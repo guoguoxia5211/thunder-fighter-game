@@ -1,11 +1,10 @@
 {
-  "version": "2.1.0",
+  "version": "3.0.0",
   "player": {
     "speed": 5,
-    "jumpPower": -15,
-    "health": 10,
+    "health": 3,
     "damage": 10,
-    "fireRate": 7
+    "fireRate": 1
   },
   "enemies": {
     "spawnRate": 5
