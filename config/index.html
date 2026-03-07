@@ -3,34 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 - 配置系统 v2.1</title>
+    <title>⚡ 雷霆战机 - 配置系统 v3</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); 
             color: #fff; 
             font-family: -apple-system, BlinkMacSystemFont, 'Arial', sans-serif; 
-            padding: 20px; 
-            min-height: 100vh; 
+            overflow-x: hidden;
         }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { text-align: center; color: #f39c12; margin-bottom: 30px; }
         
-        .section {
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr 250px;
+            gap: 20px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* 左侧配置面板 */
+        .config-panel {
             background: rgba(26, 26, 46, 0.9);
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .section-title {
-            color: #4ecdc4;
-            font-size: 18px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(78, 205, 196, 0.3);
-            padding-bottom: 10px;
+            padding: 15px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
         }
         
+        /* 中间预览窗口 */
+        .preview-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 右侧操作面板 */
+        .action-panel {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        /* 可折叠面板 */
+        .accordion {
+            margin-bottom: 15px;
+        }
+        .accordion-header {
+            background: rgba(78, 205, 196, 0.2);
+            border: 1px solid #4ecdc4;
+            border-radius: 10px;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .accordion-header:hover {
+            background: rgba(78, 205, 196, 0.3);
+        }
+        .accordion-header .icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        .accordion-header.active .icon {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            display: none;
+            padding: 15px 10px;
+            animation: slideDown 0.3s ease;
+        }
+        .accordion-content.show {
+            display: block;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 滑块样式 */
         .slider-group {
             margin: 15px 0;
         }
@@ -39,6 +98,7 @@
             justify-content: space-between;
             margin-bottom: 8px;
             color: #95a5a6;
+            font-size: 13px;
         }
         .slider-value {
             color: #f39c12;
@@ -46,31 +106,33 @@
         }
         input[type="range"] {
             width: 100%;
-            height: 8px;
-            border-radius: 4px;
+            height: 6px;
+            border-radius: 3px;
             background: rgba(255,255,255,0.1);
             outline: none;
             -webkit-appearance: none;
         }
         input[type="range"]::-webkit-slider-thumb {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #f39c12;
             cursor: pointer;
             -webkit-appearance: none;
         }
         
+        /* 按钮样式 */
         .action-btn {
             background: linear-gradient(45deg, #f39c12, #e67e22);
             border: none;
             color: white;
-            padding: 15px 30px;
-            border-radius: 25px;
+            padding: 12px 20px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
-            margin: 10px 5px;
+            font-size: 14px;
+            margin: 8px 0;
+            width: 100%;
             transition: transform 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
@@ -84,237 +146,252 @@
         .action-btn.primary {
             background: linear-gradient(45deg, #3498db, #2980b9);
         }
-        
-        .preview-card {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(41, 128, 185, 0.2));
-            border: 2px solid #3498db;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .preview-card h3 {
-            color: #3498db;
-            margin-bottom: 15px;
-        }
-        .preview-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .preview-link {
-            display: block;
-            background: rgba(52, 152, 219, 0.2);
-            border: 1px dashed #3498db;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            color: #3498db;
-            text-decoration: none;
-            word-break: break-all;
-        }
-        .preview-link:active {
-            background: rgba(52, 152, 219, 0.3);
+        .action-btn.danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
         }
         
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-        }
-        .resource-card {
+        /* 资源上传 */
+        .resource-upload {
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
-            padding: 15px;
-            text-align: center;
+            padding: 12px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .resource-card h4 {
+        .resource-upload span {
             color: #4ecdc4;
-            margin-bottom: 10px;
             font-size: 13px;
         }
-        .upload-btn {
+        .upload-btn-small {
             background: #3498db;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 15px;
+            padding: 6px 12px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 12px;
-            margin: 5px;
+            font-size: 11px;
         }
         
+        /* 预览 iframe */
+        .preview-frame {
+            flex: 1;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            min-height: 500px;
+        }
+        .preview-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* 状态条 */
         .status-bar {
             position: fixed;
             top: 20px;
             right: 20px;
             background: rgba(46, 204, 113, 0.9);
             color: white;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             z-index: 1000;
             display: none;
+            animation: slideIn 0.3s ease;
         }
         .status-bar.show { display: block; }
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
         
+        /* Token 框 */
         .token-box {
             background: rgba(243, 156, 18, 0.1);
             border: 2px solid #f39c12;
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 15px;
+            margin-bottom: 20px;
             text-align: center;
         }
         .token-input {
             background: rgba(0,0,0,0.5);
             border: 2px solid #f39c12;
             border-radius: 10px;
-            padding: 12px 20px;
+            padding: 10px 15px;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             width: 100%;
-            max-width: 500px;
             margin: 10px 0;
         }
         
-        @media (max-width: 600px) {
-            .preview-buttons {
-                flex-direction: column;
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 300px 1fr;
             }
-            .action-btn {
-                width: 100%;
+            .action-panel {
+                grid-column: 1;
+                grid-row: 2;
+                max-height: none;
             }
-            .resource-grid {
-                grid-template-columns: repeat(2, 1fr);
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            .action-panel {
+                grid-column: 1;
+                grid-row: 3;
+            }
+            .preview-frame {
+                min-height: 300px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚡ 雷霆战机 - 配置系统 v2.1</h1>
-        
-        <div class="token-box">
-            <h3>🔑 GitHub Token</h3>
-            <input type="password" id="githubToken" class="token-input" placeholder="输入 GitHub Token (ghp_开头)">
-            <br>
-            <button class="action-btn" onclick="saveToken()">💾 保存 Token</button>
-            <div id="tokenStatus" style="margin-top: 10px; font-size: 12px;"></div>
-        </div>
-        
-        <!-- 预览游戏卡片 -->
-        <div class="preview-card">
-            <h3>🎮 预览游戏</h3>
-            <p style="color: #95a5a6; margin-bottom: 15px;">配置完成后，打开游戏预览效果</p>
-            <div class="preview-buttons">
-                <a href="../index.html" target="_blank" class="action-btn primary">🔗 打开预览</a>
-                <button class="action-btn success" onclick="copyGameLink()">📋 复制链接</button>
+    <div class="main-container">
+        <!-- 左侧配置面板 -->
+        <div class="config-panel">
+            <h2 style="text-align: center; color: #f39c12; margin-bottom: 20px;">⚙️ 配置面板</h2>
+            
+            <!-- 游戏数值 -->
+            <div class="accordion">
+                <div class="accordion-header active" onclick="toggleAccordion(this)">
+                    <span>⚙️ 游戏数值</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="accordion-content show">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>玩家速度</span>
+                            <span class="slider-value" id="value_speed">5</span>
+                        </div>
+                        <input type="range" id="speed" min="1" max="10" value="5" oninput="updateValue('speed', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>玩家血量</span>
+                            <span class="slider-value" id="value_health">3</span>
+                        </div>
+                        <input type="range" id="health" min="1" max="10" value="3" oninput="updateValue('health', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>玩家伤害</span>
+                            <span class="slider-value" id="value_damage">1</span>
+                        </div>
+                        <input type="range" id="damage" min="1" max="10" value="1" oninput="updateValue('damage', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>玩家射速</span>
+                            <span class="slider-value" id="value_fireRate">1</span>
+                        </div>
+                        <input type="range" id="fireRate" min="1" max="10" value="1" oninput="updateValue('fireRate', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>敌人生成频率</span>
+                            <span class="slider-value" id="value_spawnRate">5</span>
+                        </div>
+                        <input type="range" id="spawnRate" min="1" max="10" value="5" oninput="updateValue('spawnRate', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>重力系数</span>
+                            <span class="slider-value" id="value_gravity">0.8</span>
+                        </div>
+                        <input type="range" id="gravity" min="0.1" max="2.0" step="0.1" value="0.8" oninput="updateValue('gravity', this.value)">
+                    </div>
+                </div>
             </div>
-            <a href="../index.html" target="_blank" class="preview-link" id="gameLink">
-                🔗 https://guoguoxia5211.github.io/thunder-fighter-game/
-            </a>
-        </div>
-        
-        <!-- 数值配置 -->
-        <div class="section">
-            <h3 class="section-title">⚙️ 玩家数值</h3>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>速度</span>
-                    <span class="slider-value" id="value_speed">5</span>
+            
+            <!-- 美术资源 -->
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>🎨 美术资源</span>
+                    <span class="icon">▼</span>
                 </div>
-                <input type="range" id="speed" min="1" max="10" value="5" oninput="updateValue('speed', this.value)">
+                <div class="accordion-content">
+                    <div class="resource-upload">
+                        <span>🎮 玩家飞机</span>
+                        <button class="upload-btn-small" onclick="uploadResource('player')">📤 上传</button>
+                        <input type="file" id="upload_player" accept="image/*" style="display:none" onchange="handleFileSelect('player', event)">
+                    </div>
+                    <div class="resource-upload">
+                        <span>👾 史莱姆</span>
+                        <button class="upload-btn-small" onclick="uploadResource('slime')">📤 上传</button>
+                        <input type="file" id="upload_slime" accept="image/*" style="display:none" onchange="handleFileSelect('slime', event)">
+                    </div>
+                    <div class="resource-upload">
+                        <span>🍄 蘑菇怪</span>
+                        <button class="upload-btn-small" onclick="uploadResource('mushroom')">📤 上传</button>
+                        <input type="file" id="upload_mushroom" accept="image/*" style="display:none" onchange="handleFileSelect('mushroom', event)">
+                    </div>
+                    <div class="resource-upload">
+                        <span>👹 精英怪</span>
+                        <button class="upload-btn-small" onclick="uploadResource('elite')">📤 上传</button>
+                        <input type="file" id="upload_elite" accept="image/*" style="display:none" onchange="handleFileSelect('elite', event)">
+                    </div>
+                    <div class="resource-upload">
+                        <span>🐲 Boss</span>
+                        <button class="upload-btn-small" onclick="uploadResource('boss')">📤 上传</button>
+                        <input type="file" id="upload_boss" accept="image/*" style="display:none" onchange="handleFileSelect('boss', event)">
+                    </div>
+                    <div class="resource-upload">
+                        <span>🌌 背景</span>
+                        <button class="upload-btn-small" onclick="uploadResource('bg')">📤 上传</button>
+                        <input type="file" id="upload_bg" accept="image/*" style="display:none" onchange="handleFileSelect('bg', event)">
+                    </div>
+                </div>
             </div>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>跳跃力</span>
-                    <span class="slider-value" id="value_jumpPower">-15</span>
-                </div>
-                <input type="range" id="jumpPower" min="-20" max="-5" value="-15" oninput="updateValue('jumpPower', this.value)">
-            </div>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>血量</span>
-                    <span class="slider-value" id="value_health">3</span>
-                </div>
-                <input type="range" id="health" min="1" max="10" value="3" oninput="updateValue('health', this.value)">
-            </div>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>伤害</span>
-                    <span class="slider-value" id="value_damage">1</span>
-                </div>
-                <input type="range" id="damage" min="1" max="10" value="1" oninput="updateValue('damage', this.value)">
-            </div>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>射速</span>
-                    <span class="slider-value" id="value_fireRate">1</span>
-                </div>
-                <input type="range" id="fireRate" min="1" max="10" value="1" oninput="updateValue('fireRate', this.value)">
-            </div>
-        </div>
-        
-        <div class="section">
-            <h3 class="section-title">👾 敌人数值</h3>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>敌人生成频率</span>
-                    <span class="slider-value" id="value_spawnRate">5</span>
-                </div>
-                <input type="range" id="spawnRate" min="1" max="10" value="5" oninput="updateValue('spawnRate', this.value)">
-            </div>
-            <div class="slider-group">
-                <div class="slider-label">
-                    <span>重力系数</span>
-                    <span class="slider-value" id="value_gravity">0.8</span>
-                </div>
-                <input type="range" id="gravity" min="0.1" max="2.0" step="0.1" value="0.8" oninput="updateValue('gravity', this.value)">
-            </div>
-        </div>
-        
-        <!-- 美术资源 -->
-        <div class="section">
-            <h3 class="section-title">🎨 美术资源</h3>
-            <div class="resource-grid">
-                <div class="resource-card">
-                    <h4>🎮 玩家飞机</h4>
-                    <button class="upload-btn" onclick="uploadResource('player')">📤 上传</button>
-                    <input type="file" id="upload_player" accept="image/*" style="display:none" onchange="handleFileSelect('player', event)">
-                </div>
-                <div class="resource-card">
-                    <h4>👾 史莱姆</h4>
-                    <button class="upload-btn" onclick="uploadResource('slime')">📤 上传</button>
-                    <input type="file" id="upload_slime" accept="image/*" style="display:none" onchange="handleFileSelect('slime', event)">
-                </div>
-                <div class="resource-card">
-                    <h4>🍄 蘑菇怪</h4>
-                    <button class="upload-btn" onclick="uploadResource('mushroom')">📤 上传</button>
-                    <input type="file" id="upload_mushroom" accept="image/*" style="display:none" onchange="handleFileSelect('mushroom', event)">
-                </div>
-                <div class="resource-card">
-                    <h4>👹 精英怪</h4>
-                    <button class="upload-btn" onclick="uploadResource('elite')">📤 上传</button>
-                    <input type="file" id="upload_elite" accept="image/*" style="display:none" onchange="handleFileSelect('elite', event)">
-                </div>
-                <div class="resource-card">
-                    <h4>🐲 Boss</h4>
-                    <button class="upload-btn" onclick="uploadResource('boss')">📤 上传</button>
-                    <input type="file" id="upload_boss" accept="image/*" style="display:none" onchange="handleFileSelect('boss', event)">
-                </div>
-                <div class="resource-card">
-                    <h4>🌌 背景</h4>
-                    <button class="upload-btn" onclick="uploadResource('bg')">📤 上传</button>
-                    <input type="file" id="upload_bg" accept="image/*" style="display:none" onchange="handleFileSelect('bg', event)">
-                </div>
+            
+            <!-- Token 配置 -->
+            <div class="token-box">
+                <h3 style="color: #f39c12; margin-bottom: 10px;">🔑 GitHub Token</h3>
+                <input type="password" id="githubToken" class="token-input" placeholder="输入 GitHub Token">
+                <button class="action-btn" onclick="saveToken()">💾 保存 Token</button>
+                <div id="tokenStatus" style="margin-top: 10px; font-size: 11px;"></div>
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 20px;">
+        <!-- 中间预览窗口 -->
+        <div class="preview-panel">
+            <h2 style="text-align: center; color: #3498db; margin-bottom: 15px;">🎮 实时预览</h2>
+            <div class="preview-frame">
+                <iframe id="gamePreview" src="../index.html"></iframe>
+            </div>
+        </div>
+        
+        <!-- 右侧操作面板 -->
+        <div class="action-panel">
+            <h2 style="text-align: center; color: #2ecc71; margin-bottom: 20px;">⚡ 快捷操作</h2>
+            
+            <button class="action-btn primary" onclick="openPreview()">🔗 打开预览</button>
+            <button class="action-btn success" onclick="refreshPreview()">🔄 刷新预览</button>
+            <button class="action-btn" onclick="copyGameLink()">📋 复制链接</button>
+            
+            <div style="border-top: 2px solid rgba(255,255,255,0.1); margin: 20px 0;"></div>
+            
             <button class="action-btn success" onclick="deployConfig()">🚀 部署配置</button>
             <button class="action-btn secondary" onclick="resetConfig()">🔄 重置默认</button>
+            
+            <div style="margin-top: 30px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 10px;">
+                <h4 style="color: #3498db; margin-bottom: 10px;">💡 使用提示</h4>
+                <ol style="color: #95a5a6; font-size: 12px; padding-left: 20px;">
+                    <li>调整数值或上传资源</li>
+                    <li>点击"刷新预览"查看效果</li>
+                    <li>满意后点击"部署配置"</li>
+                    <li>等待部署完成后刷新游戏</li>
+                </ol>
+            </div>
         </div>
     </div>
     
@@ -325,13 +402,14 @@
         let githubToken = localStorage.getItem('github_token') || '';
         
         let config = {
-            version: "2.1.0",
-            player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+            version: "3.0.0",
+            player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
             enemies: { spawnRate: 5 },
             game: { gravity: 0.8 }
         };
         
         let uploadedFiles = {};
+        let previewWindow = null;
         
         window.onload = function() {
             if (githubToken) {
@@ -339,6 +417,12 @@
                 document.getElementById('tokenStatus').textContent = '✅ Token 已保存';
             }
         };
+        
+        function toggleAccordion(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('show');
+        }
         
         function saveToken() {
             const token = document.getElementById('githubToken').value.trim();
@@ -354,12 +438,21 @@
             document.getElementById('value_' + key).textContent = value;
             
             if (key === 'speed') config.player.speed = parseFloat(value);
-            if (key === 'jumpPower') config.player.jumpPower = parseFloat(value);
             if (key === 'health') config.player.health = parseFloat(value);
             if (key === 'damage') config.player.damage = parseFloat(value);
             if (key === 'fireRate') config.player.fireRate = parseFloat(value);
             if (key === 'spawnRate') config.enemies.spawnRate = parseFloat(value);
             if (key === 'gravity') config.game.gravity = parseFloat(value);
+            
+            // 实时发送到预览窗口
+            sendConfigToPreview();
+        }
+        
+        function sendConfigToPreview() {
+            const iframe = document.getElementById('gamePreview');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ type: 'UPDATE_CONFIG', config: config }, '*');
+            }
         }
         
         function uploadResource(type) {
@@ -380,6 +473,20 @@
                 showStatus('✅ ' + file.name + ' 已上传，点击部署生效', 'success');
             };
             reader.readAsDataURL(file);
+        }
+        
+        function openPreview() {
+            const gameUrl = window.location.href.replace('config/index.html', 'index.html');
+            previewWindow = window.open(gameUrl, 'gamePreview', 'width=800,height=600');
+            showStatus('🎮 已打开游戏预览窗口', 'success');
+        }
+        
+        function refreshPreview() {
+            const iframe = document.getElementById('gamePreview');
+            if (iframe) {
+                iframe.src = iframe.src;
+                showStatus('🔄 已刷新预览', 'success');
+            }
         }
         
         function copyGameLink() {
@@ -423,8 +530,11 @@
                     }
                 }
                 
-                showStatus('✅ 部署成功！请手动刷新游戏页面', 'success');
-                alert('✅ 部署成功！\n\n请刷新游戏页面查看效果：\nhttps://guoguoxia5211.github.io/thunder-fighter-game/');
+                showStatus('✅ 部署成功！请刷新预览', 'success');
+                setTimeout(() => {
+                    refreshPreview();
+                    alert('✅ 部署成功！\n\n已自动刷新预览窗口查看效果');
+                }, 2000);
                 
             } catch (error) {
                 showStatus('❌ 部署失败：' + error.message, 'error');
@@ -432,7 +542,6 @@
         }
         
         async function uploadToGitHub(path, content, message) {
-            // 获取当前 sha
             const shaResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
                 headers: { 'Authorization': 'token ' + githubToken }
             });
@@ -443,14 +552,8 @@
                 sha = data.sha;
             }
             
-            // 上传文件
-            const uploadData = {
-                message: message,
-                content: content
-            };
-            if (sha) {
-                uploadData.sha = sha;
-            }
+            const uploadData = { message: message, content: content };
+            if (sha) uploadData.sha = sha;
             
             const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
                 method: 'PUT',
@@ -473,14 +576,13 @@
         function resetConfig() {
             if (confirm('确定要重置为默认配置吗？')) {
                 config = {
-                    version: "2.1.0",
-                    player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+                    version: "3.0.0",
+                    player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
                     enemies: { spawnRate: 5 },
                     game: { gravity: 0.8 }
                 };
                 
                 document.getElementById('speed').value = 5;
-                document.getElementById('jumpPower').value = -15;
                 document.getElementById('health').value = 3;
                 document.getElementById('damage').value = 1;
                 document.getElementById('fireRate').value = 1;
@@ -488,13 +590,13 @@
                 document.getElementById('gravity').value = 0.8;
                 
                 document.getElementById('value_speed').textContent = '5';
-                document.getElementById('value_jumpPower').textContent = '-15';
                 document.getElementById('value_health').textContent = '3';
                 document.getElementById('value_damage').textContent = '1';
                 document.getElementById('value_fireRate').textContent = '1';
                 document.getElementById('value_spawnRate').textContent = '5';
                 document.getElementById('value_gravity').textContent = '0.8';
                 
+                sendConfigToPreview();
                 showStatus('✅ 配置已重置为默认值', 'success');
             }
         }
