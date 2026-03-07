@@ -4,8 +4,8 @@
     "speed": 5,
     "jumpPower": -15,
     "health": 3,
-    "damage": 1,
-    "fireRate": 1,
+    "damage": 6,
+    "fireRate": 4,
     "image": "player/classic.png"
   },
   "enemies": {
