@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI 设计工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* 左侧画布 */
+        .canvas-area {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #canvas {
+            width: 375px;
+            height: 667px;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #1a1a1a;
+        }
+
+        /* 右侧控制面板 */
+        .control-panel {
+            width: 320px;
+            background: #ffffff;
+            border-left: 1px solid #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .control-panel h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* 分组 */
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 控制项 */
+        .control-item {
+            margin-bottom: 15px;
+        }
+
+        .control-item label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .control-item input[type="text"],
+        .control-item input[type="number"],
+        .control-item select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+        }
+
+        .control-item input:focus,
+        .control-item select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .control-item input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .control-item input[type="range"] {
+            width: 100%;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-row .control-item {
+            flex: 1;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* 画布内容 */
+        .canvas-content {
+            padding: 20px;
+            height: 100%;
+        }
+
+        /* 顶部状态栏 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            padding: 20px;
+        }
+
+        .main-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .main-subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 25px;
+        }
+
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .action-btn.secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .action-btn.secondary:hover {
+            background: #e9ecef;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            font-size: 11px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧画布 -->
+    <div class="canvas-area">
+        <div id="canvas">
+            <div class="status-bar" id="statusBar">
+                <span id="statusTime">9:41</span>
+                <span id="statusIcons">📶 🔋</span>
+            </div>
+            
+            <div class="main-content" id="mainContent">
+                <h1 class="main-title" id="mainTitle">欢迎使用</h1>
+                <p class="main-subtitle" id="mainSubtitle">开始设计你的界面</p>
+                
+                <div class="button-group" id="buttonGroup">
+                    <button class="action-btn primary" id="btn1">主要操作</button>
+                    <button class="action-btn secondary" id="btn2">次要操作</button>
+                    <button class="action-btn secondary" id="btn3">其他操作</button>
+                </div>
+            </div>
+            
+            <div class="bottom-nav" id="bottomNav">
+                <div class="nav-item active">
+                    <span class="icon">🏠</span>
+                    首页
+                </div>
+                <div class="nav-item">
+                    <span class="icon">🔍</span>
+                    发现
+                </div>
+                <div class="nav-item">
+                    <span class="icon">👤</span>
+                    我的
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧控制面板 -->
+    <div class="control-panel">
+        <h2>🎨 UI 设计工具</h2>
+
+        <!-- 状态栏 -->
+        <div class="control-group">
+            <h3>状态栏</h3>
+            <div class="control-item">
+                <label>时间</label>
+                <input type="text" id="statusTimeInput" value="9:41" onchange="updateStatusBar()">
+            </div>
+            <div class="control-item">
+                <label>显示状态栏</label>
+                <select onchange="toggleStatusBar(this.value)">
+                    <option value="show">显示</option>
+                    <option value="hide">隐藏</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 主标题 -->
+        <div class="control-group">
+            <h3>主标题</h3>
+            <div class="control-item">
+                <label>标题文字</label>
+                <input type="text" id="titleInput" value="欢迎使用" oninput="updateTitle()">
+            </div>
+            <div class="control-item">
+                <label>字体大小</label>
+                <input type="range" min="18" max="36" value="24" oninput="updateTitleStyle()">
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <label>颜色</label>
+                    <input type="color" id="titleColor" value="#333333" oninput="updateTitleStyle()">
+                </div>
+            </div>
+        </div>
+
+        <!-- 副标题 -->
+        <div class="control-group">
+            <h3>副标题</h3>
+            <div class="control-item">
+                <label>副标题文字</label>
+                <input type="text" id="subtitleInput" value="开始设计你的界面" oninput="updateSubtitle()">
+            </div>
+            <div class="control-item">
+                <label>字体大小</label>
+                <input type="range" min="12" max="20" value="14" oninput="updateSubtitleStyle()">
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <label>颜色</label>
+                    <input type="color" id="subtitleColor" value="#999999" oninput="updateSubtitleStyle()">
+                </div>
+            </div>
+        </div>
+
+        <!-- 按钮 -->
+        <div class="control-group">
+            <h3>按钮 1（主要）</h3>
+            <div class="control-item">
+                <label>按钮文字</label>
+                <input type="text" id="btn1Text" value="主要操作" oninput="updateButton1()">
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <label>背景色</label>
+                    <input type="color" id="btn1Bg" value="#667eea" oninput="updateButton1()">
+                </div>
+                <div class="control-item">
+                    <label>文字色</label>
+                    <input type="color" id="btn1Color" value="#ffffff" oninput="updateButton1()">
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>按钮 2（次要）</h3>
+            <div class="control-item">
+                <label>按钮文字</label>
+                <input type="text" id="btn2Text" value="次要操作" oninput="updateButton2()">
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <label>背景色</label>
+                    <input type="color" id="btn2Bg" value="#f8f9fa" oninput="updateButton2()">
+                </div>
+                <div class="control-item">
+                    <label>文字色</label>
+                    <input type="color" id="btn2Color" value="#333333" oninput="updateButton2()">
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <h3>按钮 3</h3>
+            <div class="control-item">
+                <label>按钮文字</label>
+                <input type="text" id="btn3Text" value="其他操作" oninput="updateButton3()">
+            </div>
+            <div class="control-item">
+                <label>显示</label>
+                <select onchange="toggleButton3(this.value)">
+                    <option value="show">显示</option>
+                    <option value="hide">隐藏</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <div class="control-group">
+            <h3>底部导航</h3>
+            <div class="control-item">
+                <label>显示导航</label>
+                <select onchange="toggleBottomNav(this.value)">
+                    <option value="show">显示</option>
+                    <option value="hide">隐藏</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <label>标签 1</label>
+                    <input type="text" value="首页" oninput="updateNavLabels()">
+                </div>
+                <div class="control-item">
+                    <label>标签 2</label>
+                    <input type="text" value="发现" oninput="updateNavLabels()">
+                </div>
+                <div class="control-item">
+                    <label>标签 3</label>
+                    <input type="text" value="我的" oninput="updateNavLabels()">
+                </div>
+            </div>
+        </div>
+
+        <!-- 画布背景 -->
+        <div class="control-group">
+            <h3>画布</h3>
+            <div class="control-item">
+                <label>背景色</label>
+                <input type="color" id="canvasBg" value="#ffffff" oninput="updateCanvasBg()">
+            </div>
+            <div class="control-item">
+                <label>内边距</label>
+                <input type="range" min="0" max="40" value="20" oninput="updateCanvasPadding()">
+            </div>
+        </div>
+
+        <!-- 操作 -->
+        <div class="control-group">
+            <h3>操作</h3>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="resetDesign()">重置</button>
+                <button class="btn btn-primary" onclick="exportDesign()">导出</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏
+        function updateStatusBar() {
+            document.getElementById('statusTime').textContent = document.getElementById('statusTimeInput').value;
+        }
+
+        function toggleStatusBar(value) {
+            document.getElementById('statusBar').style.display = value === 'show' ? 'flex' : 'none';
+        }
+
+        // 更新主标题
+        function updateTitle() {
+            document.getElementById('mainTitle').textContent = document.getElementById('titleInput').value;
+        }
+
+        function updateTitleStyle() {
+            const size = event.target.value;
+            const color = document.getElementById('titleColor').value;
+            document.getElementById('mainTitle').style.fontSize = size + 'px';
+            document.getElementById('mainTitle').style.color = color;
+        }
+
+        // 更新副标题
+        function updateSubtitle() {
+            document.getElementById('mainSubtitle').textContent = document.getElementById('subtitleInput').value;
+        }
+
+        function updateSubtitleStyle() {
+            const size = event.target.value;
+            const color = document.getElementById('subtitleColor').value;
+            document.getElementById('mainSubtitle').style.fontSize = size + 'px';
+            document.getElementById('mainSubtitle').style.color = color;
+        }
+
+        // 更新按钮 1
+        function updateButton1() {
+            const btn = document.getElementById('btn1');
+            btn.textContent = document.getElementById('btn1Text').value;
+            const bg = document.getElementById('btn1Bg').value;
+            const color = document.getElementById('btn1Color').value;
+            btn.style.background = `linear-gradient(135deg, ${bg} 0%, ${adjustColor(bg, -20)} 100%)`;
+            btn.style.color = color;
+        }
+
+        // 更新按钮 2
+        function updateButton2() {
+            const btn = document.getElementById('btn2');
+            btn.textContent = document.getElementById('btn2Text').value;
+            btn.style.background = document.getElementById('btn2Bg').value;
+            btn.style.color = document.getElementById('btn2Color').value;
+        }
+
+        // 更新按钮 3
+        function updateButton3() {
+            const btn = document.getElementById('btn3');
+            btn.textContent = document.getElementById('btn3Text').value;
+        }
+
+        function toggleButton3(value) {
+            document.getElementById('btn3').style.display = value === 'show' ? 'block' : 'none';
+        }
+
+        // 更新底部导航
+        function toggleBottomNav(value) {
+            document.getElementById('bottomNav').style.display = value === 'show' ? 'flex' : 'none';
+        }
+
+        function updateNavLabels() {
+            const inputs = event.target.parentElement.parentElement.querySelectorAll('input');
+            const navItems = document.querySelectorAll('.nav-item');
+            inputs.forEach((input, index) => {
+                if (navItems[index]) {
+                    navItems[index].childNodes[3].textContent = input.value;
+                }
+            });
+        }
+
+        // 更新画布
+        function updateCanvasBg() {
+            document.getElementById('mainContent').style.background = document.getElementById('canvasBg').value;
+        }
+
+        function updateCanvasPadding() {
+            document.getElementById('mainContent').style.padding = event.target.value + 'px';
+        }
+
+        // 颜色调整
+        function adjustColor(hex, amount) {
+            return '#' + hex.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+        }
+
+        // 重置设计
+        function resetDesign() {
+            if (confirm('确定要重置所有设置吗？')) {
+                location.reload();
+            }
+        }
+
+        // 导出设计
+        function exportDesign() {
+            const design = {
+                statusBar: document.getElementById('statusTime').textContent,
+                title: document.getElementById('mainTitle').textContent,
+                subtitle: document.getElementById('mainSubtitle').textContent,
+                buttons: [
+                    { text: document.getElementById('btn1').textContent, bg: document.getElementById('btn1Bg').value },
+                    { text: document.getElementById('btn2').textContent, bg: document.getElementById('btn2Bg').value },
+                    { text: document.getElementById('btn3').textContent }
+                ]
+            };
+            
+            const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ui-design.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
