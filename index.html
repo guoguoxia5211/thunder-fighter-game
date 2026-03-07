@@ -582,6 +582,16 @@
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
         });
+    
+        // 接收配置消息 (实时预览)
+        window.addEventListener("message", function(event) {
+            if (event.data && event.data.type === "UPDATE_CONFIG") {
+                const newConfig = event.data.config;
+                console.log("收到配置更新:", newConfig);
+            }
+        });
+
     </script>
 </body>
 </html>
+
