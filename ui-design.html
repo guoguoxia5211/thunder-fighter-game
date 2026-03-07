@@ -356,7 +356,6 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -433,6 +432,186 @@
             50% { opacity: 1; }
         }
 
+        /* 开场动画 */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(0,212,255,0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 按钮点击动画 */
+        @keyframes buttonPress {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* 应用动画 */
+        .game-title {
+            animation: slideInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+
+        .game-logo {
+            animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+        }
+
+        .menu-btn {
+            opacity: 0;
+            animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        .menu-btn:nth-child(1) { animation-delay: 0.6s; }
+        .menu-btn:nth-child(2) { animation-delay: 0.7s; }
+        .menu-btn:nth-child(3) { animation-delay: 0.8s; }
+        .menu-btn:nth-child(4) { animation-delay: 0.9s; }
+
+        .footer-info {
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+
+        /* 按钮悬停效果 */
+        .menu-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-start:hover {
+            box-shadow: 0 6px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .btn-skin:hover {
+            box-shadow: 0 6px 30px rgba(255,107,107,0.6), 0 0 40px rgba(255,107,107,0.3);
+        }
+
+        .btn-achievement:hover {
+            box-shadow: 0 6px 30px rgba(161,140,209,0.6), 0 0 40px rgba(161,140,209,0.3);
+        }
+
+        .btn-settings:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        /* 按钮点击效果 */
+        .menu-btn:active {
+            transform: translateY(-1px) scale(0.98);
+            animation: buttonPress 0.2s ease-out;
+        }
+
+        /* 光泽扫过效果 */
+        .menu-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            transition: left 0.6s ease;
+        }
+
+        .menu-btn:hover::after {
+            left: 100%;
+        }
+
+        /* 标题光晕 */
+        .game-logo {
+            position: relative;
+        }
+
+        .game-logo::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(
+                circle,
+                rgba(0,212,255,0.1) 0%,
+                transparent 70%
+            );
+            animation: glow 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
         /* 滚动条样式 */
         ::-webkit-scrollbar {
             width: 8px;
@@ -475,19 +654,19 @@
                 </div>
 
                 <div class="menu-section">
-                    <button class="menu-btn btn-start" id="btnStart">
+                    <button class="menu-btn btn-start" id="btnStart" onclick="handleClick(this)">
                         <span>🚀</span>
                         <span id="btnStartText">开始游戏</span>
                     </button>
-                    <button class="menu-btn btn-skin" id="btnSkin">
+                    <button class="menu-btn btn-skin" id="btnSkin" onclick="handleClick(this)">
                         <span>👕</span>
                         <span id="btnSkinText">皮肤系统</span>
                     </button>
-                    <button class="menu-btn btn-achievement" id="btnAchieve">
+                    <button class="menu-btn btn-achievement" id="btnAchieve" onclick="handleClick(this)">
                         <span>🏆</span>
                         <span id="btnAchieveText">成就系统</span>
                     </button>
-                    <button class="menu-btn btn-settings" id="btnSettings">
+                    <button class="menu-btn btn-settings" id="btnSettings" onclick="handleClick(this)">
                         <span>⚙️</span>
                         <span id="btnSettingsText">设置</span>
                     </button>
@@ -738,6 +917,38 @@
         // 切换面板
         function togglePanel(panel) {
             panel.classList.toggle('active');
+        }
+
+        // 按钮点击效果
+        function handleClick(btn) {
+            // 创建涟漪
+            const ripple = document.createElement('span');
+            ripple.style.cssText = `
+                position: absolute;
+                background: rgba(255,255,255,0.6);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: rippleEffect 0.6s ease-out;
+                pointer-events: none;
+            `;
+            
+            const rect = btn.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const size = Math.max(rect.width, rect.height);
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (x - size/2) + 'px';
+            ripple.style.top = (y - size/2) + 'px';
+            
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+            
+            // 添加点击样式
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = '';
+            }, 150);
         }
 
         // 更新文字
