@@ -2,83 +2,235 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UI 设计工具</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f0f2f5;
             min-height: 100vh;
-            display: flex;
+            overflow-x: hidden;
         }
 
-        /* 左侧画布 */
-        .canvas-area {
+        /* 顶部标签 */
+        .tabs {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tab {
             flex: 1;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        #canvas {
-            width: 375px;
-            height: 667px;
-            background: #ffffff;
-            border-radius: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            overflow: hidden;
-            position: relative;
-            border: 8px solid #1a1a1a;
-        }
-
-        /* 右侧控制面板 */
-        .control-panel {
-            width: 320px;
-            background: #ffffff;
-            border-left: 1px solid #e0e0e0;
-            padding: 20px;
-            overflow-y: auto;
-            height: 100vh;
-        }
-
-        .control-panel h2 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        /* 分组 */
-        .control-group {
-            margin-bottom: 25px;
-        }
-
-        .control-group h3 {
+            padding: 12px;
+            text-align: center;
             font-size: 14px;
             color: #666;
-            margin-bottom: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
         }
 
-        /* 控制项 */
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+
+        /* 预览区 */
+        .preview-area {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #preview {
+            width: 375px;
+            min-height: 667px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        /* 手机状态栏 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            font-size: 12px;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* 内容区 */
+        .content {
+            padding: 24px;
+        }
+
+        .header-section {
+            margin-bottom: 32px;
+        }
+
+        .main-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: #667eea;
+        }
+
+        /* 卡片组 */
+        .card-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 8px 0 16px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 4px 8px;
+            font-size: 11px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* 控制面板 */
+        .control-panel {
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 16px;
+            max-height: calc(100vh - 400px);
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 24px;
+        }
+
+        .panel-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
         .control-item {
-            margin-bottom: 15px;
+            flex: 1;
         }
 
         .control-item label {
             display: block;
-            font-size: 13px;
-            color: #555;
+            font-size: 12px;
+            color: #666;
             margin-bottom: 6px;
         }
 
@@ -86,17 +238,11 @@
         .control-item input[type="number"],
         .control-item select {
             width: 100%;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
             font-size: 13px;
-            transition: border-color 0.2s;
-        }
-
-        .control-item input:focus,
-        .control-item select:focus {
-            outline: none;
-            border-color: #667eea;
+            background: #f8f9fa;
         }
 
         .control-item input[type="color"] {
@@ -104,128 +250,158 @@
             height: 40px;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
+            padding: 2px;
             cursor: pointer;
         }
 
         .control-item input[type="range"] {
             width: 100%;
-        }
-
-        .control-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .control-row .control-item {
-            flex: 1;
-        }
-
-        /* 按钮样式 */
-        .btn {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-secondary:hover {
+            height: 6px;
+            -webkit-appearance: none;
             background: #e0e0e0;
+            border-radius: 3px;
+            outline: none;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #667eea;
+            border-radius: 50%;
+            cursor: pointer;
         }
 
-        .btn-group .btn {
-            flex: 1;
+        .value-display {
+            text-align: right;
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
         }
 
-        /* 画布内容 */
-        .canvas-content {
-            padding: 20px;
-            height: 100%;
+        /* 开关 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
         }
 
-        /* 顶部状态栏 */
-        .status-bar {
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .switch-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 15px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 12px;
-            color: #666;
+            padding: 10px 0;
         }
 
-        /* 主内容区 */
-        .main-content {
-            padding: 20px;
-        }
-
-        .main-title {
-            font-size: 24px;
-            font-weight: 600;
+        .switch-label {
+            font-size: 13px;
             color: #333;
-            margin-bottom: 8px;
         }
 
-        .main-subtitle {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 25px;
+        /* 渐变预设 */
+        .gradient-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
         }
 
-        /* 按钮组 */
-        .button-group {
+        .gradient-preset {
+            height: 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gradient-preset:hover {
+            transform: scale(1.05);
+        }
+
+        .gradient-preset.selected {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 毛玻璃效果 */
+        .glass-preview {
+            height: 60px;
+            border-radius: 8px;
+            margin-top: 10px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* 底部操作栏 */
+        .action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 16px;
             gap: 12px;
+            z-index: 200;
         }
 
         .action-btn {
-            width: 100%;
-            padding: 14px 20px;
+            flex: 1;
+            padding: 12px;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
         }
 
         .action-btn.primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .action-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
         .action-btn.secondary {
@@ -234,323 +410,394 @@
             border: 1px solid #e0e0e0;
         }
 
-        .action-btn.secondary:hover {
-            background: #e9ecef;
+        /* 隐藏面板 */
+        .panel-content {
+            display: none;
         }
 
-        /* 底部导航 */
-        .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            background: #ffffff;
-            border-top: 1px solid #e0e0e0;
-            padding: 10px 0;
-        }
-
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            font-size: 11px;
-            color: #999;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .nav-item.active {
-            color: #667eea;
-        }
-
-        .nav-item .icon {
-            font-size: 20px;
+        .panel-content.active {
             display: block;
-            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
-    <!-- 左侧画布 -->
-    <div class="canvas-area">
-        <div id="canvas">
+    <!-- 顶部标签 -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchPanel('layout')">📐 布局</div>
+        <div class="tab" onclick="switchPanel('style')">🎨 样式</div>
+        <div class="tab" onclick="switchPanel('effect')">✨ 效果</div>
+    </div>
+
+    <!-- 预览区 -->
+    <div class="preview-area">
+        <div id="preview">
             <div class="status-bar" id="statusBar">
-                <span id="statusTime">9:41</span>
-                <span id="statusIcons">📶 🔋</span>
+                <span>9:41</span>
+                <span>📶 🔋</span>
             </div>
             
-            <div class="main-content" id="mainContent">
-                <h1 class="main-title" id="mainTitle">欢迎使用</h1>
-                <p class="main-subtitle" id="mainSubtitle">开始设计你的界面</p>
-                
+            <div class="content">
+                <div class="header-section">
+                    <h1 class="main-title" id="mainTitle">欢迎使用</h1>
+                    <p class="subtitle" id="subtitle">调整右侧参数来设计你的界面</p>
+                </div>
+
                 <div class="button-group" id="buttonGroup">
-                    <button class="action-btn primary" id="btn1">主要操作</button>
-                    <button class="action-btn secondary" id="btn2">次要操作</button>
-                    <button class="action-btn secondary" id="btn3">其他操作</button>
+                    <button class="btn btn-primary" id="btn1">主要操作</button>
+                    <button class="btn btn-secondary" id="btn2">次要操作</button>
+                    <button class="btn btn-ghost" id="btn3">幽灵按钮</button>
+                </div>
+
+                <div class="card-group">
+                    <div class="card" id="card1">
+                        <div class="card-title">卡片标题</div>
+                        <div class="card-desc">这是一段卡片描述文字，用来展示卡片的样式效果</div>
+                    </div>
+                    <div class="card" id="card2">
+                        <div class="card-title">卡片标题</div>
+                        <div class="card-desc">这是另一段卡片描述文字</div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="bottom-nav" id="bottomNav">
                 <div class="nav-item active">
-                    <span class="icon">🏠</span>
+                    <span class="nav-icon">🏠</span>
                     首页
                 </div>
                 <div class="nav-item">
-                    <span class="icon">🔍</span>
+                    <span class="nav-icon">🔍</span>
                     发现
                 </div>
                 <div class="nav-item">
-                    <span class="icon">👤</span>
+                    <span class="nav-icon">👤</span>
                     我的
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 右侧控制面板 -->
+    <!-- 控制面板 -->
     <div class="control-panel">
-        <h2>🎨 UI 设计工具</h2>
-
-        <!-- 状态栏 -->
-        <div class="control-group">
-            <h3>状态栏</h3>
-            <div class="control-item">
-                <label>时间</label>
-                <input type="text" id="statusTimeInput" value="9:41" onchange="updateStatusBar()">
-            </div>
-            <div class="control-item">
-                <label>显示状态栏</label>
-                <select onchange="toggleStatusBar(this.value)">
-                    <option value="show">显示</option>
-                    <option value="hide">隐藏</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 主标题 -->
-        <div class="control-group">
-            <h3>主标题</h3>
-            <div class="control-item">
-                <label>标题文字</label>
-                <input type="text" id="titleInput" value="欢迎使用" oninput="updateTitle()">
-            </div>
-            <div class="control-item">
-                <label>字体大小</label>
-                <input type="range" min="18" max="36" value="24" oninput="updateTitleStyle()">
-            </div>
-            <div class="control-row">
+        <!-- 布局面板 -->
+        <div id="panel-layout" class="panel-content active">
+            <div class="panel-section">
+                <h3>📝 标题</h3>
                 <div class="control-item">
-                    <label>颜色</label>
-                    <input type="color" id="titleColor" value="#333333" oninput="updateTitleStyle()">
+                    <label>主标题</label>
+                    <input type="text" id="titleInput" value="欢迎使用" oninput="update()">
+                </div>
+                <div class="control-item">
+                    <label>副标题</label>
+                    <input type="text" id="subtitleInput" value="调整右侧参数来设计你的界面" oninput="update()">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>🔘 按钮</h3>
+                <div class="control-item">
+                    <label>按钮 1 文字</label>
+                    <input type="text" id="btn1Input" value="主要操作" oninput="update()">
+                </div>
+                <div class="control-item">
+                    <label>按钮 2 文字</label>
+                    <input type="text" id="btn2Input" value="次要操作" oninput="update()">
+                </div>
+                <div class="control-item">
+                    <label>按钮 3 文字</label>
+                    <input type="text" id="btn3Input" value="幽灵按钮" oninput="update()">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>📦 卡片</h3>
+                <div class="control-item">
+                    <label>卡片 1 标题</label>
+                    <input type="text" value="卡片标题" oninput="update()">
+                </div>
+                <div class="control-item">
+                    <label>卡片 1 描述</label>
+                    <input type="text" value="这是一段卡片描述文字，用来展示卡片的样式效果" oninput="update()">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>🧭 底部导航</h3>
+                <div class="switch-row">
+                    <span class="switch-label">显示导航</span>
+                    <label class="switch">
+                        <input type="checkbox" checked onchange="toggleNav(this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
             </div>
         </div>
 
-        <!-- 副标题 -->
-        <div class="control-group">
-            <h3>副标题</h3>
-            <div class="control-item">
-                <label>副标题文字</label>
-                <input type="text" id="subtitleInput" value="开始设计你的界面" oninput="updateSubtitle()">
-            </div>
-            <div class="control-item">
-                <label>字体大小</label>
-                <input type="range" min="12" max="20" value="14" oninput="updateSubtitleStyle()">
-            </div>
-            <div class="control-row">
-                <div class="control-item">
-                    <label>颜色</label>
-                    <input type="color" id="subtitleColor" value="#999999" oninput="updateSubtitleStyle()">
+        <!-- 样式面板 -->
+        <div id="panel-style" class="panel-content">
+            <div class="panel-section">
+                <h3>🎨 主标题样式</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>大小</label>
+                        <input type="range" min="20" max="40" value="28" oninput="updateTitleStyle()">
+                        <div class="value-display" id="titleSizeVal">28px</div>
+                    </div>
+                    <div class="control-item">
+                        <label>颜色</label>
+                        <input type="color" id="titleColor" value="#333333" oninput="updateTitleStyle()">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 按钮 -->
-        <div class="control-group">
-            <h3>按钮 1（主要）</h3>
-            <div class="control-item">
-                <label>按钮文字</label>
-                <input type="text" id="btn1Text" value="主要操作" oninput="updateButton1()">
+            <div class="panel-section">
+                <h3>🎨 副标题样式</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>大小</label>
+                        <input type="range" min="12" max="20" value="15" oninput="updateSubtitleStyle()">
+                        <div class="value-display" id="subtitleSizeVal">15px</div>
+                    </div>
+                    <div class="control-item">
+                        <label>颜色</label>
+                        <input type="color" id="subtitleColor" value="#999999" oninput="updateSubtitleStyle()">
+                    </div>
+                </div>
             </div>
-            <div class="control-row">
+
+            <div class="panel-section">
+                <h3>🔘 按钮 1 样式</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>底色</label>
+                        <input type="color" id="btn1Bg" value="#667eea" oninput="updateBtn1Style()">
+                    </div>
+                    <div class="control-item">
+                        <label>文字</label>
+                        <input type="color" id="btn1Color" value="#ffffff" oninput="updateBtn1Style()">
+                    </div>
+                </div>
+                <div class="control-item">
+                    <label>圆角</label>
+                    <input type="range" min="0" max="30" value="12" oninput="updateBtn1Style()">
+                    <div class="value-display" id="btn1RadiusVal">12px</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>🔘 按钮 2 样式</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>底色</label>
+                        <input type="color" id="btn2Bg" value="#f8f9fa" oninput="updateBtn2Style()">
+                    </div>
+                    <div class="control-item">
+                        <label>文字</label>
+                        <input type="color" id="btn2Color" value="#333333" oninput="updateBtn2Style()">
+                    </div>
+                </div>
+                <div class="control-item">
+                    <label>圆角</label>
+                    <input type="range" min="0" max="30" value="12" oninput="updateBtn2Style()">
+                    <div class="value-display" id="btn2RadiusVal">12px</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>📦 卡片样式</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>底色</label>
+                        <input type="color" id="cardBg" value="#f8f9fa" oninput="updateCardStyle()">
+                    </div>
+                    <div class="control-item">
+                        <label>圆角</label>
+                        <input type="range" min="0" max="30" value="12" oninput="updateCardStyle()">
+                        <div class="value-display" id="cardRadiusVal">12px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>📱 画布</h3>
                 <div class="control-item">
                     <label>背景色</label>
-                    <input type="color" id="btn1Bg" value="#667eea" oninput="updateButton1()">
-                </div>
-                <div class="control-item">
-                    <label>文字色</label>
-                    <input type="color" id="btn1Color" value="#ffffff" oninput="updateButton1()">
+                    <input type="color" id="canvasBg" value="#ffffff" oninput="updateCanvasStyle()">
                 </div>
             </div>
         </div>
 
-        <div class="control-group">
-            <h3>按钮 2（次要）</h3>
-            <div class="control-item">
-                <label>按钮文字</label>
-                <input type="text" id="btn2Text" value="次要操作" oninput="updateButton2()">
-            </div>
-            <div class="control-row">
-                <div class="control-item">
-                    <label>背景色</label>
-                    <input type="color" id="btn2Bg" value="#f8f9fa" oninput="updateButton2()">
+        <!-- 效果面板 -->
+        <div id="panel-effect" class="panel-content">
+            <div class="panel-section">
+                <h3>🌈 渐变预设</h3>
+                <div class="gradient-presets">
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" onclick="applyGradient(this, 'btn1')"></div>
                 </div>
-                <div class="control-item">
-                    <label>文字色</label>
-                    <input type="color" id="btn2Color" value="#333333" oninput="updateButton2()">
-                </div>
             </div>
-        </div>
 
-        <div class="control-group">
-            <h3>按钮 3</h3>
-            <div class="control-item">
-                <label>按钮文字</label>
-                <input type="text" id="btn3Text" value="其他操作" oninput="updateButton3()">
-            </div>
-            <div class="control-item">
-                <label>显示</label>
-                <select onchange="toggleButton3(this.value)">
-                    <option value="show">显示</option>
-                    <option value="hide">隐藏</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 底部导航 -->
-        <div class="control-group">
-            <h3>底部导航</h3>
-            <div class="control-item">
-                <label>显示导航</label>
-                <select onchange="toggleBottomNav(this.value)">
-                    <option value="show">显示</option>
-                    <option value="hide">隐藏</option>
-                </select>
-            </div>
-            <div class="control-row">
+            <div class="panel-section">
+                <h3>💎 毛玻璃效果</h3>
                 <div class="control-item">
-                    <label>标签 1</label>
-                    <input type="text" value="首页" oninput="updateNavLabels()">
+                    <label>模糊强度</label>
+                    <input type="range" min="0" max="20" value="0" oninput="updateGlassEffect()">
+                    <div class="value-display" id="glassVal">0px</div>
                 </div>
-                <div class="control-item">
-                    <label>标签 2</label>
-                    <input type="text" value="发现" oninput="updateNavLabels()">
-                </div>
-                <div class="control-item">
-                    <label>标签 3</label>
-                    <input type="text" value="我的" oninput="updateNavLabels()">
+                <div class="glass-preview" id="glassPreview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                    毛玻璃预览
                 </div>
             </div>
-        </div>
 
-        <!-- 画布背景 -->
-        <div class="control-group">
-            <h3>画布</h3>
-            <div class="control-item">
-                <label>背景色</label>
-                <input type="color" id="canvasBg" value="#ffffff" oninput="updateCanvasBg()">
+            <div class="panel-section">
+                <h3>✨ 阴影效果</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>强度</label>
+                        <input type="range" min="0" max="30" value="15" oninput="updateShadow()">
+                        <div class="value-display" id="shadowVal">15px</div>
+                    </div>
+                </div>
             </div>
-            <div class="control-item">
-                <label>内边距</label>
-                <input type="range" min="0" max="40" value="20" oninput="updateCanvasPadding()">
-            </div>
-        </div>
 
-        <!-- 操作 -->
-        <div class="control-group">
-            <h3>操作</h3>
-            <div class="btn-group">
-                <button class="btn btn-secondary" onclick="resetDesign()">重置</button>
-                <button class="btn btn-primary" onclick="exportDesign()">导出</button>
+            <div class="panel-section">
+                <h3>📐 间距</h3>
+                <div class="control-item">
+                    <label>内容内边距</label>
+                    <input type="range" min="10" max="40" value="24" oninput="updatePadding()">
+                    <div class="value-display" id="paddingVal">24px</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- 底部操作栏 -->
+    <div class="action-bar">
+        <button class="action-btn secondary" onclick="resetDesign()">🔄 重置</button>
+        <button class="action-btn primary" onclick="exportDesign()">💾 导出</button>
+    </div>
+
     <script>
-        // 更新状态栏
-        function updateStatusBar() {
-            document.getElementById('statusTime').textContent = document.getElementById('statusTimeInput').value;
+        // 切换面板
+        function switchPanel(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('panel-' + name).classList.add('active');
         }
 
-        function toggleStatusBar(value) {
-            document.getElementById('statusBar').style.display = value === 'show' ? 'flex' : 'none';
-        }
-
-        // 更新主标题
-        function updateTitle() {
+        // 更新文字
+        function update() {
             document.getElementById('mainTitle').textContent = document.getElementById('titleInput').value;
+            document.getElementById('subtitle').textContent = document.getElementById('subtitleInput').value;
+            document.getElementById('btn1').textContent = document.getElementById('btn1Input').value;
+            document.getElementById('btn2').textContent = document.getElementById('btn2Input').value;
+            document.getElementById('btn3').textContent = document.getElementById('btn3Input').value;
         }
 
+        // 切换导航
+        function toggleNav(show) {
+            document.getElementById('bottomNav').style.display = show ? 'flex' : 'none';
+        }
+
+        // 更新标题样式
         function updateTitleStyle() {
             const size = event.target.value;
             const color = document.getElementById('titleColor').value;
             document.getElementById('mainTitle').style.fontSize = size + 'px';
             document.getElementById('mainTitle').style.color = color;
+            document.getElementById('titleSizeVal').textContent = size + 'px';
         }
 
-        // 更新副标题
-        function updateSubtitle() {
-            document.getElementById('mainSubtitle').textContent = document.getElementById('subtitleInput').value;
-        }
-
+        // 更新副标题样式
         function updateSubtitleStyle() {
             const size = event.target.value;
             const color = document.getElementById('subtitleColor').value;
-            document.getElementById('mainSubtitle').style.fontSize = size + 'px';
-            document.getElementById('mainSubtitle').style.color = color;
+            document.getElementById('subtitle').style.fontSize = size + 'px';
+            document.getElementById('subtitle').style.color = color;
+            document.getElementById('subtitleSizeVal').textContent = size + 'px';
         }
 
-        // 更新按钮 1
-        function updateButton1() {
+        // 更新按钮 1 样式
+        function updateBtn1Style() {
             const btn = document.getElementById('btn1');
-            btn.textContent = document.getElementById('btn1Text').value;
             const bg = document.getElementById('btn1Bg').value;
             const color = document.getElementById('btn1Color').value;
+            const radius = event.target.value;
+            
             btn.style.background = `linear-gradient(135deg, ${bg} 0%, ${adjustColor(bg, -20)} 100%)`;
             btn.style.color = color;
+            btn.style.borderRadius = radius + 'px';
+            document.getElementById('btn1RadiusVal').textContent = radius + 'px';
         }
 
-        // 更新按钮 2
-        function updateButton2() {
+        // 更新按钮 2 样式
+        function updateBtn2Style() {
             const btn = document.getElementById('btn2');
-            btn.textContent = document.getElementById('btn2Text').value;
-            btn.style.background = document.getElementById('btn2Bg').value;
-            btn.style.color = document.getElementById('btn2Color').value;
+            const bg = document.getElementById('btn2Bg').value;
+            const color = document.getElementById('btn2Color').value;
+            const radius = event.target.value;
+            
+            btn.style.background = bg;
+            btn.style.color = color;
+            btn.style.borderRadius = radius + 'px';
+            document.getElementById('btn2RadiusVal').textContent = radius + 'px';
         }
 
-        // 更新按钮 3
-        function updateButton3() {
-            const btn = document.getElementById('btn3');
-            btn.textContent = document.getElementById('btn3Text').value;
-        }
-
-        function toggleButton3(value) {
-            document.getElementById('btn3').style.display = value === 'show' ? 'block' : 'none';
-        }
-
-        // 更新底部导航
-        function toggleBottomNav(value) {
-            document.getElementById('bottomNav').style.display = value === 'show' ? 'flex' : 'none';
-        }
-
-        function updateNavLabels() {
-            const inputs = event.target.parentElement.parentElement.querySelectorAll('input');
-            const navItems = document.querySelectorAll('.nav-item');
-            inputs.forEach((input, index) => {
-                if (navItems[index]) {
-                    navItems[index].childNodes[3].textContent = input.value;
-                }
+        // 更新卡片样式
+        function updateCardStyle() {
+            const bg = document.getElementById('cardBg').value;
+            const radius = event.target.value;
+            
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.background = bg;
+                card.style.borderRadius = radius + 'px';
             });
+            document.getElementById('cardRadiusVal').textContent = radius + 'px';
         }
 
-        // 更新画布
-        function updateCanvasBg() {
-            document.getElementById('mainContent').style.background = document.getElementById('canvasBg').value;
+        // 更新画布样式
+        function updateCanvasStyle() {
+            document.getElementById('preview').style.background = document.getElementById('canvasBg').value;
         }
 
-        function updateCanvasPadding() {
-            document.getElementById('mainContent').style.padding = event.target.value + 'px';
+        // 应用渐变
+        function applyGradient(el, target) {
+            document.querySelectorAll('.gradient-preset').forEach(p => p.classList.remove('selected'));
+            el.classList.add('selected');
+            
+            const bg = getComputedStyle(el).background;
+            document.getElementById('btn1').style.background = bg;
+        }
+
+        // 毛玻璃效果
+        function updateGlassEffect() {
+            const value = event.target.value;
+            const preview = document.getElementById('glassPreview');
+            preview.style.backdropFilter = `blur(${value}px)`;
+            preview.style.webkitBackdropFilter = `blur(${value}px)`;
+            document.getElementById('glassVal').textContent = value + 'px';
+        }
+
+        // 阴影效果
+        function updateShadow() {
+            const value = event.target.value;
+            document.getElementById('preview').style.boxShadow = `0 ${value}px ${parseInt(value)*2}px rgba(0,0,0,0.12)`;
+            document.getElementById('shadowVal').textContent = value + 'px';
+        }
+
+        // 更新间距
+        function updatePadding() {
+            const value = event.target.value;
+            document.querySelector('.content').style.padding = value + 'px';
+            document.getElementById('paddingVal').textContent = value + 'px';
         }
 
         // 颜色调整
@@ -558,24 +805,27 @@
             return '#' + hex.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
         }
 
-        // 重置设计
+        // 重置
         function resetDesign() {
             if (confirm('确定要重置所有设置吗？')) {
                 location.reload();
             }
         }
 
-        // 导出设计
+        // 导出
         function exportDesign() {
             const design = {
-                statusBar: document.getElementById('statusTime').textContent,
                 title: document.getElementById('mainTitle').textContent,
-                subtitle: document.getElementById('mainSubtitle').textContent,
+                subtitle: document.getElementById('subtitle').textContent,
                 buttons: [
                     { text: document.getElementById('btn1').textContent, bg: document.getElementById('btn1Bg').value },
-                    { text: document.getElementById('btn2').textContent, bg: document.getElementById('btn2Bg').value },
-                    { text: document.getElementById('btn3').textContent }
-                ]
+                    { text: document.getElementById('btn2').textContent, bg: document.getElementById('btn2Bg').value }
+                ],
+                colors: {
+                    title: document.getElementById('titleColor').value,
+                    subtitle: document.getElementById('subtitleColor').value,
+                    canvas: document.getElementById('canvasBg').value
+                }
             };
             
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
@@ -586,6 +836,9 @@
             a.click();
             URL.revokeObjectURL(url);
         }
+
+        // 初始化
+        update();
     </script>
 </body>
 </html>
