@@ -1,41 +1,16 @@
 {
-  "version": "1.0.0",
+  "version": "2.1.0",
   "player": {
     "speed": 5,
     "jumpPower": -15,
-    "health": 3,
+    "health": 10,
     "damage": 10,
-    "fireRate": 6,
-    "image": "player/classic.png"
+    "fireRate": 7
   },
   "enemies": {
-    "slime": {
-      "speed": 2,
-      "health": 14,
-      "damage": 1,
-      "image": "enemy/slime.png"
-    },
-    "mushroom": {
-      "speed": 2,
-      "health": 50,
-      "damage": 2,
-      "image": "enemy/mushroom.png"
-    },
-    "elite": {
-      "speed": 3,
-      "health": 200,
-      "damage": 3,
-      "image": "enemy/elite.png"
-    },
-    "boss": {
-      "speed": 2,
-      "health": 234,
-      "damage": 5,
-      "image": "enemy/boss.png"
-    }
+    "spawnRate": 5
   },
   "game": {
-    "gravity": 0.8,
-    "spawnRate": 5
+    "gravity": 0.8
   }
 }
