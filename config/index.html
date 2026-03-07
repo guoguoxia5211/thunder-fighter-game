@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 - 配置系统</title>
+    <title>⚡ 雷霆战机 - 配置系统 v2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -13,31 +13,8 @@
             padding: 20px; 
             min-height: 100vh; 
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 800px; margin: 0 auto; }
         h1 { text-align: center; color: #f39c12; margin-bottom: 30px; }
-        
-        .tabs { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 20px; 
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-        .tab-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .tab-btn:hover { background: rgba(255,255,255,0.2); }
-        .tab-btn.active { background: #f39c12; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
         
         .section {
             background: rgba(26, 26, 46, 0.9);
@@ -86,24 +63,48 @@
             background: linear-gradient(45deg, #f39c12, #e67e22);
             border: none;
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             margin: 10px 5px;
             transition: transform 0.2s;
         }
         .action-btn:hover { transform: scale(1.05); }
-        .action-btn:active { transform: scale(0.95); }
         .action-btn.secondary {
             background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+        .action-btn.success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+        .action-btn.primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+        }
+        
+        .preview-card {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(41, 128, 185, 0.2));
+            border: 2px solid #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .preview-card h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        .preview-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
         }
         .resource-card {
             background: rgba(0,0,0,0.3);
@@ -111,17 +112,10 @@
             padding: 15px;
             text-align: center;
         }
-        .resource-card img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            margin: 10px auto;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-        }
         .resource-card h4 {
             color: #4ecdc4;
             margin-bottom: 10px;
+            font-size: 14px;
         }
         .upload-btn {
             background: #3498db;
@@ -167,11 +161,20 @@
             max-width: 500px;
             margin: 10px 0;
         }
+        
+        @media (max-width: 600px) {
+            .preview-buttons {
+                flex-direction: column;
+            }
+            .action-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>⚡ 雷霆战机 - 配置系统 v1.0</h1>
+        <h1>⚡ 雷霆战机 - 配置系统 v2</h1>
         
         <div class="token-box">
             <h3>🔑 GitHub Token</h3>
@@ -181,165 +184,114 @@
             <div id="tokenStatus" style="margin-top: 10px; font-size: 12px;"></div>
         </div>
         
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('resources')">📁 资源管理</button>
-            <button class="tab-btn" onclick="switchTab('values')">📊 数值配置</button>
-            <button class="tab-btn" onclick="switchTab('deploy')">🚀 部署</button>
-        </div>
-        
-        <!-- 资源管理 -->
-        <div id="resources" class="tab-content active">
-            <div class="section">
-                <h3 class="section-title">🎮 玩家资源</h3>
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h4>玩家飞机</h4>
-                        <img id="preview_player" src="" alt="玩家飞机">
-                        <p id="name_player">player/classic.png</p>
-                        <button class="upload-btn" onclick="uploadResource('player')">📤 上传</button>
-                        <input type="file" id="upload_player" accept="image/*" style="display:none" onchange="handleFileSelect('player', event)">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">👾 敌人资源</h3>
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h4>史莱姆</h4>
-                        <img id="preview_slime" src="" alt="史莱姆">
-                        <p>enemy/slime.png</p>
-                        <button class="upload-btn" onclick="uploadResource('slime')">📤 上传</button>
-                    </div>
-                    <div class="resource-card">
-                        <h4>蘑菇怪</h4>
-                        <img id="preview_mushroom" src="" alt="蘑菇怪">
-                        <p>enemy/mushroom.png</p>
-                        <button class="upload-btn" onclick="uploadResource('mushroom')">📤 上传</button>
-                    </div>
-                    <div class="resource-card">
-                        <h4>精英怪</h4>
-                        <img id="preview_elite" src="" alt="精英怪">
-                        <p>enemy/elite.png</p>
-                        <button class="upload-btn" onclick="uploadResource('elite')">📤 上传</button>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Boss</h4>
-                        <img id="preview_boss" src="" alt="Boss">
-                        <p>enemy/boss.png</p>
-                        <button class="upload-btn" onclick="uploadResource('boss')">📤 上传</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3 class="section-title">🌌 背景资源</h3>
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <h4>太空背景</h4>
-                        <img id="preview_bg" src="" alt="背景">
-                        <p>bg/space.png</p>
-                        <button class="upload-btn" onclick="uploadResource('bg')">📤 上传</button>
-                    </div>
-                </div>
+        <!-- 预览游戏卡片 -->
+        <div class="preview-card">
+            <h3>🎮 预览游戏</h3>
+            <p style="color: #95a5a6; margin-bottom: 15px;">配置完成后，打开游戏预览效果</p>
+            <div class="preview-buttons">
+                <button class="action-btn primary" onclick="openPreview()">🔗 打开预览</button>
+                <button class="action-btn success" onclick="refreshPreview()">🔄 刷新预览</button>
             </div>
         </div>
         
         <!-- 数值配置 -->
-        <div id="values" class="tab-content">
-            <div class="section">
-                <h3 class="section-title">⚙️ 玩家数值</h3>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>速度</span>
-                        <span class="slider-value" id="value_speed">5</span>
-                    </div>
-                    <input type="range" id="speed" min="1" max="10" value="5" oninput="updateValue('speed', this.value)">
+        <div class="section">
+            <h3 class="section-title">⚙️ 玩家数值</h3>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>速度</span>
+                    <span class="slider-value" id="value_speed">5</span>
                 </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>跳跃力</span>
-                        <span class="slider-value" id="value_jumpPower">-15</span>
-                    </div>
-                    <input type="range" id="jumpPower" min="-20" max="-5" value="-15" oninput="updateValue('jumpPower', this.value)">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>血量</span>
-                        <span class="slider-value" id="value_health">3</span>
-                    </div>
-                    <input type="range" id="health" min="1" max="10" value="3" oninput="updateValue('health', this.value)">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>伤害</span>
-                        <span class="slider-value" id="value_damage">1</span>
-                    </div>
-                    <input type="range" id="damage" min="1" max="10" value="1" oninput="updateValue('damage', this.value)">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>射速</span>
-                        <span class="slider-value" id="value_fireRate">1</span>
-                    </div>
-                    <input type="range" id="fireRate" min="1" max="10" value="1" oninput="updateValue('fireRate', this.value)">
-                </div>
+                <input type="range" id="speed" min="1" max="10" value="5" oninput="updateValue('speed', this.value)">
             </div>
-            
-            <div class="section">
-                <h3 class="section-title">👾 敌人数值</h3>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>史莱姆速度</span>
-                        <span class="slider-value" id="value_slime_speed">2</span>
-                    </div>
-                    <input type="range" id="slime_speed" min="1" max="5" value="2" oninput="updateValue('slime_speed', this.value)">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>跳跃力</span>
+                    <span class="slider-value" id="value_jumpPower">-15</span>
                 </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>史莱姆血量</span>
-                        <span class="slider-value" id="value_slime_health">20</span>
-                    </div>
-                    <input type="range" id="slime_health" min="1" max="100" value="20" oninput="updateValue('slime_health', this.value)">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>Boss 血量</span>
-                        <span class="slider-value" id="value_boss_health">500</span>
-                    </div>
-                    <input type="range" id="boss_health" min="100" max="1000" value="500" oninput="updateValue('boss_health', this.value)">
-                </div>
+                <input type="range" id="jumpPower" min="-20" max="-5" value="-15" oninput="updateValue('jumpPower', this.value)">
             </div>
-            
-            <div class="section">
-                <h3 class="section-title">🎮 游戏数值</h3>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>重力系数</span>
-                        <span class="slider-value" id="value_gravity">0.8</span>
-                    </div>
-                    <input type="range" id="gravity" min="0.1" max="2.0" step="0.1" value="0.8" oninput="updateValue('gravity', this.value)">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>血量</span>
+                    <span class="slider-value" id="value_health">3</span>
                 </div>
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>生成频率</span>
-                        <span class="slider-value" id="value_spawnRate">5</span>
-                    </div>
-                    <input type="range" id="spawnRate" min="1" max="10" value="5" oninput="updateValue('spawnRate', this.value)">
+                <input type="range" id="health" min="1" max="10" value="3" oninput="updateValue('health', this.value)">
+            </div>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>伤害</span>
+                    <span class="slider-value" id="value_damage">1</span>
+                </div>
+                <input type="range" id="damage" min="1" max="10" value="1" oninput="updateValue('damage', this.value)">
+            </div>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>射速</span>
+                    <span class="slider-value" id="value_fireRate">1</span>
+                </div>
+                <input type="range" id="fireRate" min="1" max="10" value="1" oninput="updateValue('fireRate', this.value)">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3 class="section-title">👾 敌人数值</h3>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>敌人生成频率</span>
+                    <span class="slider-value" id="value_spawnRate">5</span>
+                </div>
+                <input type="range" id="spawnRate" min="1" max="10" value="5" oninput="updateValue('spawnRate', this.value)">
+            </div>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>重力系数</span>
+                    <span class="slider-value" id="value_gravity">0.8</span>
+                </div>
+                <input type="range" id="gravity" min="0.1" max="2.0" step="0.1" value="0.8" oninput="updateValue('gravity', this.value)">
+            </div>
+        </div>
+        
+        <!-- 资源管理 -->
+        <div class="section">
+            <h3 class="section-title">🎨 美术资源</h3>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>🎮 玩家飞机</h4>
+                    <button class="upload-btn" onclick="uploadResource('player')">📤 上传</button>
+                    <input type="file" id="upload_player" accept="image/*" style="display:none" onchange="handleFileSelect('player', event)">
+                </div>
+                <div class="resource-card">
+                    <h4>👾 史莱姆</h4>
+                    <button class="upload-btn" onclick="uploadResource('slime')">📤 上传</button>
+                    <input type="file" id="upload_slime" accept="image/*" style="display:none" onchange="handleFileSelect('slime', event)">
+                </div>
+                <div class="resource-card">
+                    <h4>🍄 蘑菇怪</h4>
+                    <button class="upload-btn" onclick="uploadResource('mushroom')">📤 上传</button>
+                    <input type="file" id="upload_mushroom" accept="image/*" style="display:none" onchange="handleFileSelect('mushroom', event)">
+                </div>
+                <div class="resource-card">
+                    <h4>👹 精英怪</h4>
+                    <button class="upload-btn" onclick="uploadResource('elite')">📤 上传</button>
+                    <input type="file" id="upload_elite" accept="image/*" style="display:none" onchange="handleFileSelect('elite', event)">
+                </div>
+                <div class="resource-card">
+                    <h4>🐲 Boss</h4>
+                    <button class="upload-btn" onclick="uploadResource('boss')">📤 上传</button>
+                    <input type="file" id="upload_boss" accept="image/*" style="display:none" onchange="handleFileSelect('boss', event)">
+                </div>
+                <div class="resource-card">
+                    <h4>🌌 背景</h4>
+                    <button class="upload-btn" onclick="uploadResource('bg')">📤 上传</button>
+                    <input type="file" id="upload_bg" accept="image/*" style="display:none" onchange="handleFileSelect('bg', event)">
                 </div>
             </div>
         </div>
         
-        <!-- 部署 -->
-        <div id="deploy" class="tab-content">
-            <div class="section">
-                <h3 class="section-title">🚀 部署配置</h3>
-                <p style="margin-bottom: 20px; color: #95a5a6;">
-                    点击部署按钮将配置上传到 GitHub 仓库，等待 1-2 分钟后刷新游戏页面生效。
-                </p>
-                <button class="action-btn" onclick="deployConfig()">🚀 部署配置</button>
-                <button class="action-btn secondary" onclick="resetConfig()">🔄 重置默认</button>
-            </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="action-btn success" onclick="deployConfig()">🚀 部署配置</button>
+            <button class="action-btn secondary" onclick="resetConfig()">🔄 重置默认</button>
         </div>
     </div>
     
@@ -348,34 +300,23 @@
     <script>
         const GITHUB_REPO = 'guoguoxia5211/thunder-fighter-game';
         let githubToken = localStorage.getItem('github_token') || '';
+        
         let config = {
-            version: "1.0.0",
-            player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1, image: "player/classic.png" },
-            enemies: {
-                slime: { speed: 2, health: 20, damage: 1, image: "enemy/slime.png" },
-                mushroom: { speed: 2, health: 50, damage: 2, image: "enemy/mushroom.png" },
-                elite: { speed: 3, health: 200, damage: 3, image: "enemy/elite.png" },
-                boss: { speed: 2, health: 500, damage: 5, image: "enemy/boss.png" }
-            },
-            game: { gravity: 0.8, spawnRate: 5 }
+            version: "2.0.0",
+            player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+            enemies: { spawnRate: 5 },
+            game: { gravity: 0.8 }
         };
         
         let uploadedFiles = {};
+        let previewWindow = null;
         
         window.onload = function() {
             if (githubToken) {
                 document.getElementById('githubToken').value = githubToken;
                 document.getElementById('tokenStatus').textContent = '✅ Token 已保存';
             }
-            loadPreviews();
         };
-        
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
         
         function saveToken() {
             const token = document.getElementById('githubToken').value.trim();
@@ -384,17 +325,7 @@
             githubToken = token;
             localStorage.setItem('github_token', token);
             document.getElementById('tokenStatus').textContent = '✅ Token 已保存';
-            alert('✅ Token 已保存！');
-        }
-        
-        function loadPreviews() {
-            const baseUrl = 'https://raw.githubusercontent.com/' + GITHUB_REPO + '/main/';
-            document.getElementById('preview_player').src = baseUrl + config.player.image + '?t=' + Date.now();
-            document.getElementById('preview_slime').src = baseUrl + config.enemies.slime.image + '?t=' + Date.now();
-            document.getElementById('preview_mushroom').src = baseUrl + config.enemies.mushroom.image + '?t=' + Date.now();
-            document.getElementById('preview_elite').src = baseUrl + config.enemies.elite.image + '?t=' + Date.now();
-            document.getElementById('preview_boss').src = baseUrl + config.enemies.boss.image + '?t=' + Date.now();
-            document.getElementById('preview_bg').src = baseUrl + config.game.image + '?t=' + Date.now();
+            showStatus('✅ Token 已保存！', 'success');
         }
         
         function updateValue(key, value) {
@@ -405,11 +336,8 @@
             if (key === 'health') config.player.health = parseFloat(value);
             if (key === 'damage') config.player.damage = parseFloat(value);
             if (key === 'fireRate') config.player.fireRate = parseFloat(value);
-            if (key === 'slime_speed') config.enemies.slime.speed = parseFloat(value);
-            if (key === 'slime_health') config.enemies.slime.health = parseFloat(value);
-            if (key === 'boss_health') config.enemies.boss.health = parseFloat(value);
+            if (key === 'spawnRate') config.enemies.spawnRate = parseFloat(value);
             if (key === 'gravity') config.game.gravity = parseFloat(value);
-            if (key === 'spawnRate') config.game.spawnRate = parseFloat(value);
         }
         
         function uploadResource(type) {
@@ -427,48 +355,51 @@
                     dataUrl: e.target.result,
                     base64Content: e.target.result.split(',')[1]
                 };
-                
-                // 更新预览
-                const previewImg = document.getElementById('preview_' + type);
-                previewImg.src = e.target.result;
-                
                 showStatus('✅ ' + file.name + ' 已上传，点击部署生效', 'success');
             };
             reader.readAsDataURL(file);
         }
         
-        function showStatus(message, type) {
-            const statusBar = document.getElementById('statusBar');
-            statusBar.textContent = message;
-            statusBar.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.9)' : 'rgba(231, 76, 60, 0.9)';
-            statusBar.classList.add('show');
-            setTimeout(() => statusBar.classList.remove('show'), 3000);
+        function openPreview() {
+            const gameUrl = window.location.href.replace('config/index.html', 'index.html');
+            previewWindow = window.open(gameUrl, 'gamePreview', 'width=800,height=600');
+            showStatus('🎮 已打开游戏预览窗口', 'success');
+        }
+        
+        function refreshPreview() {
+            if (previewWindow && !previewWindow.closed) {
+                previewWindow.location.reload();
+                showStatus('🔄 已刷新游戏预览', 'success');
+            } else {
+                openPreview();
+            }
         }
         
         async function deployConfig() {
             if (!githubToken) {
-                alert('请先保存 GitHub Token');
+                showStatus('❌ 请先保存 GitHub Token', 'error');
                 return;
             }
             
-            const confirmMsg = '确定要部署配置吗？\n\n部署后需要等待 1-2 分钟，然后刷新游戏页面生效。';
-            if (!confirm(confirmMsg)) return;
+            if (Object.keys(uploadedFiles).length === 0 && !confirm('确定要部署当前数值配置吗？')) {
+                return;
+            }
             
             showStatus('⏳ 正在部署配置...', 'info');
             
             try {
                 // 部署配置文件
                 const configBase64 = btoa(JSON.stringify(config, null, 2));
-                await uploadToGitHub('config.json', configBase64, 'Update game config');
+                await uploadToGitHub('config.json', configBase64, 'Update game config v' + config.version);
                 
                 // 部署上传的资源
                 for (const [type, fileData] of Object.entries(uploadedFiles)) {
                     let path = '';
-                    if (type === 'player') path = config.player.image;
-                    if (type === 'slime') path = config.enemies.slime.image;
-                    if (type === 'mushroom') path = config.enemies.mushroom.image;
-                    if (type === 'elite') path = config.enemies.elite.image;
-                    if (type === 'boss') path = config.enemies.boss.image;
+                    if (type === 'player') path = 'player/classic.png';
+                    if (type === 'slime') path = 'enemy/slime.png';
+                    if (type === 'mushroom') path = 'enemy/mushroom.png';
+                    if (type === 'elite') path = 'enemy/elite.png';
+                    if (type === 'boss') path = 'enemy/boss.png';
                     if (type === 'bg') path = 'bg/space.png';
                     
                     if (path) {
@@ -476,12 +407,15 @@
                     }
                 }
                 
-                showStatus('✅ 部署成功！请等待 1-2 分钟后刷新游戏页面', 'success');
-                alert('✅ 部署成功！\n\n请等待 1-2 分钟让 GitHub Pages 更新，然后刷新游戏页面查看效果。');
+                showStatus('✅ 部署成功！游戏将自动刷新', 'success');
+                
+                // 自动刷新预览窗口
+                setTimeout(() => {
+                    refreshPreview();
+                }, 2000);
                 
             } catch (error) {
                 showStatus('❌ 部署失败：' + error.message, 'error');
-                alert('❌ 部署失败：' + error.message);
             }
         }
         
@@ -527,43 +461,39 @@
         function resetConfig() {
             if (confirm('确定要重置为默认配置吗？')) {
                 config = {
-                    version: "1.0.0",
-                    player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1, image: "player/classic.png" },
-                    enemies: {
-                        slime: { speed: 2, health: 20, damage: 1, image: "enemy/slime.png" },
-                        mushroom: { speed: 2, health: 50, damage: 2, image: "enemy/mushroom.png" },
-                        elite: { speed: 3, health: 200, damage: 3, image: "enemy/elite.png" },
-                        boss: { speed: 2, health: 500, damage: 5, image: "enemy/boss.png" }
-                    },
-                    game: { gravity: 0.8, spawnRate: 5 }
+                    version: "2.0.0",
+                    player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+                    enemies: { spawnRate: 5 },
+                    game: { gravity: 0.8 }
                 };
                 
-                // 重置滑块
                 document.getElementById('speed').value = 5;
                 document.getElementById('jumpPower').value = -15;
                 document.getElementById('health').value = 3;
                 document.getElementById('damage').value = 1;
                 document.getElementById('fireRate').value = 1;
-                document.getElementById('slime_speed').value = 2;
-                document.getElementById('slime_health').value = 20;
-                document.getElementById('boss_health').value = 500;
-                document.getElementById('gravity').value = 0.8;
                 document.getElementById('spawnRate').value = 5;
+                document.getElementById('gravity').value = 0.8;
                 
-                // 更新显示值
                 document.getElementById('value_speed').textContent = '5';
                 document.getElementById('value_jumpPower').textContent = '-15';
                 document.getElementById('value_health').textContent = '3';
                 document.getElementById('value_damage').textContent = '1';
                 document.getElementById('value_fireRate').textContent = '1';
-                document.getElementById('value_slime_speed').textContent = '2';
-                document.getElementById('value_slime_health').textContent = '20';
-                document.getElementById('value_boss_health').textContent = '500';
-                document.getElementById('value_gravity').textContent = '0.8';
                 document.getElementById('value_spawnRate').textContent = '5';
+                document.getElementById('value_gravity').textContent = '0.8';
                 
                 showStatus('✅ 配置已重置为默认值', 'success');
             }
+        }
+        
+        function showStatus(message, type) {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.textContent = message;
+            statusBar.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.9)' : 
+                                         type === 'error' ? 'rgba(231, 76, 60, 0.9)' : 'rgba(52, 152, 219, 0.9)';
+            statusBar.classList.add('show');
+            setTimeout(() => statusBar.classList.remove('show'), 3000);
         }
     </script>
 </body>
