@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美术团队训练中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .card a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .card a:hover {
+            background: #5568d3;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.done {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        ul li:last-child {
+            border-bottom: none;
+        }
+        ul li a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 美术团队训练中心</h1>
+        <p class="subtitle">基础技能提升计划</p>
+
+        <!-- 程序化参考图 -->
+        <div class="section">
+            <h2>📐 程序化参考图</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon">🔲</div>
+                    <h3>几何体素描参考</h3>
+                    <p>立方体、球体、圆柱体的素描示例，包含透视和光影演示</p>
+                    <a href="示例图/几何体素描参考.html">打开参考 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🎨</div>
+                    <h3>色环示例</h3>
+                    <p>12 色色环、三原色、对比色搭配可视化</p>
+                    <a href="示例图/色环示例.html">打开参考 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🖼️</div>
+                    <h3>构图分析示例</h3>
+                    <p>6 种构图法则：三分法、黄金分割、引导线、对称、框架、负空间</p>
+                    <a href="示例图/构图分析示例.html">打开参考 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">📏</div>
+                    <h3>透视原理示例</h3>
+                    <p>一点透视、两点透视、三点透视详细演示</p>
+                    <a href="示例图/透视原理示例.html">打开参考 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">👤</div>
+                    <h3>人体比例参考</h3>
+                    <p>标准 8 头身、Q 版 2-3 头身、英雄 9 头身比例</p>
+                    <a href="示例图/人体比例参考.html">打开参考 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 学习任务 -->
+        <div class="section">
+            <h2>📚 学习任务 <span class="status pending">进行中</span></h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="icon">🎨</div>
+                    <h3>色彩师 - 色彩理论</h3>
+                    <p>学习三原色、配色原则、色彩属性</p>
+                    <a href="学习任务/色彩师 - 色彩理论学习报告.md">填写报告 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">💡</div>
+                    <h3>灯光师 - 光影理论</h3>
+                    <p>学习光源类型、光影关系、光的方向性</p>
+                    <a href="学习任务/灯光师 - 光影理论学习报告.md">填写报告 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">👾</div>
+                    <h3>角色师 - 角色设计</h3>
+                    <p>学习角色比例、类型、表情、服装设计</p>
+                    <a href="学习任务/角色师 - 角色设计理论学习报告.md">填写报告 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🏞️</div>
+                    <h3>场景师 - 场景设计</h3>
+                    <p>学习透视原理、场景层次、氛围营造</p>
+                    <a href="学习任务/场景师 - 场景设计理论学习报告.md">填写报告 →</a>
+                </div>
+
+                <div class="card">
+                    <div class="icon">🎬</div>
+                    <h3>动画师 - 动画原理</h3>
+                    <p>学习十二动画法则、运动规律</p>
+                    <a href="学习任务/动画师 - 动画原理学习报告.md">填写报告 →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文档资源 -->
+        <div class="section">
+            <h2>📋 文档资源</h2>
+            <ul>
+                <li>📄 <a href="训练总览.md">训练总览</a> — 完整训练计划说明</li>
+                <li>📄 <a href="进度追踪.md">进度追踪</a> — 记录训练进度</li>
+                <li>📄 <a href="复盘模板.md">复盘模板</a> — 练习后填写反思</li>
+                <li>📄 <a href="参考资源.md">参考资源</a> — 教程和大师作品推荐</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
