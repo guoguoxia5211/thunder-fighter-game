@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 - 配置系统 v2</title>
+    <title>⚡ 雷霆战机 - 配置系统 v2.1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); 
             color: #fff; 
-            font-family: 'Arial', sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Arial', sans-serif; 
             padding: 20px; 
             min-height: 100vh; 
         }
@@ -50,6 +50,7 @@
             border-radius: 4px;
             background: rgba(255,255,255,0.1);
             outline: none;
+            -webkit-appearance: none;
         }
         input[type="range"]::-webkit-slider-thumb {
             width: 20px;
@@ -57,21 +58,23 @@
             border-radius: 50%;
             background: #f39c12;
             cursor: pointer;
+            -webkit-appearance: none;
         }
         
         .action-btn {
             background: linear-gradient(45deg, #f39c12, #e67e22);
             border: none;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             margin: 10px 5px;
             transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
-        .action-btn:hover { transform: scale(1.05); }
+        .action-btn:active { transform: scale(0.95); }
         .action-btn.secondary {
             background: linear-gradient(45deg, #95a5a6, #7f8c8d);
         }
@@ -100,10 +103,24 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+        .preview-link {
+            display: block;
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px dashed #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .preview-link:active {
+            background: rgba(52, 152, 219, 0.3);
+        }
         
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
         }
         .resource-card {
@@ -115,7 +132,7 @@
         .resource-card h4 {
             color: #4ecdc4;
             margin-bottom: 10px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .upload-btn {
             background: #3498db;
@@ -169,12 +186,15 @@
             .action-btn {
                 width: 100%;
             }
+            .resource-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>⚡ 雷霆战机 - 配置系统 v2</h1>
+        <h1>⚡ 雷霆战机 - 配置系统 v2.1</h1>
         
         <div class="token-box">
             <h3>🔑 GitHub Token</h3>
@@ -189,9 +209,12 @@
             <h3>🎮 预览游戏</h3>
             <p style="color: #95a5a6; margin-bottom: 15px;">配置完成后，打开游戏预览效果</p>
             <div class="preview-buttons">
-                <button class="action-btn primary" onclick="openPreview()">🔗 打开预览</button>
-                <button class="action-btn success" onclick="refreshPreview()">🔄 刷新预览</button>
+                <a href="../index.html" target="_blank" class="action-btn primary">🔗 打开预览</a>
+                <button class="action-btn success" onclick="copyGameLink()">📋 复制链接</button>
             </div>
+            <a href="../index.html" target="_blank" class="preview-link" id="gameLink">
+                🔗 https://guoguoxia5211.github.io/thunder-fighter-game/
+            </a>
         </div>
         
         <!-- 数值配置 -->
@@ -252,7 +275,7 @@
             </div>
         </div>
         
-        <!-- 资源管理 -->
+        <!-- 美术资源 -->
         <div class="section">
             <h3 class="section-title">🎨 美术资源</h3>
             <div class="resource-grid">
@@ -302,14 +325,13 @@
         let githubToken = localStorage.getItem('github_token') || '';
         
         let config = {
-            version: "2.0.0",
+            version: "2.1.0",
             player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
             enemies: { spawnRate: 5 },
             game: { gravity: 0.8 }
         };
         
         let uploadedFiles = {};
-        let previewWindow = null;
         
         window.onload = function() {
             if (githubToken) {
@@ -360,19 +382,13 @@
             reader.readAsDataURL(file);
         }
         
-        function openPreview() {
-            const gameUrl = window.location.href.replace('config/index.html', 'index.html');
-            previewWindow = window.open(gameUrl, 'gamePreview', 'width=800,height=600');
-            showStatus('🎮 已打开游戏预览窗口', 'success');
-        }
-        
-        function refreshPreview() {
-            if (previewWindow && !previewWindow.closed) {
-                previewWindow.location.reload();
-                showStatus('🔄 已刷新游戏预览', 'success');
-            } else {
-                openPreview();
-            }
+        function copyGameLink() {
+            const link = 'https://guoguoxia5211.github.io/thunder-fighter-game/';
+            navigator.clipboard.writeText(link).then(() => {
+                showStatus('📋 链接已复制！', 'success');
+            }).catch(() => {
+                showStatus('❌ 复制失败，请手动复制链接', 'error');
+            });
         }
         
         async function deployConfig() {
@@ -407,12 +423,8 @@
                     }
                 }
                 
-                showStatus('✅ 部署成功！游戏将自动刷新', 'success');
-                
-                // 自动刷新预览窗口
-                setTimeout(() => {
-                    refreshPreview();
-                }, 2000);
+                showStatus('✅ 部署成功！请手动刷新游戏页面', 'success');
+                alert('✅ 部署成功！\n\n请刷新游戏页面查看效果：\nhttps://guoguoxia5211.github.io/thunder-fighter-game/');
                 
             } catch (error) {
                 showStatus('❌ 部署失败：' + error.message, 'error');
@@ -461,7 +473,7 @@
         function resetConfig() {
             if (confirm('确定要重置为默认配置吗？')) {
                 config = {
-                    version: "2.0.0",
+                    version: "2.1.0",
                     player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
                     enemies: { spawnRate: 5 },
                     game: { gravity: 0.8 }
