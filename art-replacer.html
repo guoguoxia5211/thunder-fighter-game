@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 雷霆战机 - 美术替换系统 v3.0.4</title>
+    <title>🎨 雷霆战机 - 美术替换系统 v3.0.5</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; font-family: 'Arial', sans-serif; padding: 20px; min-height: 100vh; }
         h1 { text-align: center; color: #00d2ff; margin-bottom: 10px; font-size: 36px; }
         .subtitle { text-align: center; color: #3a7bd5; margin-bottom: 30px; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; }
         .token-box { background: rgba(243, 156, 18, 0.1); border: 2px solid #f39c12; border-radius: 15px; padding: 20px; margin-bottom: 30px; text-align: center; }
         .token-box h3 { color: #f39c12; margin-bottom: 15px; }
         .token-input { background: rgba(0,0,0,0.5); border: 2px solid #f39c12; border-radius: 10px; padding: 12px 20px; color: #fff; font-size: 14px; width: 100%; max-width: 500px; margin-bottom: 10px; }
         .token-btn { background: linear-gradient(45deg, #f39c12, #e67e22); border: none; color: white; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; margin: 5px; }
         .token-status { margin-top: 10px; font-size: 12px; }
         .token-status.valid { color: #2ecc71; }
-        .resource-item { background: rgba(26, 26, 46, 0.9); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
-        .resource-title { color: #00d2ff; font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid rgba(0, 210, 255, 0.3); padding-bottom: 10px; }
-        .preview-container { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; }
-        .preview-box { text-align: center; }
-        .preview-label { font-size: 14px; color: #95a5a6; margin-bottom: 10px; }
-        .preview-img { width: 120px; height: 120px; background: rgba(0,0,0,0.5); border-radius: 10px; border: 2px solid rgba(255,255,255,0.1); object-fit: contain; }
-        .arrow { font-size: 40px; color: #f39c12; }
-        .upload-area { border: 2px dashed rgba(0, 210, 255, 0.5); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.3s; }
+        .category-section { background: rgba(26, 26, 46, 0.9); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .category-title { color: #00d2ff; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(0, 210, 255, 0.3); padding-bottom: 10px; }
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+        .resource-card { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; }
+        .resource-name { color: #00d2ff; font-size: 14px; font-weight: bold; margin-bottom: 10px; }
+        .preview-row { display: flex; gap: 10px; align-items: center; }
+        .preview-box { flex: 1; text-align: center; }
+        .preview-label { font-size: 11px; color: #95a5a6; margin-bottom: 5px; }
+        .preview-img { width: 100px; height: 100px; background: rgba(0,0,0,0.5); border-radius: 8px; border: 2px solid rgba(255,255,255,0.1); object-fit: contain; margin: 0 auto; display: block; }
+        .arrow { color: #f39c12; font-size: 24px; }
+        .upload-area { border: 2px dashed rgba(0, 210, 255, 0.5); border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; min-height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.3s; flex: 1; }
         .upload-area:hover { border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); }
         .upload-area.uploading { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); }
         .upload-area.uploaded { border-color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
         .upload-area input { display: none; }
-        .upload-preview { width: 100px; height: 100px; margin: 10px auto; background: rgba(0,0,0,0.3); border-radius: 8px; display: none; object-fit: contain; }
-        .upload-status { margin-top: 15px; font-size: 13px; min-height: 40px; }
-        .deploy-btn { background: linear-gradient(45deg, #f39c12, #e67e22); border: none; color: white; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; font-size: 14px; }
+        .upload-preview { width: 80px; height: 80px; margin: 8px auto; background: rgba(0,0,0,0.3); border-radius: 6px; display: none; object-fit: contain; }
+        .upload-status { margin-top: 10px; font-size: 12px; min-height: 30px; }
+        .deploy-btn { background: linear-gradient(45deg, #f39c12, #e67e22); border: none; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; font-size: 13px; }
         .deploy-btn:disabled { background: #95a5a6; cursor: not-allowed; }
         .deploy-btn.deployed { background: linear-gradient(45deg, #27ae60, #2ecc71); }
         .game-link { background: linear-gradient(45deg, #9b59b6, #8e44ad); border: none; color: white; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; margin: 20px auto; display: block; text-decoration: none; text-align: center; }
@@ -40,14 +43,13 @@
         .help-box { background: rgba(52, 152, 219, 0.1); border: 2px solid #3498db; border-radius: 15px; padding: 20px; margin-bottom: 30px; }
         .help-box h3 { color: #3498db; margin-bottom: 10px; }
         .help-box p { color: #ecf0f1; line-height: 1.8; }
-        .loading { text-align: center; padding: 40px; color: #95a5a6; }
     </style>
 </head>
 <body>
+    <h1>🎨 雷霆战机 - 美术替换系统 v3.0.5</h1>
+    <p class="subtitle">与游戏美术实时同步</p>
+    <a href="https://guoguoxia5211.github.io/thunder-fighter-game/" target="_blank" class="game-link">🎮 打开游戏验证</a>
     <div class="container">
-        <h1>🎨 雷霆战机 - 美术替换系统 v3.0.4</h1>
-        <p class="subtitle">与游戏美术实时同步</p>
-        <a href="https://guoguoxia5211.github.io/thunder-fighter-game/" target="_blank" class="game-link">🎮 打开游戏验证</a>
         <div class="token-box">
             <h3>🔑 GitHub Token</h3>
             <input type="password" id="githubToken" class="token-input" placeholder="输入 Token (ghp_开头)">
@@ -58,9 +60,9 @@
         </div>
         <div class="help-box">
             <h3>📌 使用说明</h3>
-            <p>1. 保存 Token → 2. 上传图片 (自动重命名) → 3. 点击部署 → 4. 等待 1-2 分钟 → 5. 刷新游戏</p>
+            <p>1. 保存 Token → 2. 上传图片 → 3. 点击部署 → 4. 等待 1-2 分钟 → 5. 刷新游戏</p>
         </div>
-        <div id="resourcesContainer"><div class="loading">正在加载游戏美术资源...</div></div>
+        <div id="resourcesContainer"></div>
     </div>
     <div class="toast" id="toast"></div>
     <script>
@@ -130,35 +132,28 @@
             container.innerHTML = '';
             const categories = {};
             RESOURCES.forEach(res => {
-                if (!categories[res.category]) {
-                    categories[res.category] = [];
-                }
+                if (!categories[res.category]) categories[res.category] = [];
                 categories[res.category].push(res);
             });
             for (const [category, resources] of Object.entries(categories)) {
                 const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'resource-item';
-                categoryDiv.innerHTML = `<h3 class="resource-title">${category.toUpperCase()}</h3>`;
+                categoryDiv.className = 'category-section';
+                categoryDiv.innerHTML = `<h3 class="category-title">${category.toUpperCase()}</h3>`;
                 const gridDiv = document.createElement('div');
-                gridDiv.className = 'preview-container';
-                gridDiv.style.display = 'grid';
-                gridDiv.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
-                gridDiv.style.gap = '20px';
+                gridDiv.className = 'resource-grid';
                 for (const res of resources) {
-                    const resDiv = document.createElement('div');
-                    resDiv.style.background = 'rgba(0,0,0,0.3)';
-                    resDiv.style.borderRadius = '10px';
-                    resDiv.style.padding = '15px';
-                    resDiv.innerHTML = `
-                        <div style="text-align:center;margin-bottom:10px;font-weight:bold;color:#00d2ff;">${res.name}</div>
-                        <div style="display:flex;gap:10px;align-items:center;justify-content:center;">
-                            <div style="text-align:center;">
-                                <div style="font-size:11px;color:#95a5a6;margin-bottom:5px;">📌 当前资源</div>
-                                <img class="preview-img" src="${GITHUB_BASE_URL}${res.path}?t=${Date.now()}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><rect fill=%22%23333%22 width=%22120%22 height=%22120%22/><text fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>加载中</text></svg>'" alt="${res.path}" style="min-height:120px;">
-                                <div style="margin-top:5px;font-size:10px;color:#95a5a6;">${res.path}</div>
+                    const resCard = document.createElement('div');
+                    resCard.className = 'resource-card';
+                    resCard.innerHTML = `
+                        <div class="resource-name">${res.name}</div>
+                        <div class="preview-row">
+                            <div class="preview-box">
+                                <div class="preview-label">📌 当前资源</div>
+                                <img class="preview-img" src="${GITHUB_BASE_URL}${res.path}?t=${Date.now()}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                                <div style="display:none;font-size:10px;color:#95a5a6;margin-top:10px;">${res.path}</div>
                             </div>
                             <div class="arrow">➜</div>
-                            <div style="text-align:center;">
+                            <div class="preview-box">
                                 <div class="preview-label">📤 上传替换</div>
                                 <div class="upload-area" id="upload_area_${res.id}">
                                     📁 点击上传<br>
@@ -169,12 +164,13 @@
                                 <div class="upload-status" id="status_${res.id}"></div>
                             </div>
                         </div>
-                        <button class="deploy-btn" id="deploy_btn_${res.id}" onclick="deployResource('${res.id}')" disabled style="margin-top:10px;">🚀 替换并部署</button>
+                        <button class="deploy-btn" id="deploy_btn_${res.id}" onclick="deployResource('${res.id}')" disabled>🚀 替换并部署</button>
                     `;
-                    gridDiv.appendChild(resDiv);
-                    document.getElementById(`upload_area_${res.id}`).onclick = function(e) {
+                    gridDiv.appendChild(resCard);
+                    const uploadArea = resCard.querySelector(`#upload_area_${res.id}`);
+                    uploadArea.onclick = function(e) {
                         if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'IMG') {
-                            document.getElementById(`upload_${res.id}`).click();
+                            resCard.querySelector(`#upload_${res.id}`).click();
                         }
                     };
                 }
@@ -216,15 +212,10 @@
                 previewImg.style.display = 'block';
                 uploadArea.classList.remove('uploading');
                 uploadArea.classList.add('uploaded');
-                uploadArea.innerHTML = `✅ 已上传<br><span style="font-size:11px;">${file.name}</span>`;
+                uploadArea.innerHTML = `✅ 已上传<br><span style="font-size:10px;">${file.name}</span>`;
                 uploadArea.appendChild(previewImg);
                 statusDiv.innerHTML = '<span style="color:#2ecc71;">✅ 可以部署</span>';
                 deployBtn.disabled = false;
-                document.getElementById(`upload_area_${id}`).onclick = function(e) {
-                    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'IMG') {
-                        document.getElementById(`upload_${id}`).click();
-                    }
-                };
                 showToast(`✅ 上传成功！将保存为 ${targetPath.split('/').pop()}`, 'success');
             };
             reader.onerror = function() {
@@ -259,7 +250,7 @@
                     method: 'PUT',
                     headers: { 'Authorization': `token ${githubToken}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                        message: `Update ${res.name} v3.0.4`, 
+                        message: `Update ${res.name} v3.0.5`, 
                         content: file.base64Content,
                         sha: fileSha
                     })
