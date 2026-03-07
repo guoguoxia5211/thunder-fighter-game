@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ 雷霆战机 v1.2.4 - 自定义美术版</title>
+    <title>⚡ 雷霆战机 v1.2.5 - 美术资源库版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; overflow: hidden; touch-action: none; font-family: 'Arial', sans-serif; }
         #gameCanvas { display: block; margin: 0 auto; background: #000; }
         #ui { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 16px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 10; }
+        #loadingScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.9); z-index: 30; color: #fff; }
+        #loadingBar { width: 300px; height: 20px; background: #333; border-radius: 10px; margin: 20px; overflow: hidden; }
+        #loadingProgress { width: 0%; height: 100%; background: linear-gradient(90deg, #4ecdc4, #44a08d); transition: width 0.3s; }
+        #loadingText { font-size: 14px; color: #95a5a6; }
         #startScreen, #gameOverScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.8); z-index: 20; }
         #startScreen h1, #gameOverScreen h1 { color: #ff6b6b; font-size: 42px; text-shadow: 0 0 20px #ff6b6b; margin-bottom: 10px; }
         #version { color: #4ecdc4; font-size: 16px; margin-bottom: 20px; }
@@ -24,15 +28,23 @@
     </style>
 </head>
 <body>
+    <div id="loadingScreen">
+        <h2>🎨 加载美术资源...</h2>
+        <div id="loadingBar">
+            <div id="loadingProgress"></div>
+        </div>
+        <div id="loadingText">0%</div>
+    </div>
+    
     <div id="ui">
         <div id="scoreDisplay">得分：0</div>
         <div id="levelDisplay">等级：1</div>
         <div id="goldDisplay">金币：0</div>
     </div>
     
-    <div id="startScreen">
+    <div id="startScreen" class="hidden">
         <h1>⚡ 雷霆战机 ⚡</h1>
-        <div id="version">v1.2.4 - 自定义美术版</div>
+        <div id="version">v1.2.5 - 美术资源库版</div>
         <p>🎮 触摸屏幕控制飞机移动<br>🔫 自动发射子弹<br>🎲 Roguelike 升级系统<br>💰 金币永久成长</p>
         <button id="startBtn">开始游戏</button>
     </div>
@@ -60,26 +72,53 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        // 加载所有美术资源
-        const images = {
-            bg: new Image(),
-            player: new Image(),
-            enemy_small: new Image(),
-            enemy_medium: new Image(),
-            enemy_large: new Image(),
-            enemy_elite: new Image(),
-            enemy_boss: new Image()
+        // 美术资源库 - 所有资源从 GitHub 加载
+        const BASE_URL = 'https://raw.githubusercontent.com/guoguoxia5211/thunder-fighter-game/main/';
+        
+        const gameAssets = {
+            bg: { src: BASE_URL + 'bg/space.png', loaded: false },
+            player: { src: BASE_URL + 'player/classic.png', loaded: false },
+            enemy_small: { src: BASE_URL + 'enemy/small.png', loaded: false },
+            enemy_medium: { src: BASE_URL + 'enemy/medium.png', loaded: false },
+            enemy_large: { src: BASE_URL + 'enemy/large.png', loaded: false },
+            enemy_elite: { src: BASE_URL + 'enemy/elite.png', loaded: false },
+            enemy_boss: { src: BASE_URL + 'enemy/boss.png', loaded: false }
         };
         
-        // 从 GitHub 加载图片 (用户自定义的美术资源)
-        const BASE_URL = 'https://raw.githubusercontent.com/guoguoxia5211/thunder-fighter-game/main/';
-        images.bg.src = BASE_URL + 'bg/space.png';
-        images.player.src = BASE_URL + 'player/classic.png';
-        images.enemy_small.src = BASE_URL + 'enemy/small.png';
-        images.enemy_medium.src = BASE_URL + 'enemy/medium.png';
-        images.enemy_large.src = BASE_URL + 'enemy/large.png';
-        images.enemy_elite.src = BASE_URL + 'enemy/elite.png';
-        images.enemy_boss.src = BASE_URL + 'enemy/boss.png';
+        // 加载所有美术资源
+        function loadAllAssets(callback) {
+            let loadedCount = 0;
+            const totalCount = Object.keys(gameAssets).length;
+            
+            for (const [key, asset] of Object.entries(gameAssets)) {
+                const img = new Image();
+                img.src = asset.src;
+                img.onload = () => {
+                    asset.loaded = true;
+                    asset.image = img;
+                    loadedCount++;
+                    updateLoadingProgress(loadedCount, totalCount);
+                    if (loadedCount >= totalCount) {
+                        callback();
+                    }
+                };
+                img.onerror = () => {
+                    console.warn(`Failed to load: ${key}`);
+                    asset.loaded = true;
+                    loadedCount++;
+                    updateLoadingProgress(loadedCount, totalCount);
+                    if (loadedCount >= totalCount) {
+                        callback();
+                    }
+                };
+            }
+        }
+        
+        function updateLoadingProgress(loaded, total) {
+            const percent = Math.floor((loaded / total) * 100);
+            document.getElementById('loadingProgress').style.width = percent + '%';
+            document.getElementById('loadingText').textContent = percent + '%';
+        }
         
         // 背景滚动
         let bgY = 0;
@@ -130,11 +169,12 @@
             { id: 'heal', name: '❤️ 修复', desc: '恢复 1 点生命', apply: () => { lives = Math.min(5, lives + 1); } }
         ];
         
-        // 绘制滚动背景
+        // 绘制滚动背景 (使用图片)
         function drawBackground() {
-            if (images.bg.complete && images.bg.naturalWidth > 0) {
-                const bgHeight = images.bg.height;
-                const bgWidth = images.bg.width;
+            if (gameAssets.bg.loaded && gameAssets.bg.image) {
+                const bgImage = gameAssets.bg.image;
+                const bgHeight = bgImage.height;
+                const bgWidth = bgImage.width;
                 const canvasRatio = canvas.width / canvas.height;
                 const imgRatio = bgWidth / bgHeight;
                 
@@ -147,8 +187,8 @@
                     drawWidth = canvas.height * imgRatio;
                 }
                 
-                ctx.drawImage(images.bg, 0, bgY - drawHeight, drawWidth, drawHeight);
-                ctx.drawImage(images.bg, 0, bgY, drawWidth, drawHeight);
+                ctx.drawImage(bgImage, 0, bgY - drawHeight, drawWidth, drawHeight);
+                ctx.drawImage(bgImage, 0, bgY, drawWidth, drawHeight);
                 
                 bgY += bgSpeed;
                 if (bgY >= drawHeight) {
@@ -160,12 +200,12 @@
             }
         }
         
-        // 绘制玩家飞机 (使用自定义图片)
+        // 绘制玩家飞机 (使用图片)
         function drawPlayer() {
-            if (images.player.complete && images.player.naturalWidth > 0) {
-                ctx.drawImage(images.player, player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+            if (gameAssets.player.loaded && gameAssets.player.image) {
+                ctx.drawImage(gameAssets.player.image, player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
             } else {
-                // 图片加载失败时使用 Canvas 绘制
+                // 图片加载失败时使用 Canvas 绘制备用
                 ctx.fillStyle = '#4ecdc4';
                 ctx.beginPath();
                 ctx.moveTo(player.x, player.y - player.height / 2);
@@ -197,7 +237,7 @@
             }
         }
         
-        // 绘制子弹
+        // 绘制子弹 (UI 可以用 Canvas)
         function drawBullets() {
             bullets.forEach((bullet, index) => {
                 ctx.fillStyle = bullet.color;
@@ -244,14 +284,14 @@
             enemies.push(enemy);
         }
         
-        // 绘制敌机 (使用自定义图片)
+        // 绘制敌机 (使用图片)
         function drawEnemies() {
             enemies.forEach((enemy, index) => {
                 const imgKey = 'enemy_' + enemy.type;
-                if (images[imgKey] && images[imgKey].complete && images[imgKey].naturalWidth > 0) {
-                    ctx.drawImage(images[imgKey], enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
+                if (gameAssets[imgKey] && gameAssets[imgKey].loaded && gameAssets[imgKey].image) {
+                    ctx.drawImage(gameAssets[imgKey].image, enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
                 } else {
-                    // 图片加载失败时使用 Canvas 绘制
+                    // 图片加载失败时使用 Canvas 绘制备用
                     ctx.fillStyle = '#e74c3c';
                     ctx.beginPath();
                     ctx.moveTo(enemy.x, enemy.y + enemy.height / 2);
@@ -262,7 +302,7 @@
                     ctx.fill();
                 }
                 
-                // 血条
+                // 血条 (UI 用 Canvas)
                 if (enemy.health < enemy.maxHealth) {
                     const barWidth = enemy.width;
                     const barHeight = 4;
@@ -297,7 +337,7 @@
             });
         }
         
-        // 绘制敌机子弹
+        // 绘制敌机子弹 (UI 可以用 Canvas)
         function drawEnemyBullets() {
             enemyBullets.forEach((bullet, index) => {
                 ctx.fillStyle = bullet.color;
@@ -327,7 +367,7 @@
             }
         }
         
-        // 绘制粒子
+        // 绘制粒子 (UI 可以用 Canvas)
         function drawParticles() {
             particles.forEach((particle, index) => {
                 ctx.fillStyle = particle.color;
@@ -509,6 +549,7 @@
             enemyInterval = 50;
             shootInterval = 15;
             
+            document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('gameOverScreen').classList.add('hidden');
             
@@ -532,6 +573,13 @@
         document.getElementById('restartBtn').addEventListener('click', startGame);
         document.getElementById('menuBtn').addEventListener('click', () => {
             document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        });
+        
+        // 初始化：加载所有美术资源
+        loadAllAssets(() => {
+            // 所有资源加载完成，显示开始界面
+            document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
         });
     </script>
