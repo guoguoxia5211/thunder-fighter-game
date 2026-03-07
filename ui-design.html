@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UI 设计工具</title>
+    <title>雷霆战机 - UI 设计工具</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #f0f2f5;
+            background: #0a0a1a;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -22,8 +22,8 @@
         /* 顶部标签 */
         .tabs {
             display: flex;
-            background: #fff;
-            border-bottom: 1px solid #e0e0e0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -34,15 +34,15 @@
             padding: 12px;
             text-align: center;
             font-size: 14px;
-            color: #666;
+            color: rgba(255,255,255,0.6);
             cursor: pointer;
             transition: all 0.3s;
             border-bottom: 2px solid transparent;
         }
 
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #00d4ff;
+            border-bottom-color: #00d4ff;
             font-weight: 600;
         }
 
@@ -55,152 +55,128 @@
 
         #preview {
             width: 375px;
-            min-height: 667px;
-            background: #ffffff;
+            height: 667px;
+            background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
             border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            transition: all 0.3s;
+            position: relative;
         }
 
-        /* 手机状态栏 */
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 16px;
-            font-size: 12px;
-            color: #333;
-            background: #f8f9fa;
+        /* 游戏标题区 */
+        .game-title {
+            text-align: center;
+            padding: 60px 20px 40px;
         }
 
-        /* 内容区 */
-        .content {
-            padding: 24px;
+        .game-logo {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0,212,255,0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
         }
 
-        .header-section {
-            margin-bottom: 32px;
+        .game-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 4px;
         }
 
-        .main-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .subtitle {
-            font-size: 15px;
-            color: #999;
-            line-height: 1.5;
-        }
-
-        /* 按钮组 */
-        .button-group {
+        /* 菜单区 */
+        .menu-section {
+            padding: 20px 30px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-bottom: 32px;
         }
 
-        .btn {
+        .menu-btn {
             width: 100%;
-            padding: 16px 24px;
+            padding: 18px 24px;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: #667eea;
-        }
-
-        /* 卡片组 */
-        .card-group {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 32px;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
 
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+        .menu-btn:hover::before {
+            left: 100%;
         }
 
-        .card-desc {
-            font-size: 13px;
-            color: #999;
-            line-height: 1.5;
+        .btn-start {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,212,255,0.4);
         }
 
-        /* 底部导航 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
+        .btn-skin {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255,107,107,0.4);
+        }
+
+        .btn-achievement {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(161,140,209,0.4);
+        }
+
+        .btn-settings {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* 底部信息 */
+        .footer-info {
+            position: absolute;
+            bottom: 20px;
             left: 0;
             right: 0;
-            display: flex;
-            background: #ffffff;
-            border-top: 1px solid #e0e0e0;
-            padding: 8px 0 16px;
-            z-index: 100;
-        }
-
-        .nav-item {
-            flex: 1;
             text-align: center;
-            padding: 4px 8px;
             font-size: 11px;
-            color: #999;
-            cursor: pointer;
+            color: rgba(255,255,255,0.3);
         }
 
-        .nav-item.active {
-            color: #667eea;
-        }
-
-        .nav-icon {
-            font-size: 22px;
-            display: block;
-            margin-bottom: 2px;
+        .player-level {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 8px;
         }
 
         /* 控制面板 */
         .control-panel {
-            background: #fff;
-            border-top: 1px solid #e0e0e0;
+            background: #1a1a2e;
+            border-top: 1px solid rgba(255,255,255,0.1);
             padding: 16px;
             max-height: calc(100vh - 400px);
             overflow-y: auto;
+            color: #fff;
         }
 
         .panel-section {
@@ -210,7 +186,7 @@
         .panel-section h3 {
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: #00d4ff;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -230,7 +206,7 @@
         .control-item label {
             display: block;
             font-size: 12px;
-            color: #666;
+            color: rgba(255,255,255,0.6);
             margin-bottom: 6px;
         }
 
@@ -239,16 +215,17 @@
         .control-item select {
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
             font-size: 13px;
-            background: #f8f9fa;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
         }
 
         .control-item input[type="color"] {
             width: 100%;
             height: 40px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
             padding: 2px;
             cursor: pointer;
@@ -258,7 +235,7 @@
             width: 100%;
             height: 6px;
             -webkit-appearance: none;
-            background: #e0e0e0;
+            background: rgba(255,255,255,0.1);
             border-radius: 3px;
             outline: none;
         }
@@ -267,7 +244,7 @@
             -webkit-appearance: none;
             width: 18px;
             height: 18px;
-            background: #667eea;
+            background: #00d4ff;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -275,66 +252,8 @@
         .value-display {
             text-align: right;
             font-size: 11px;
-            color: #999;
+            color: rgba(255,255,255,0.4);
             margin-top: 4px;
-        }
-
-        /* 开关 */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .3s;
-            border-radius: 26px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #667eea;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-        .switch-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-        }
-
-        .switch-label {
-            font-size: 13px;
-            color: #333;
         }
 
         /* 渐变预设 */
@@ -358,32 +277,17 @@
         }
 
         .gradient-preset.selected {
-            border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-        }
-
-        /* 毛玻璃效果 */
-        .glass-preview {
-            height: 60px;
-            border-radius: 8px;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 500;
+            border-color: #00d4ff;
+            box-shadow: 0 2px 8px rgba(0,212,255,0.4);
         }
 
         /* 底部操作栏 */
         .action-bar {
-            position: fixed;
+            position: sticky;
             bottom: 0;
-            left: 0;
-            right: 0;
             display: flex;
-            background: #fff;
-            border-top: 1px solid #e0e0e0;
+            background: #1a1a2e;
+            border-top: 1px solid rgba(255,255,255,0.1);
             padding: 12px 16px;
             gap: 12px;
             z-index: 200;
@@ -400,14 +304,14 @@
         }
 
         .action-btn.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
         }
 
         .action-btn.secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #e0e0e0;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         /* 隐藏面板 */
@@ -418,117 +322,126 @@
         .panel-content.active {
             display: block;
         }
+
+        /* 背景星星动画 */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <!-- 顶部标签 -->
     <div class="tabs">
-        <div class="tab active" onclick="switchPanel('layout')">📐 布局</div>
+        <div class="tab active" onclick="switchPanel('content')">📝 内容</div>
         <div class="tab" onclick="switchPanel('style')">🎨 样式</div>
-        <div class="tab" onclick="switchPanel('effect')">✨ 效果</div>
+        <div class="tab" onclick="switchPanel('effect')">✨ 特效</div>
     </div>
 
     <!-- 预览区 -->
     <div class="preview-area">
         <div id="preview">
-            <div class="status-bar" id="statusBar">
-                <span>9:41</span>
-                <span>📶 🔋</span>
-            </div>
-            
-            <div class="content">
-                <div class="header-section">
-                    <h1 class="main-title" id="mainTitle">欢迎使用</h1>
-                    <p class="subtitle" id="subtitle">调整右侧参数来设计你的界面</p>
-                </div>
+            <!-- 星星背景 -->
+            <div class="stars" id="stars"></div>
 
-                <div class="button-group" id="buttonGroup">
-                    <button class="btn btn-primary" id="btn1">主要操作</button>
-                    <button class="btn btn-secondary" id="btn2">次要操作</button>
-                    <button class="btn btn-ghost" id="btn3">幽灵按钮</button>
-                </div>
-
-                <div class="card-group">
-                    <div class="card" id="card1">
-                        <div class="card-title">卡片标题</div>
-                        <div class="card-desc">这是一段卡片描述文字，用来展示卡片的样式效果</div>
-                    </div>
-                    <div class="card" id="card2">
-                        <div class="card-title">卡片标题</div>
-                        <div class="card-desc">这是另一段卡片描述文字</div>
-                    </div>
-                </div>
+            <!-- 游戏标题 -->
+            <div class="game-title">
+                <div class="game-logo" id="gameLogo">雷霆战机</div>
+                <div class="game-subtitle" id="gameSubtitle">THUNDER FIGHTER</div>
             </div>
 
-            <div class="bottom-nav" id="bottomNav">
-                <div class="nav-item active">
-                    <span class="nav-icon">🏠</span>
-                    首页
-                </div>
-                <div class="nav-item">
-                    <span class="nav-icon">🔍</span>
-                    发现
-                </div>
-                <div class="nav-item">
-                    <span class="nav-icon">👤</span>
-                    我的
-                </div>
+            <!-- 菜单区 -->
+            <div class="menu-section">
+                <button class="menu-btn btn-start" id="btnStart">
+                    <span>🚀</span>
+                    <span id="btnStartText">开始游戏</span>
+                </button>
+                <button class="menu-btn btn-skin" id="btnSkin">
+                    <span>👕</span>
+                    <span id="btnSkinText">皮肤系统</span>
+                </button>
+                <button class="menu-btn btn-achievement" id="btnAchieve">
+                    <span>🏆</span>
+                    <span id="btnAchieveText">成就系统</span>
+                </button>
+                <button class="menu-btn btn-settings" id="btnSettings">
+                    <span>⚙️</span>
+                    <span id="btnSettingsText">设置</span>
+                </button>
+            </div>
+
+            <!-- 底部信息 -->
+            <div class="footer-info">
+                <div class="player-level">Lv.99 王牌飞行员</div>
+                <div id="versionInfo">Version 1.0.0</div>
             </div>
         </div>
     </div>
 
     <!-- 控制面板 -->
     <div class="control-panel">
-        <!-- 布局面板 -->
-        <div id="panel-layout" class="panel-content active">
+        <!-- 内容面板 -->
+        <div id="panel-content" class="panel-content active">
             <div class="panel-section">
-                <h3>📝 标题</h3>
+                <h3>🎮 游戏标题</h3>
                 <div class="control-item">
                     <label>主标题</label>
-                    <input type="text" id="titleInput" value="欢迎使用" oninput="update()">
+                    <input type="text" id="logoInput" value="雷霆战机" oninput="update()">
                 </div>
                 <div class="control-item">
                     <label>副标题</label>
-                    <input type="text" id="subtitleInput" value="调整右侧参数来设计你的界面" oninput="update()">
+                    <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()">
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>🔘 按钮</h3>
+                <h3>🔘 按钮文字</h3>
                 <div class="control-item">
-                    <label>按钮 1 文字</label>
-                    <input type="text" id="btn1Input" value="主要操作" oninput="update()">
+                    <label>开始游戏</label>
+                    <input type="text" value="开始游戏" oninput="update()">
                 </div>
                 <div class="control-item">
-                    <label>按钮 2 文字</label>
-                    <input type="text" id="btn2Input" value="次要操作" oninput="update()">
+                    <label>皮肤系统</label>
+                    <input type="text" value="皮肤系统" oninput="update()">
                 </div>
                 <div class="control-item">
-                    <label>按钮 3 文字</label>
-                    <input type="text" id="btn3Input" value="幽灵按钮" oninput="update()">
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <h3>📦 卡片</h3>
-                <div class="control-item">
-                    <label>卡片 1 标题</label>
-                    <input type="text" value="卡片标题" oninput="update()">
+                    <label>成就系统</label>
+                    <input type="text" value="成就系统" oninput="update()">
                 </div>
                 <div class="control-item">
-                    <label>卡片 1 描述</label>
-                    <input type="text" value="这是一段卡片描述文字，用来展示卡片的样式效果" oninput="update()">
+                    <label>设置</label>
+                    <input type="text" value="设置" oninput="update()">
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>🧭 底部导航</h3>
-                <div class="switch-row">
-                    <span class="switch-label">显示导航</span>
-                    <label class="switch">
-                        <input type="checkbox" checked onchange="toggleNav(this.checked)">
-                        <span class="slider"></span>
-                    </label>
+                <h3>📊 底部信息</h3>
+                <div class="control-item">
+                    <label>玩家等级</label>
+                    <input type="text" value="Lv.99 王牌飞行员" oninput="update()">
+                </div>
+                <div class="control-item">
+                    <label>版本号</label>
+                    <input type="text" value="Version 1.0.0" oninput="update()">
                 </div>
             </div>
         </div>
@@ -536,45 +449,26 @@
         <!-- 样式面板 -->
         <div id="panel-style" class="panel-content">
             <div class="panel-section">
-                <h3>🎨 主标题样式</h3>
+                <h3>🎨 标题样式</h3>
                 <div class="control-row">
                     <div class="control-item">
                         <label>大小</label>
-                        <input type="range" min="20" max="40" value="28" oninput="updateTitleStyle()">
-                        <div class="value-display" id="titleSizeVal">28px</div>
-                    </div>
-                    <div class="control-item">
-                        <label>颜色</label>
-                        <input type="color" id="titleColor" value="#333333" oninput="updateTitleStyle()">
+                        <input type="range" min="30" max="60" value="42" oninput="updateLogoStyle()">
+                        <div class="value-display" id="logoSizeVal">42px</div>
                     </div>
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>🎨 副标题样式</h3>
+                <h3>🚀 开始按钮</h3>
                 <div class="control-row">
                     <div class="control-item">
-                        <label>大小</label>
-                        <input type="range" min="12" max="20" value="15" oninput="updateSubtitleStyle()">
-                        <div class="value-display" id="subtitleSizeVal">15px</div>
+                        <label>颜色 1</label>
+                        <input type="color" id="btn1Color1" value="#00d4ff" oninput="updateBtn1Style()">
                     </div>
                     <div class="control-item">
-                        <label>颜色</label>
-                        <input type="color" id="subtitleColor" value="#999999" oninput="updateSubtitleStyle()">
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <h3>🔘 按钮 1 样式</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>底色</label>
-                        <input type="color" id="btn1Bg" value="#667eea" oninput="updateBtn1Style()">
-                    </div>
-                    <div class="control-item">
-                        <label>文字</label>
-                        <input type="color" id="btn1Color" value="#ffffff" oninput="updateBtn1Style()">
+                        <label>颜色 2</label>
+                        <input type="color" id="btn1Color2" value="#0099ff" oninput="updateBtn1Style()">
                     </div>
                 </div>
                 <div class="control-item">
@@ -585,15 +479,15 @@
             </div>
 
             <div class="panel-section">
-                <h3>🔘 按钮 2 样式</h3>
+                <h3>👕 皮肤按钮</h3>
                 <div class="control-row">
                     <div class="control-item">
-                        <label>底色</label>
-                        <input type="color" id="btn2Bg" value="#f8f9fa" oninput="updateBtn2Style()">
+                        <label>颜色 1</label>
+                        <input type="color" id="btn2Color1" value="#ff6b6b" oninput="updateBtn2Style()">
                     </div>
                     <div class="control-item">
-                        <label>文字</label>
-                        <input type="color" id="btn2Color" value="#333333" oninput="updateBtn2Style()">
+                        <label>颜色 2</label>
+                        <input type="color" id="btn2Color2" value="#ff8e53" oninput="updateBtn2Style()">
                     </div>
                 </div>
                 <div class="control-item">
@@ -604,74 +498,93 @@
             </div>
 
             <div class="panel-section">
-                <h3>📦 卡片样式</h3>
+                <h3>🏆 成就按钮</h3>
                 <div class="control-row">
                     <div class="control-item">
-                        <label>底色</label>
-                        <input type="color" id="cardBg" value="#f8f9fa" oninput="updateCardStyle()">
+                        <label>颜色 1</label>
+                        <input type="color" id="btn3Color1" value="#a18cd1" oninput="updateBtn3Style()">
                     </div>
                     <div class="control-item">
-                        <label>圆角</label>
-                        <input type="range" min="0" max="30" value="12" oninput="updateCardStyle()">
-                        <div class="value-display" id="cardRadiusVal">12px</div>
+                        <label>颜色 2</label>
+                        <input type="color" id="btn3Color2" value="#fbc2eb" oninput="updateBtn3Style()">
+                    </div>
+                </div>
+                <div class="control-item">
+                    <label>圆角</label>
+                    <input type="range" min="0" max="30" value="12" oninput="updateBtn3Style()">
+                    <div class="value-display" id="btn3RadiusVal">12px</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>⚙️ 设置按钮</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>背景</label>
+                        <input type="color" id="btn4Bg" value="#ffffff" style="opacity:0.1" oninput="updateBtn4Style()">
+                    </div>
+                    <div class="control-item">
+                        <label>边框</label>
+                        <input type="color" id="btn4Border" value="#ffffff" oninput="updateBtn4Style()">
                     </div>
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>📱 画布</h3>
-                <div class="control-item">
-                    <label>背景色</label>
-                    <input type="color" id="canvasBg" value="#ffffff" oninput="updateCanvasStyle()">
+                <h3>🌌 背景</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>颜色 1</label>
+                        <input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()">
+                    </div>
+                    <div class="control-item">
+                        <label>颜色 2</label>
+                        <input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 效果面板 -->
+        <!-- 特效面板 -->
         <div id="panel-effect" class="panel-content">
             <div class="panel-section">
-                <h3>🌈 渐变预设</h3>
+                <h3>🌈 标题渐变预设</h3>
                 <div class="gradient-presets">
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" onclick="applyGradient(this, 'btn1')"></div>
-                    <div class="gradient-preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" onclick="applyGradient(this, 'btn1')"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" onclick="applyTitleGradient(this)"></div>
+                    <div class="gradient-preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" onclick="applyTitleGradient(this)"></div>
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>💎 毛玻璃效果</h3>
+                <h3>✨ 按钮阴影</h3>
                 <div class="control-item">
-                    <label>模糊强度</label>
-                    <input type="range" min="0" max="20" value="0" oninput="updateGlassEffect()">
-                    <div class="value-display" id="glassVal">0px</div>
-                </div>
-                <div class="glass-preview" id="glassPreview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-                    毛玻璃预览
+                    <label>强度</label>
+                    <input type="range" min="0" max="40" value="20" oninput="updateShadow()">
+                    <div class="value-display" id="shadowVal">20px</div>
                 </div>
             </div>
 
             <div class="panel-section">
-                <h3>✨ 阴影效果</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>强度</label>
-                        <input type="range" min="0" max="30" value="15" oninput="updateShadow()">
-                        <div class="value-display" id="shadowVal">15px</div>
-                    </div>
+                <h3>⭐ 星星背景</h3>
+                <div class="control-item">
+                    <label>星星数量</label>
+                    <input type="range" min="0" max="100" value="50" oninput="updateStars()">
+                    <div class="value-display" id="starsVal">50 颗</div>
                 </div>
             </div>
 
             <div class="panel-section">
                 <h3>📐 间距</h3>
                 <div class="control-item">
-                    <label>内容内边距</label>
-                    <input type="range" min="10" max="40" value="24" oninput="updatePadding()">
-                    <div class="value-display" id="paddingVal">24px</div>
+                    <label>标题上边距</label>
+                    <input type="range" min="20" max="100" value="60" oninput="updatePadding()">
+                    <div class="value-display" id="paddingVal">60px</div>
                 </div>
             </div>
         </div>
@@ -684,125 +597,134 @@
     </div>
 
     <script>
+        // 创建星星
+        function createStars(count) {
+            const container = document.getElementById('stars');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+
         // 切换面板
         function switchPanel(name) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-            
             event.target.classList.add('active');
             document.getElementById('panel-' + name).classList.add('active');
         }
 
         // 更新文字
         function update() {
-            document.getElementById('mainTitle').textContent = document.getElementById('titleInput').value;
-            document.getElementById('subtitle').textContent = document.getElementById('subtitleInput').value;
-            document.getElementById('btn1').textContent = document.getElementById('btn1Input').value;
-            document.getElementById('btn2').textContent = document.getElementById('btn2Input').value;
-            document.getElementById('btn3').textContent = document.getElementById('btn3Input').value;
-        }
-
-        // 切换导航
-        function toggleNav(show) {
-            document.getElementById('bottomNav').style.display = show ? 'flex' : 'none';
+            document.getElementById('gameLogo').textContent = document.getElementById('logoInput').value;
+            document.getElementById('gameSubtitle').textContent = document.getElementById('subtitleInput').value;
+            
+            const inputs = document.querySelectorAll('.control-panel input[type="text"]');
+            const btns = ['btnStartText', 'btnSkinText', 'btnAchieveText', 'btnSettingsText'];
+            inputs.forEach((input, index) => {
+                if (index >= 2 && index <= 5) {
+                    document.getElementById(btns[index - 2]).textContent = input.value;
+                }
+            });
         }
 
         // 更新标题样式
-        function updateTitleStyle() {
+        function updateLogoStyle() {
             const size = event.target.value;
-            const color = document.getElementById('titleColor').value;
-            document.getElementById('mainTitle').style.fontSize = size + 'px';
-            document.getElementById('mainTitle').style.color = color;
-            document.getElementById('titleSizeVal').textContent = size + 'px';
-        }
-
-        // 更新副标题样式
-        function updateSubtitleStyle() {
-            const size = event.target.value;
-            const color = document.getElementById('subtitleColor').value;
-            document.getElementById('subtitle').style.fontSize = size + 'px';
-            document.getElementById('subtitle').style.color = color;
-            document.getElementById('subtitleSizeVal').textContent = size + 'px';
+            document.getElementById('gameLogo').style.fontSize = size + 'px';
+            document.getElementById('logoSizeVal').textContent = size + 'px';
         }
 
         // 更新按钮 1 样式
         function updateBtn1Style() {
-            const btn = document.getElementById('btn1');
-            const bg = document.getElementById('btn1Bg').value;
-            const color = document.getElementById('btn1Color').value;
+            const btn = document.getElementById('btnStart');
+            const c1 = document.getElementById('btn1Color1').value;
+            const c2 = document.getElementById('btn1Color2').value;
             const radius = event.target.value;
             
-            btn.style.background = `linear-gradient(135deg, ${bg} 0%, ${adjustColor(bg, -20)} 100%)`;
-            btn.style.color = color;
+            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
             btn.style.borderRadius = radius + 'px';
             document.getElementById('btn1RadiusVal').textContent = radius + 'px';
         }
 
         // 更新按钮 2 样式
         function updateBtn2Style() {
-            const btn = document.getElementById('btn2');
-            const bg = document.getElementById('btn2Bg').value;
-            const color = document.getElementById('btn2Color').value;
+            const btn = document.getElementById('btnSkin');
+            const c1 = document.getElementById('btn2Color1').value;
+            const c2 = document.getElementById('btn2Color2').value;
             const radius = event.target.value;
             
-            btn.style.background = bg;
-            btn.style.color = color;
+            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
             btn.style.borderRadius = radius + 'px';
             document.getElementById('btn2RadiusVal').textContent = radius + 'px';
         }
 
-        // 更新卡片样式
-        function updateCardStyle() {
-            const bg = document.getElementById('cardBg').value;
+        // 更新按钮 3 样式
+        function updateBtn3Style() {
+            const btn = document.getElementById('btnAchieve');
+            const c1 = document.getElementById('btn3Color1').value;
+            const c2 = document.getElementById('btn3Color2').value;
             const radius = event.target.value;
             
-            document.querySelectorAll('.card').forEach(card => {
-                card.style.background = bg;
-                card.style.borderRadius = radius + 'px';
-            });
-            document.getElementById('cardRadiusVal').textContent = radius + 'px';
+            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
+            btn.style.borderRadius = radius + 'px';
+            document.getElementById('btn3RadiusVal').textContent = radius + 'px';
         }
 
-        // 更新画布样式
-        function updateCanvasStyle() {
-            document.getElementById('preview').style.background = document.getElementById('canvasBg').value;
+        // 更新按钮 4 样式
+        function updateBtn4Style() {
+            const btn = document.getElementById('btnSettings');
+            const bg = document.getElementById('btn4Bg').value;
+            const border = document.getElementById('btn4Border').value;
+            
+            btn.style.background = bg + '1a';
+            btn.style.borderColor = border + '33';
         }
 
-        // 应用渐变
-        function applyGradient(el, target) {
+        // 更新背景样式
+        function updateBgStyle() {
+            const c1 = document.getElementById('bgColor1').value;
+            const c2 = document.getElementById('bgColor2').value;
+            document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
+        }
+
+        // 应用标题渐变
+        function applyTitleGradient(el) {
             document.querySelectorAll('.gradient-preset').forEach(p => p.classList.remove('selected'));
             el.classList.add('selected');
             
             const bg = getComputedStyle(el).background;
-            document.getElementById('btn1').style.background = bg;
+            document.getElementById('gameLogo').style.background = bg;
+            document.getElementById('gameLogo').style.webkitBackgroundClip = 'text';
         }
 
-        // 毛玻璃效果
-        function updateGlassEffect() {
-            const value = event.target.value;
-            const preview = document.getElementById('glassPreview');
-            preview.style.backdropFilter = `blur(${value}px)`;
-            preview.style.webkitBackdropFilter = `blur(${value}px)`;
-            document.getElementById('glassVal').textContent = value + 'px';
-        }
-
-        // 阴影效果
+        // 更新阴影
         function updateShadow() {
             const value = event.target.value;
-            document.getElementById('preview').style.boxShadow = `0 ${value}px ${parseInt(value)*2}px rgba(0,0,0,0.12)`;
+            const btns = document.querySelectorAll('.menu-btn');
+            btns.forEach(btn => {
+                btn.style.boxShadow = `0 4px ${value}px rgba(0,0,0,0.3)`;
+            });
             document.getElementById('shadowVal').textContent = value + 'px';
+        }
+
+        // 更新星星
+        function updateStars() {
+            const value = event.target.value;
+            createStars(value);
+            document.getElementById('starsVal').textContent = value + '颗';
         }
 
         // 更新间距
         function updatePadding() {
             const value = event.target.value;
-            document.querySelector('.content').style.padding = value + 'px';
+            document.querySelector('.game-title').style.padding = `${value}px 20px 40px`;
             document.getElementById('paddingVal').textContent = value + 'px';
-        }
-
-        // 颜色调整
-        function adjustColor(hex, amount) {
-            return '#' + hex.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
         }
 
         // 重置
@@ -815,29 +737,27 @@
         // 导出
         function exportDesign() {
             const design = {
-                title: document.getElementById('mainTitle').textContent,
-                subtitle: document.getElementById('subtitle').textContent,
+                logo: document.getElementById('gameLogo').textContent,
+                subtitle: document.getElementById('gameSubtitle').textContent,
                 buttons: [
-                    { text: document.getElementById('btn1').textContent, bg: document.getElementById('btn1Bg').value },
-                    { text: document.getElementById('btn2').textContent, bg: document.getElementById('btn2Bg').value }
-                ],
-                colors: {
-                    title: document.getElementById('titleColor').value,
-                    subtitle: document.getElementById('subtitleColor').value,
-                    canvas: document.getElementById('canvasBg').value
-                }
+                    document.getElementById('btnStartText').textContent,
+                    document.getElementById('btnSkinText').textContent,
+                    document.getElementById('btnAchieveText').textContent,
+                    document.getElementById('btnSettingsText').textContent
+                ]
             };
             
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'ui-design.json';
+            a.download = 'thunder-fighter-ui.json';
             a.click();
             URL.revokeObjectURL(url);
         }
 
         // 初始化
+        createStars(50);
         update();
     </script>
 </body>
