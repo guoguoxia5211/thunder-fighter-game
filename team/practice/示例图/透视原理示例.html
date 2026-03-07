@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>透视原理示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .canvas-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .canvas-box h3 {
+            margin-top: 0;
+            color: #555;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto;
+            background: #fff;
+        }
+        .tips {
+            background: #f8f0e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .tips h3 {
+            margin-top: 0;
+            color: #7f4f2c;
+        }
+    </style>
+</head>
+<body>
+    <h1>📐 透视原理示例</h1>
+    
+    <div class="container">
+        <div class="canvas-box">
+            <h3>一点透视</h3>
+            <canvas id="onePoint" width="350" height="280"></canvas>
+        </div>
+        
+        <div class="canvas-box">
+            <h3>两点透视</h3>
+            <canvas id="twoPoint" width="350" height="280"></canvas>
+        </div>
+        
+        <div class="canvas-box">
+            <h3>三点透视</h3>
+            <canvas id="threePoint" width="350" height="280"></canvas>
+        </div>
+    </div>
+    
+    <div class="tips">
+        <h3>📝 透视要点</h3>
+        <ul>
+            <li><strong>一点透视：</strong>所有平行线汇聚于一个消失点，适合正面视角</li>
+            <li><strong>两点透视：</strong>两个消失点，适合表现物体转角</li>
+            <li><strong>三点透视：</strong>三个消失点，增加俯视/仰视效果</li>
+            <li><strong>视平线：</strong>眼睛高度的水平线，决定观察角度</li>
+            <li><strong>近大远小：</strong>同样大小的物体，近的看起来大，远的看起来小</li>
+        </ul>
+        
+        <h3>🎯 练习建议</h3>
+        <ol>
+            <li>从简单立方体开始练习</li>
+            <li>先定视平线和消失点</li>
+            <li>用辅助线检查透视准确性</li>
+            <li>观察现实场景分析透视</li>
+        </ol>
+    </div>
+
+    <script>
+        // 一点透视
+        const one = document.getElementById('onePoint');
+        const ctx1 = one.getContext('2d');
+        
+        // 背景
+        ctx1.fillStyle = '#F0F0F0';
+        ctx1.fillRect(0, 0, 350, 280);
+        
+        // 视平线
+        ctx1.strokeStyle = '#FF0000';
+        ctx1.lineWidth = 2;
+        ctx1.setLineDash([5, 5]);
+        ctx1.beginPath();
+        ctx1.moveTo(0, 140);
+        ctx1.lineTo(350, 140);
+        ctx1.stroke();
+        
+        // 消失点
+        ctx1.fillStyle = '#FF0000';
+        ctx1.beginPath();
+        ctx1.arc(175, 140, 5, 0, Math.PI * 2);
+        ctx1.fill();
+        
+        // 立方体
+        ctx1.strokeStyle = '#333';
+        ctx1.lineWidth = 2;
+        ctx1.setLineDash([]);
+        
+        // 前面
+        ctx1.strokeRect(125, 100, 100, 100);
+        
+        // 后面（缩小）
+        ctx1.strokeRect(150, 125, 50, 50);
+        
+        // 连接线
+        ctx1.beginPath();
+        ctx1.moveTo(125, 100);
+        ctx1.lineTo(150, 125);
+        ctx1.moveTo(225, 100);
+        ctx1.lineTo(200, 125);
+        ctx1.moveTo(125, 200);
+        ctx1.lineTo(150, 175);
+        ctx1.moveTo(225, 200);
+        ctx1.lineTo(200, 175);
+        ctx1.stroke();
+        
+        // 标注
+        ctx1.fillStyle = '#333';
+        ctx1.font = '12px Arial';
+        ctx1.fillText('消失点', 185, 135);
+        ctx1.fillText('视平线', 280, 135);
+
+        // 两点透视
+        const two = document.getElementById('twoPoint');
+        const ctx2 = two.getContext('2d');
+        
+        // 背景
+        ctx2.fillStyle = '#F0F0F0';
+        ctx2.fillRect(0, 0, 350, 280);
+        
+        // 视平线
+        ctx2.strokeStyle = '#FF0000';
+        ctx2.lineWidth = 2;
+        ctx2.setLineDash([5, 5]);
+        ctx2.beginPath();
+        ctx2.moveTo(0, 140);
+        ctx2.lineTo(350, 140);
+        ctx2.stroke();
+        
+        // 两个消失点
+        ctx2.fillStyle = '#FF0000';
+        ctx2.beginPath();
+        ctx2.arc(50, 140, 5, 0, Math.PI * 2);
+        ctx2.arc(300, 140, 5, 0, Math.PI * 2);
+        ctx2.fill();
+        
+        // 立方体
+        ctx2.strokeStyle = '#333';
+        ctx2.lineWidth = 2;
+        ctx2.setLineDash([]);
+        
+        // 最近的角
+        const cx = 175, cy = 180;
+        
+        // 左边
+        ctx2.beginPath();
+        ctx2.moveTo(cx, cy);
+        ctx2.lineTo(100, 160);
+        ctx2.lineTo(100, 220);
+        ctx2.lineTo(cx, cy + 60);
+        ctx2.stroke();
+        
+        // 右边
+        ctx2.beginPath();
+        ctx2.moveTo(cx, cy);
+        ctx2.lineTo(250, 160);
+        ctx2.lineTo(250, 220);
+        ctx2.lineTo(cx, cy + 60);
+        ctx2.stroke();
+        
+        // 顶面
+        ctx2.beginPath();
+        ctx2.moveTo(cx, cy);
+        ctx2.lineTo(100, 160);
+        ctx2.lineTo(175, 130);
+        ctx2.lineTo(250, 160);
+        ctx2.stroke();
+        
+        // 标注
+        ctx2.fillStyle = '#333';
+        ctx2.font = '12px Arial';
+        ctx2.fillText('消失点 1', 20, 135);
+        ctx2.fillText('消失点 2', 250, 135);
+
+        // 三点透视
+        const three = document.getElementById('threePoint');
+        const ctx3 = three.getContext('2d');
+        
+        // 背景
+        ctx3.fillStyle = '#F0F0F0';
+        ctx3.fillRect(0, 0, 350, 280);
+        
+        // 三个消失点
+        ctx3.fillStyle = '#FF0000';
+        ctx3.beginPath();
+        ctx3.arc(50, 50, 5, 0, Math.PI * 2);
+        ctx3.arc(300, 50, 5, 0, Math.PI * 2);
+        ctx3.arc(175, 350, 5, 0, Math.PI * 2);
+        ctx3.fill();
+        
+        // 立方体（俯视角度）
+        ctx3.strokeStyle = '#333';
+        ctx3.lineWidth = 2;
+        
+        // 顶面
+        ctx3.beginPath();
+        ctx3.moveTo(175, 100);
+        ctx3.lineTo(100, 130);
+        ctx3.lineTo(175, 160);
+        ctx3.lineTo(250, 130);
+        ctx3.closePath();
+        ctx3.stroke();
+        
+        // 侧面
+        ctx3.beginPath();
+        ctx3.moveTo(100, 130);
+        ctx3.lineTo(100, 200);
+        ctx3.moveTo(250, 130);
+        ctx3.lineTo(250, 200);
+        ctx3.moveTo(175, 160);
+        ctx3.lineTo(175, 230);
+        ctx3.stroke();
+        
+        // 底面
+        ctx3.beginPath();
+        ctx3.moveTo(100, 200);
+        ctx3.lineTo(175, 230);
+        ctx3.lineTo(250, 200);
+        ctx3.stroke();
+        
+        // 标注
+        ctx3.fillStyle = '#333';
+        ctx3.font = '12px Arial';
+        ctx3.fillText('消失点 1', 20, 45);
+        ctx3.fillText('消失点 2', 250, 45);
+        ctx3.fillText('消失点 3（下方）', 180, 270);
+    </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人体比例参考</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .canvas-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .canvas-box h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto;
+            background: #fff;
+        }
+        .tips {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .tips h3 {
+            margin-top: 0;
+            color: #2c5f7f;
+        }
+    </style>
+</head>
+<body>
+    <h1>👤 人体比例参考</h1>
+    
+    <div class="container">
+        <div class="canvas-box">
+            <h3>标准比例（8 头身）</h3>
+            <canvas id="standard" width="200" height="400"></canvas>
+        </div>
+        
+        <div class="canvas-box">
+            <h3>Q 版比例（2-3 头身）</h3>
+            <canvas id="chibi" width="200" height="300"></canvas>
+        </div>
+        
+        <div class="canvas-box">
+            <h3>英雄比例（9 头身）</h3>
+            <canvas id="hero" width="200" height="450"></canvas>
+        </div>
+    </div>
+    
+    <div class="tips">
+        <h3>📝 人体比例要点</h3>
+        <ul>
+            <li><strong>8 头身：</strong>标准成人比例，头长：身高 = 1:8</li>
+            <li><strong>7 头身：</strong>略矮，更接近真实亚洲人比例</li>
+            <li><strong>9 头身：</strong>英雄/模特比例，更显修长</li>
+            <li><strong>2-3 头身：</strong>Q 版角色，可爱风格</li>
+            <li><strong>关键位置：</strong>
+                <ul>
+                    <li>1 头：下巴到乳头</li>
+                    <li>2 头：乳头到肚脐</li>
+                    <li>3 头：肚脐到胯部</li>
+                    <li>4 头：胯部（身体中点）</li>
+                    <li>6 头：膝盖</li>
+                    <li>8 头：脚底</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>🎯 练习建议</h3>
+        <ol>
+            <li>先画火柴人确定动态</li>
+            <li>用几何体概括身体各部分</li>
+            <li>注意关节位置和比例</li>
+            <li>多画不同角度的速写</li>
+        </ol>
+    </div>
+
+    <script>
+        // 标准比例
+        const std = document.getElementById('standard');
+        const ctx1 = std.getContext('2d');
+        
+        const headSize = 40;
+        const centerX = 100;
+        
+        // 画 8 等分线
+        ctx1.strokeStyle = '#ddd';
+        ctx1.lineWidth = 1;
+        for (let i = 0; i <= 8; i++) {
+            ctx1.beginPath();
+            ctx1.moveTo(0, i * headSize);
+            ctx1.lineTo(200, i * headSize);
+            ctx1.stroke();
+            
+            ctx1.fillStyle = '#999';
+            ctx1.font = '10px Arial';
+            ctx1.fillText(i + '头', 5, i * headSize + 12);
+        }
+        
+        // 画人体简图
+        ctx1.strokeStyle = '#333';
+        ctx1.lineWidth = 2;
+        
+        // 头
+        ctx1.beginPath();
+        ctx1.arc(centerX, headSize/2, headSize/2, 0, Math.PI * 2);
+        ctx1.stroke();
+        
+        // 身体
+        ctx1.beginPath();
+        ctx1.moveTo(centerX, headSize);
+        ctx1.lineTo(centerX, 3.5 * headSize);
+        ctx1.stroke();
+        
+        // 肩膀
+        ctx1.beginPath();
+        ctx1.moveTo(centerX - 30, headSize * 1.2);
+        ctx1.lineTo(centerX + 30, headSize * 1.2);
+        ctx1.stroke();
+        
+        // 手臂
+        ctx1.beginPath();
+        ctx1.moveTo(centerX - 30, headSize * 1.2);
+        ctx1.lineTo(centerX - 35, headSize * 2.5);
+        ctx1.moveTo(centerX + 30, headSize * 1.2);
+        ctx1.lineTo(centerX + 35, headSize * 2.5);
+        ctx1.stroke();
+        
+        // 腿
+        ctx1.beginPath();
+        ctx1.moveTo(centerX, headSize * 3.5);
+        ctx1.lineTo(centerX - 15, headSize * 6);
+        ctx1.lineTo(centerX - 15, headSize * 8);
+        ctx1.moveTo(centerX, headSize * 3.5);
+        ctx1.lineTo(centerX + 15, headSize * 6);
+        ctx1.lineTo(centerX + 15, headSize * 8);
+        ctx1.stroke();
+        
+        // 标注
+        ctx1.fillStyle = '#666';
+        ctx1.font = '10px Arial';
+        ctx1.fillText('乳头', 145, headSize + 5);
+        ctx1.fillText('肚脐', 145, headSize * 2 + 5);
+        ctx1.fillText('胯部', 145, headSize * 4 + 5);
+        ctx1.fillText('膝盖', 145, headSize * 6 + 5);
+
+        // Q 版比例
+        const chibi = document.getElementById('chibi');
+        const ctx2 = chibi.getContext('2d');
+        
+        const chibiHead = 60;
+        const chibiCenterX = 100;
+        
+        // 画 3 等分线
+        ctx2.strokeStyle = '#ddd';
+        ctx2.lineWidth = 1;
+        for (let i = 0; i <= 3; i++) {
+            ctx2.beginPath();
+            ctx2.moveTo(0, i * chibiHead);
+            ctx2.lineTo(200, i * chibiHead);
+            ctx2.stroke();
+            
+            ctx2.fillStyle = '#999';
+            ctx2.font = '10px Arial';
+            ctx2.fillText(i + '头', 5, i * chibiHead + 12);
+        }
+        
+        // 画 Q 版人体
+        ctx2.strokeStyle = '#333';
+        ctx2.lineWidth = 2;
+        
+        // 大头
+        ctx2.beginPath();
+        ctx2.arc(chibiCenterX, chibiHead/2, chibiHead/2, 0, Math.PI * 2);
+        ctx2.stroke();
+        
+        // 小身体
+        ctx2.beginPath();
+        ctx2.moveTo(chibiCenterX, chibiHead);
+        ctx2.lineTo(chibiCenterX, chibiHead * 2.5);
+        ctx2.stroke();
+        
+        // 短手臂
+        ctx2.beginPath();
+        ctx2.moveTo(chibiCenterX - 20, chibiHead * 1.2);
+        ctx2.lineTo(chibiCenterX - 25, chibiHead * 2);
+        ctx2.moveTo(chibiCenterX + 20, chibiHead * 1.2);
+        ctx2.lineTo(chibiCenterX + 25, chibiHead * 2);
+        ctx2.stroke();
+        
+        // 短腿
+        ctx2.beginPath();
+        ctx2.moveTo(chibiCenterX, chibiHead * 2.5);
+        ctx2.lineTo(chibiCenterX - 10, chibiHead * 3);
+        ctx2.moveTo(chibiCenterX, chibiHead * 2.5);
+        ctx2.lineTo(chibiCenterX + 10, chibiHead * 3);
+        ctx2.stroke();
+
+        // 英雄比例
+        const hero = document.getElementById('hero');
+        const ctx3 = hero.getContext('2d');
+        
+        const heroHead = 45;
+        const heroCenterX = 100;
+        
+        // 画 9 等分线
+        ctx3.strokeStyle = '#ddd';
+        ctx3.lineWidth = 1;
+        for (let i = 0; i <= 9; i++) {
+            ctx3.beginPath();
+            ctx3.moveTo(0, i * heroHead);
+            ctx3.lineTo(200, i * heroHead);
+            ctx3.stroke();
+            
+            ctx3.fillStyle = '#999';
+            ctx3.font = '10px Arial';
+            ctx3.fillText(i + '头', 5, i * heroHead + 12);
+        }
+        
+        // 画英雄人体
+        ctx3.strokeStyle = '#333';
+        ctx3.lineWidth = 2;
+        
+        // 头
+        ctx3.beginPath();
+        ctx3.arc(heroCenterX, heroHead/2, heroHead/2, 0, Math.PI * 2);
+        ctx3.stroke();
+        
+        // 宽肩膀
+        ctx3.beginPath();
+        ctx3.moveTo(heroCenterX - 40, heroHead * 1.2);
+        ctx3.lineTo(heroCenterX + 40, heroHead * 1.2);
+        ctx3.stroke();
+        
+        // 身体
+        ctx3.beginPath();
+        ctx3.moveTo(heroCenterX, heroHead);
+        ctx3.lineTo(heroCenterX, heroHead * 4);
+        ctx3.stroke();
+        
+        // 长腿
+        ctx3.beginPath();
+        ctx3.moveTo(heroCenterX, heroHead * 4);
+        ctx3.lineTo(heroCenterX - 20, heroHead * 7);
+        ctx3.lineTo(heroCenterX - 20, heroHead * 9);
+        ctx3.moveTo(heroCenterX, heroHead * 4);
+        ctx3.lineTo(heroCenterX + 20, heroHead * 7);
+        ctx3.lineTo(heroCenterX + 20, heroHead * 9);
+        ctx3.stroke();
+        
+        // 标注
+        ctx3.fillStyle = '#666';
+        ctx3.font = '10px Arial';
+        ctx3.fillText('英雄比例', 60, 20);
+    </script>
+</body>
+</html>
