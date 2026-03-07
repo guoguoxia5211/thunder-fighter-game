@@ -1,15 +1,15 @@
 {
   "version": "5.0.0",
   "player": {
-    "speed": 5,
-    "health": 3,
+    "speed": 10,
+    "health": 10,
     "damage": 10,
     "fireRate": 10
   },
   "enemies": {
-    "spawnRate": 5
+    "spawnRate": 1
   },
   "game": {
-    "gravity": 0.8
+    "gravity": 2
   }
 }
