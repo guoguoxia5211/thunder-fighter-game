@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 - 配置系统 v4</title>
+    <title>⚡ 雷霆战机 - 配置系统 v5 实时预览</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -21,7 +21,6 @@
             min-height: 100vh;
         }
         
-        /* 左侧配置面板 */
         .config-panel {
             background: rgba(26, 26, 46, 0.9);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -31,7 +30,6 @@
             overflow-y: auto;
         }
         
-        /* 中间预览窗口 */
         .preview-panel {
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -41,7 +39,6 @@
             flex-direction: column;
         }
         
-        /* 右侧操作面板 */
         .action-panel {
             background: rgba(26, 26, 46, 0.9);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -51,10 +48,7 @@
             overflow-y: auto;
         }
         
-        /* 可折叠面板 */
-        .accordion {
-            margin-bottom: 15px;
-        }
+        .accordion { margin-bottom: 15px; }
         .accordion-header {
             background: rgba(78, 205, 196, 0.2);
             border: 1px solid #4ecdc4;
@@ -66,33 +60,21 @@
             align-items: center;
             transition: all 0.3s;
         }
-        .accordion-header:hover {
-            background: rgba(78, 205, 196, 0.3);
-        }
-        .accordion-header .icon {
-            font-size: 18px;
-            transition: transform 0.3s;
-        }
-        .accordion-header.active .icon {
-            transform: rotate(180deg);
-        }
+        .accordion-header:hover { background: rgba(78, 205, 196, 0.3); }
+        .accordion-header .icon { font-size: 18px; transition: transform 0.3s; }
+        .accordion-header.active .icon { transform: rotate(180deg); }
         .accordion-content {
             display: none;
             padding: 15px 10px;
             animation: slideDown 0.3s ease;
         }
-        .accordion-content.show {
-            display: block;
-        }
+        .accordion-content.show { display: block; }
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* 滑块样式 */
-        .slider-group {
-            margin: 15px 0;
-        }
+        .slider-group { margin: 15px 0; }
         .slider-label {
             display: flex;
             justify-content: space-between;
@@ -100,10 +82,7 @@
             color: #95a5a6;
             font-size: 13px;
         }
-        .slider-value {
-            color: #f39c12;
-            font-weight: bold;
-        }
+        .slider-value { color: #f39c12; font-weight: bold; }
         input[type="range"] {
             width: 100%;
             height: 6px;
@@ -121,7 +100,6 @@
             -webkit-appearance: none;
         }
         
-        /* 按钮样式 */
         .action-btn {
             background: linear-gradient(45deg, #f39c12, #e67e22);
             border: none;
@@ -137,17 +115,10 @@
             -webkit-tap-highlight-color: transparent;
         }
         .action-btn:active { transform: scale(0.95); }
-        .action-btn.secondary {
-            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-        }
-        .action-btn.success {
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
-        }
-        .action-btn.primary {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-        }
+        .action-btn.secondary { background: linear-gradient(45deg, #95a5a6, #7f8c8d); }
+        .action-btn.success { background: linear-gradient(45deg, #27ae60, #2ecc71); }
+        .action-btn.primary { background: linear-gradient(45deg, #3498db, #2980b9); }
         
-        /* 资源上传 */
         .resource-upload {
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
@@ -157,10 +128,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .resource-upload span {
-            color: #4ecdc4;
-            font-size: 13px;
-        }
+        .resource-upload span { color: #4ecdc4; font-size: 13px; }
         .upload-btn-small {
             background: #3498db;
             color: white;
@@ -171,7 +139,6 @@
             font-size: 11px;
         }
         
-        /* 预览 iframe */
         .preview-frame {
             flex: 1;
             background: #000;
@@ -185,7 +152,6 @@
             border: none;
         }
         
-        /* 状态条 */
         .status-bar {
             position: fixed;
             top: 20px;
@@ -205,7 +171,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Token 配置 - 底部小图标 */
         .token-settings {
             position: fixed;
             bottom: 20px;
@@ -276,7 +241,22 @@
             color: white;
         }
         
-        /* 响应式 */
+        .live-indicator {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            border-radius: 20px;
+            padding: 8px 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2ecc71;
+            font-size: 12px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
         @media (max-width: 1200px) {
             .main-container {
                 grid-template-columns: 300px 1fr;
@@ -314,11 +294,13 @@
 </head>
 <body>
     <div class="main-container">
-        <!-- 左侧配置面板 -->
         <div class="config-panel">
             <h2 style="text-align: center; color: #f39c12; margin-bottom: 20px;">⚙️ 配置面板</h2>
             
-            <!-- 游戏数值 -->
+            <div class="live-indicator">
+                ✨ 实时预览已开启 - 调整数值立即生效
+            </div>
+            
             <div class="accordion">
                 <div class="accordion-header active" onclick="toggleAccordion(this)">
                     <span>⚙️ 游戏数值</span>
@@ -370,7 +352,6 @@
                 </div>
             </div>
             
-            <!-- 美术资源 -->
             <div class="accordion">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
                     <span>🎨 美术资源</span>
@@ -411,7 +392,6 @@
             </div>
         </div>
         
-        <!-- 中间预览窗口 -->
         <div class="preview-panel">
             <h2 style="text-align: center; color: #3498db; margin-bottom: 15px;">🎮 实时预览</h2>
             <div class="preview-frame">
@@ -419,7 +399,6 @@
             </div>
         </div>
         
-        <!-- 右侧操作面板 -->
         <div class="action-panel">
             <h2 style="text-align: center; color: #2ecc71; margin-bottom: 20px;">⚡ 快捷操作</h2>
             
@@ -435,8 +414,8 @@
             <div style="margin-top: 30px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 10px;">
                 <h4 style="color: #3498db; margin-bottom: 10px;">💡 使用提示</h4>
                 <ol style="color: #95a5a6; font-size: 12px; padding-left: 20px;">
-                    <li>调整数值或上传资源</li>
-                    <li>点击"刷新预览"查看效果</li>
+                    <li>调整数值 - <strong>立即生效</strong></li>
+                    <li>上传资源 - 点击部署生效</li>
                     <li>满意后点击"部署配置"</li>
                     <li>等待部署完成后刷新游戏</li>
                 </ol>
@@ -444,11 +423,8 @@
         </div>
     </div>
     
-    <!-- 底部 Token 配置 -->
     <div class="token-settings">
-        <div class="token-icon" onclick="toggleTokenPopup()" title="GitHub Token 设置">
-            🔑
-        </div>
+        <div class="token-icon" onclick="toggleTokenPopup()" title="GitHub Token 设置">🔑</div>
     </div>
     
     <div class="token-popup" id="tokenPopup">
@@ -468,7 +444,7 @@
         let githubToken = localStorage.getItem('github_token') || '';
         
         let config = {
-            version: "4.0.0",
+            version: "5.0.0",
             player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
             enemies: { spawnRate: 5 },
             game: { gravity: 0.8 }
@@ -516,6 +492,7 @@
             if (key === 'spawnRate') config.enemies.spawnRate = parseFloat(value);
             if (key === 'gravity') config.game.gravity = parseFloat(value);
             
+            // 实时发送到预览窗口
             sendConfigToPreview();
         }
         
@@ -646,7 +623,7 @@
         function resetConfig() {
             if (confirm('确定要重置为默认配置吗？')) {
                 config = {
-                    version: "4.0.0",
+                    version: "5.0.0",
                     player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
                     enemies: { spawnRate: 5 },
                     game: { gravity: 0.8 }
