@@ -4,14 +4,14 @@
     "speed": 5,
     "jumpPower": -15,
     "health": 3,
-    "damage": 6,
-    "fireRate": 4,
+    "damage": 10,
+    "fireRate": 6,
     "image": "player/classic.png"
   },
   "enemies": {
     "slime": {
       "speed": 2,
-      "health": 20,
+      "health": 14,
       "damage": 1,
       "image": "enemy/slime.png"
     },
@@ -29,7 +29,7 @@
     },
     "boss": {
       "speed": 2,
-      "health": 500,
+      "health": 234,
       "damage": 5,
       "image": "enemy/boss.png"
     }
