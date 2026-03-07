@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ 雷霆战机 v1.2.2 - 图片加载版</title>
+    <title>⚡ 雷霆战机 v1.2.3 - 滚动背景版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; overflow: hidden; touch-action: none; font-family: 'Arial', sans-serif; }
-        #gameCanvas { display: block; margin: 0 auto; background: linear-gradient(to bottom, #0a0a2e 0%, #1a1a4e 50%, #0a0a2e 100%); }
+        #gameCanvas { display: block; margin: 0 auto; background: #000; }
         #ui { position: absolute; top: 10px; left: 10px; color: #fff; font-size: 16px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 10; }
         #startScreen, #gameOverScreen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.8); z-index: 20; }
         #startScreen h1, #gameOverScreen h1 { color: #ff6b6b; font-size: 42px; text-shadow: 0 0 20px #ff6b6b; margin-bottom: 10px; }
@@ -32,7 +32,7 @@
     
     <div id="startScreen">
         <h1>⚡ 雷霆战机 ⚡</h1>
-        <div id="version">v1.2.2 - 图片加载版</div>
+        <div id="version">v1.2.3 - 滚动背景版</div>
         <p>🎮 触摸屏幕控制飞机移动<br>🔫 自动发射子弹<br>🎲 Roguelike 升级系统<br>💰 金币永久成长</p>
         <button id="startBtn">开始游戏</button>
     </div>
@@ -60,57 +60,13 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        // 图片资源 (从 GitHub 加载)
-        const BASE_URL = 'https://raw.githubusercontent.com/guoguoxia5211/thunder-fighter-game/main/';
+        // 背景图片
+        const bgImage = new Image();
+        bgImage.src = 'https://raw.githubusercontent.com/guoguoxia5211/thunder-fighter-game/main/bg/space.png';
         
-        // 图片资源对象
-        const images = {
-            player: null,
-            enemy_small: null,
-            enemy_medium: null,
-            enemy_large: null,
-            enemy_elite: null,
-            enemy_boss: null,
-            bullet: null,
-            explosion: null
-        };
-        
-        // 加载所有图片
-        function loadImages() {
-            const imageSources = {
-                player: BASE_URL + 'player/classic.png',
-                enemy_small: BASE_URL + 'enemy/small.png',
-                enemy_medium: BASE_URL + 'enemy/medium.png',
-                enemy_large: BASE_URL + 'enemy/large.png',
-                enemy_elite: BASE_URL + 'enemy/elite.png',
-                enemy_boss: BASE_URL + 'enemy/boss.png',
-                bullet: BASE_URL + 'bullet/player.png',
-                explosion: BASE_URL + 'explosion/small.png'
-            };
-            
-            let loaded = 0;
-            const total = Object.keys(imageSources).length;
-            
-            for (const [key, src] of Object.entries(imageSources)) {
-                const img = new Image();
-                img.src = src;
-                img.onload = () => {
-                    loaded++;
-                    console.log(`Loaded: ${key}`);
-                    if (loaded === total) {
-                        console.log('All images loaded');
-                    }
-                };
-                img.onerror = () => {
-                    loaded++;
-                    console.warn(`Failed to load: ${key}`);
-                };
-                images[key] = img;
-            }
-        }
-        
-        // 开始加载图片
-        loadImages();
+        // 背景滚动
+        let bgY = 0;
+        const bgSpeed = 2;
         
         // 游戏状态
         let gameRunning = false;
@@ -172,6 +128,39 @@
             }
         }
         
+        // 绘制滚动背景
+        function drawBackground() {
+            if (bgImage.complete && bgImage.naturalWidth > 0) {
+                const bgHeight = bgImage.height;
+                const bgWidth = bgImage.width;
+                const canvasRatio = canvas.width / canvas.height;
+                const imgRatio = bgWidth / bgHeight;
+                
+                let drawWidth, drawHeight;
+                if (canvasRatio > imgRatio) {
+                    drawWidth = canvas.width;
+                    drawHeight = canvas.width / imgRatio;
+                } else {
+                    drawHeight = canvas.height;
+                    drawWidth = canvas.height * imgRatio;
+                }
+                
+                // 绘制两次实现无缝滚动
+                ctx.drawImage(bgImage, 0, bgY - drawHeight, drawWidth, drawHeight);
+                ctx.drawImage(bgImage, 0, bgY, drawWidth, drawHeight);
+                
+                // 更新背景位置
+                bgY += bgSpeed;
+                if (bgY >= drawHeight) {
+                    bgY = 0;
+                }
+            } else {
+                // 图片加载失败时使用渐变背景
+                ctx.fillStyle = '#0a0a2e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        
         // 绘制星空
         function drawStars() {
             ctx.fillStyle = '#fff';
@@ -187,21 +176,25 @@
             });
         }
         
-        // 绘制玩家飞机 (使用图片)
+        // 绘制玩家飞机
         function drawPlayer() {
-            if (images.player && images.player.complete && images.player.naturalWidth > 0) {
-                ctx.drawImage(images.player, player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
-            } else {
-                // 图片加载失败时使用 Canvas 绘制
-                ctx.fillStyle = player.color;
-                ctx.beginPath();
-                ctx.moveTo(player.x, player.y - player.height / 2);
-                ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
-                ctx.lineTo(player.x, player.y + player.height / 3);
-                ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
-                ctx.closePath();
-                ctx.fill();
-            }
+            ctx.fillStyle = player.color;
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y - player.height / 2);
+            ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
+            ctx.lineTo(player.x, player.y + player.height / 3);
+            ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
+            ctx.closePath();
+            ctx.fill();
+            
+            // 火焰效果
+            ctx.fillStyle = `rgba(255, ${Math.random() * 100 + 100}, 0, 0.8)`;
+            ctx.beginPath();
+            ctx.moveTo(player.x - 10, player.y + player.height / 2);
+            ctx.lineTo(player.x, player.y + player.height / 2 + 20 + Math.random() * 10);
+            ctx.lineTo(player.x + 10, player.y + player.height / 2);
+            ctx.closePath();
+            ctx.fill();
         }
         
         // 创建子弹
@@ -224,18 +217,11 @@
             }
         }
         
-        // 绘制子弹 (使用图片)
+        // 绘制子弹
         function drawBullets() {
             bullets.forEach((bullet, index) => {
-                if (images.bullet && images.bullet.complete && images.bullet.naturalWidth > 0) {
-                    ctx.save();
-                    ctx.translate(bullet.x, bullet.y);
-                    ctx.drawImage(images.bullet, -bullet.width / 2, -bullet.height / 2, bullet.width, bullet.height);
-                    ctx.restore();
-                } else {
-                    ctx.fillStyle = bullet.color;
-                    ctx.fillRect(bullet.x - bullet.width / 2, bullet.y - bullet.height / 2, bullet.width, bullet.height);
-                }
+                ctx.fillStyle = bullet.color;
+                ctx.fillRect(bullet.x - bullet.width / 2, bullet.y - bullet.height / 2, bullet.width, bullet.height);
                 
                 bullet.x += bullet.vx;
                 bullet.y += bullet.vy;
@@ -278,28 +264,22 @@
             enemies.push(enemy);
         }
         
-        // 绘制敌机 (使用图片)
+        // 绘制敌机
         function drawEnemies() {
             enemies.forEach((enemy, index) => {
-                const imgKey = 'enemy_' + enemy.type;
-                if (images[imgKey] && images[imgKey].complete && images[imgKey].naturalWidth > 0) {
-                    ctx.drawImage(images[imgKey], enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
-                } else {
-                    // 图片加载失败时使用 Canvas 绘制
-                    ctx.fillStyle = enemy.color;
-                    if (enemy.glow) {
-                        ctx.shadowBlur = 20;
-                        ctx.shadowColor = enemy.color;
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(enemy.x, enemy.y + enemy.height / 2);
-                    ctx.lineTo(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2);
-                    ctx.lineTo(enemy.x, enemy.y - enemy.height / 3);
-                    ctx.lineTo(enemy.x + enemy.width / 2, enemy.y - enemy.height / 2);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
+                ctx.fillStyle = enemy.color;
+                if (enemy.glow) {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = enemy.color;
                 }
+                ctx.beginPath();
+                ctx.moveTo(enemy.x, enemy.y + enemy.height / 2);
+                ctx.lineTo(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2);
+                ctx.lineTo(enemy.x, enemy.y - enemy.height / 3);
+                ctx.lineTo(enemy.x + enemy.width / 2, enemy.y - enemy.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.shadowBlur = 0;
                 
                 // 血条
                 if (enemy.health < enemy.maxHealth) {
@@ -441,9 +421,7 @@
         function gameLoop() {
             if (!gameRunning) return;
             
-            ctx.fillStyle = '#0a0a2e';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+            drawBackground();
             drawStars();
             
             shootTimer++;
