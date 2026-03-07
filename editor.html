@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可视化编辑器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* 顶部工具栏 */
+        .toolbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .toolbar button {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .toolbar button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .toolbar button:active {
+            transform: translateY(0);
+        }
+
+        .toolbar .divider {
+            width: 1px;
+            height: 30px;
+            background: #e0e0e0;
+            margin: 0 5px;
+        }
+
+        .toolbar label {
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toolbar input[type="color"] {
+            width: 40px;
+            height: 35px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .toolbar input[type="color"]:hover {
+            border-color: #667eea;
+        }
+
+        /* 画布区域 */
+        .canvas-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: auto;
+            max-height: 75vh;
+        }
+
+        #canvas {
+            position: relative;
+            width: 900px;
+            height: 650px;
+            background: #ffffff;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px dashed #e0e0e0;
+            transition: border-color 0.3s;
+        }
+
+        #canvas:hover {
+            border-color: #667eea;
+        }
+
+        /* 可编辑元素 */
+        .editable-element {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            transition: outline 0.2s;
+        }
+
+        .editable-element.selected {
+            outline: 2px solid #667eea;
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        /* 浮动编辑工具栏 */
+        .floating-toolbar {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #2a2a2a;
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: none;
+            gap: 6px;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .editable-element.selected .floating-toolbar {
+            display: flex;
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .floating-toolbar button {
+            padding: 6px 10px;
+            background: #3a3a3a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .floating-toolbar button:hover {
+            background: #4a4a4a;
+            transform: translateY(-1px);
+        }
+
+        .floating-toolbar button.edit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .floating-toolbar button.delete-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .floating-toolbar button.duplicate-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* 调整大小手柄 */
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .editable-element.selected .resize-handle {
+            display: block;
+        }
+
+        .resize-handle.nw { top: -6px; left: -6px; cursor: nw-resize; }
+        .resize-handle.ne { top: -6px; right: -6px; cursor: ne-resize; }
+        .resize-handle.sw { bottom: -6px; left: -6px; cursor: sw-resize; }
+        .resize-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+
+        /* 按钮样式 */
+        .canvas-button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .canvas-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        /* 文字样式 */
+        .canvas-text {
+            color: #333;
+            font-size: 24px;
+            font-weight: 500;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* 形状样式 */
+        .canvas-shape {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* 编辑弹窗 */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .edit-modal.active {
+            display: flex;
+        }
+
+        .edit-modal-content {
+            background: #fff;
+            padding: 35px;
+            border-radius: 20px;
+            width: 450px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .edit-modal-content h3 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .edit-modal-content label {
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .edit-modal-content input,
+        .edit-modal-content textarea,
+        .edit-modal-content select {
+            width: 100%;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .edit-modal-content input:focus,
+        .edit-modal-content textarea:focus,
+        .edit-modal-content select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .edit-modal-content textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .edit-modal-content .color-picker-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .edit-modal-content .color-picker-row > div {
+            flex: 1;
+        }
+
+        .edit-modal-content input[type="color"] {
+            width: 100%;
+            height: 45px;
+            padding: 5px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .edit-modal-content .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .edit-modal-content button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .edit-modal-content .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .edit-modal-content .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .edit-modal-content .btn-cancel {
+            background: #f8f9fa;
+            color: #555;
+            border: 2px solid #e9ecef;
+        }
+
+        .edit-modal-content .btn-cancel:hover {
+            background: #e9ecef;
+        }
+
+        /* 空状态提示 */
+        .empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #999;
+            pointer-events: none;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        /* 提示 toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2a2a2a;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 可视化编辑器</h1>
+
+        <!-- 顶部工具栏 -->
+        <div class="toolbar">
+            <button onclick="addButton()">➕ 按钮</button>
+            <button onclick="addText()">📝 文字</button>
+            <button onclick="addShape('rectangle')">⬜ 矩形</button>
+            <button onclick="addShape('circle')">⭕ 圆形</button>
+            
+            <div class="divider"></div>
+            
+            <label>
+                背景：
+                <input type="color" id="bgColor" value="#ffffff" onchange="changeBackground()">
+            </label>
+            
+            <label>
+                缩放：
+                <input type="range" min="50" max="150" value="100" onchange="zoomCanvas(this.value)">
+            </label>
+            
+            <div class="divider"></div>
+            
+            <button onclick="exportCanvas()">💾 导出</button>
+            <button onclick="importCanvas()">📂 导入</button>
+            <button onclick="clearCanvas()">🧹 清空</button>
+        </div>
+
+        <!-- 画布 -->
+        <div class="canvas-container">
+            <div id="canvas">
+                <div class="empty-state" id="emptyState">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    <p>点击上方按钮添加元素，或拖拽元素自由布局</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-modal-content">
+            <h3 id="modalTitle">编辑元素</h3>
+            <div id="modalFields"></div>
+            <div class="btn-group">
+                <button class="btn-save" onclick="saveEdit()">保存</button>
+                <button class="btn-cancel" onclick="closeEdit()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 状态管理
+        let elements = [];
+        let selectedElement = null;
+        let elementIdCounter = 0;
+        let isDragging = false;
+        let isResizing = false;
+        let dragOffset = { x: 0, y: 0 };
+        let resizeHandle = null;
+
+        const canvas = document.getElementById('canvas');
+        const editModal = document.getElementById('editModal');
+        const modalFields = document.getElementById('modalFields');
+        const modalTitle = document.getElementById('modalTitle');
+        const emptyState = document.getElementById('emptyState');
+        const toast = document.getElementById('toast');
+
+        // 初始化
+        window.onload = function() {
+            addButton({ x: 150, y: 120, text: '点击编辑我', width: 140, height: 55 });
+            addText({ x: 150, y: 220, text: '双击文字直接编辑', fontSize: 26, color: '#667eea' });
+            addShape('rectangle', { x: 450, y: 120, width: 120, height: 120, backgroundColor: '#f093fb' });
+            updateEmptyState();
+        };
+
+        // 显示 Toast
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // 更新空状态
+        function updateEmptyState() {
+            emptyState.style.display = elements.length === 0 ? 'block' : 'none';
+        }
+
+        // 添加按钮
+        function addButton(options = {}) {
+            const id = ++elementIdCounter;
+            const element = {
+                id: id,
+                type: 'button',
+                x: options.x || 150,
+                y: options.y || 120,
+                width: options.width || 140,
+                height: options.height || 55,
+                text: options.text || '新按钮',
+                backgroundColor: options.backgroundColor || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: options.color || '#ffffff',
+                fontSize: options.fontSize || 16,
+                borderRadius: options.borderRadius || 10
+            };
+            elements.push(element);
+            renderElement(element);
+            updateEmptyState();
+            selectElement(id);
+            showToast('按钮已添加');
+            return element;
+        }
+
+        // 添加文字
+        function addText(options = {}) {
+            const id = ++elementIdCounter;
+            const element = {
+                id: id,
+                type: 'text',
+                x: options.x || 150,
+                y: options.y || 220,
+                text: options.text || '新文字',
+                color: options.color || '#333333',
+                fontSize: options.fontSize || 24,
+                fontFamily: options.fontFamily || 'Arial',
+                fontWeight: options.fontWeight || '500'
+            };
+            elements.push(element);
+            renderElement(element);
+            updateEmptyState();
+            selectElement(id);
+            showToast('文字已添加');
+            return element;
+        }
+
+        // 添加形状
+        function addShape(shapeType, options = {}) {
+            const id = ++elementIdCounter;
+            const element = {
+                id: id,
+                type: 'shape',
+                shapeType: shapeType,
+                x: options.x || 450,
+                y: options.y || 120,
+                width: options.width || 120,
+                height: options.height || 120,
+                backgroundColor: options.backgroundColor || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: shapeType === 'circle' ? '50%' : (options.borderRadius || 8)
+            };
+            elements.push(element);
+            renderElement(element);
+            updateEmptyState();
+            selectElement(id);
+            showToast(`${shapeType === 'rectangle' ? '矩形' : '圆形'}已添加`);
+            return element;
+        }
+
+        // 渲染元素
+        function renderElement(element) {
+            const div = document.createElement('div');
+            div.className = 'editable-element';
+            div.id = `element-${element.id}`;
+            div.style.left = element.x + 'px';
+            div.style.top = element.y + 'px';
+
+            let content = '';
+            
+            if (element.type === 'button') {
+                content = `
+                    <button class="canvas-button" style="
+                        width: ${element.width}px;
+                        height: ${element.height}px;
+                        background: ${element.backgroundColor};
+                        color: ${element.color};
+                        font-size: ${element.fontSize}px;
+                        border-radius: ${element.borderRadius}px;
+                    ">${element.text}</button>
+                `;
+            } else if (element.type === 'text') {
+                content = `
+                    <div class="canvas-text" style="
+                        color: ${element.color};
+                        font-size: ${element.fontSize}px;
+                        font-family: ${element.fontFamily};
+                        font-weight: ${element.fontWeight};
+                    ">${element.text}</div>
+                `;
+            } else if (element.type === 'shape') {
+                div.style.width = element.width + 'px';
+                div.style.height = element.height + 'px';
+                content = `
+                    <div class="canvas-shape" style="
+                        width: 100%;
+                        height: 100%;
+                        background: ${element.backgroundColor};
+                        border-radius: ${element.borderRadius};
+                    "></div>
+                `;
+            }
+
+            div.innerHTML = `
+                ${content}
+                <div class="floating-toolbar">
+                    <button class="edit-btn" onclick="openEdit(${element.id})">✏️ 编辑</button>
+                    <button class="duplicate-btn" onclick="duplicateElement(${element.id})">📋 复制</button>
+                    <button class="delete-btn" onclick="deleteElement(${element.id})">🗑️ 删除</button>
+                </div>
+                <div class="resize-handle nw"></div>
+                <div class="resize-handle ne"></div>
+                <div class="resize-handle sw"></div>
+                <div class="resize-handle se"></div>
+            `;
+
+            // 事件绑定
+            div.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectElement(element.id);
+            });
+
+            // 双击编辑
+            div.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                openEdit(element.id);
+            });
+
+            // 拖拽功能
+            div.addEventListener('mousedown', startDrag);
+
+            canvas.appendChild(div);
+        }
+
+        // 选择元素
+        function selectElement(id) {
+            // 取消之前的选择
+            if (selectedElement) {
+                const prev = document.getElementById(`element-${selectedElement}`);
+                if (prev) prev.classList.remove('selected');
+            }
+
+            selectedElement = id;
+            const div = document.getElementById(`element-${id}`);
+            if (div) {
+                div.classList.add('selected');
+            }
+        }
+
+        // 取消选择
+        canvas.addEventListener('click', () => {
+            if (selectedElement) {
+                const prev = document.getElementById(`element-${selectedElement}`);
+                if (prev) prev.classList.remove('selected');
+                selectedElement = null;
+            }
+        });
+
+        // 开始拖拽
+        function startDrag(e) {
+            if (e.target.classList.contains('resize-handle') || 
+                e.target.tagName === 'BUTTON') {
+                return;
+            }
+
+            isDragging = true;
+            const div = document.getElementById(`element-${selectedElement}`);
+            const rect = div.getBoundingClientRect();
+            
+            dragOffset = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        // 拖拽中
+        function onDrag(e) {
+            if (!isDragging || !selectedElement) return;
+
+            const canvasRect = canvas.getBoundingClientRect();
+            const x = e.clientX - canvasRect.left - dragOffset.x;
+            const y = e.clientY - canvasRect.top - dragOffset.y;
+
+            const div = document.getElementById(`element-${selectedElement}`);
+            div.style.left = Math.max(0, x) + 'px';
+            div.style.top = Math.max(0, y) + 'px';
+
+            // 更新数据
+            const element = elements.find(el => el.id === selectedElement);
+            if (element) {
+                element.x = Math.max(0, x);
+                element.y = Math.max(0, y);
+            }
+        }
+
+        // 停止拖拽
+        function stopDrag() {
+            isDragging = false;
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // 开始调整大小
+        function startResize(e) {
+            e.stopPropagation();
+            isResizing = true;
+            resizeHandle = e.target.classList.contains('se') ? 'se' : 
+                          e.target.classList.contains('sw') ? 'sw' :
+                          e.target.classList.contains('ne') ? 'ne' : 'nw';
+
+            document.addEventListener('mousemove', onResize);
+            document.addEventListener('mouseup', stopResize);
+        }
+
+        // 调整大小中
+        function onResize(e) {
+            if (!isResizing || !selectedElement) return;
+
+            const div = document.getElementById(`element-${selectedElement}`);
+            const element = elements.find(el => el.id === selectedElement);
+            const canvasRect = canvas.getBoundingClientRect();
+            const rect = div.getBoundingClientRect();
+
+            if (resizeHandle === 'se') {
+                const newWidth = e.clientX - canvasRect.left - rect.left;
+                const newHeight = e.clientY - canvasRect.top - rect.top;
+                div.style.width = Math.max(50, newWidth) + 'px';
+                div.style.height = Math.max(30, newHeight) + 'px';
+                if (element && element.type !== 'text') {
+                    element.width = Math.max(50, newWidth);
+                    element.height = Math.max(30, newHeight);
+                }
+            }
+        }
+
+        // 停止调整大小
+        function stopResize() {
+            isResizing = false;
+            resizeHandle = null;
+            document.removeEventListener('mousemove', onResize);
+            document.removeEventListener('mouseup', stopResize);
+        }
+
+        // 打开编辑弹窗
+        function openEdit(id) {
+            const element = elements.find(el => el.id === id);
+            if (!element) return;
+
+            selectElement(id);
+            modalTitle.textContent = `编辑${getElementTypeName(element.type)}`;
+            
+            let fields = '';
+            
+            if (element.type === 'button' || element.type === 'text') {
+                fields += `
+                    <label>文字内容</label>
+                    <textarea id="edit-text">${element.text}</textarea>
+                `;
+            }
+
+            if (element.type === 'button') {
+                fields += `
+                    <div class="color-picker-row">
+                        <div>
+                            <label>背景色</label>
+                            <input type="color" id="edit-bgcolor" value="${extractColor(element.backgroundColor)}">
+                        </div>
+                        <div>
+                            <label>文字色</label>
+                            <input type="color" id="edit-color" value="${element.color}">
+                        </div>
+                    </div>
+                    <label>宽度 (px)</label>
+                    <input type="number" id="edit-width" value="${element.width}">
+                    <label>高度 (px)</label>
+                    <input type="number" id="edit-height" value="${element.height}">
+                    <label>字体大小 (px)</label>
+                    <input type="number" id="edit-fontsize" value="${element.fontSize}">
+                    <label>圆角 (px)</label>
+                    <input type="number" id="edit-radius" value="${element.borderRadius}">
+                `;
+            } else if (element.type === 'text') {
+                fields += `
+                    <label>颜色</label>
+                    <input type="color" id="edit-color" value="${element.color}">
+                    <label>字体大小 (px)</label>
+                    <input type="number" id="edit-fontsize" value="${element.fontSize}">
+                    <label>字重</label>
+                    <select id="edit-fontweight">
+                        <option value="300" ${element.fontWeight === '300' ? 'selected' : ''}>细体</option>
+                        <option value="400" ${element.fontWeight === '400' ? 'selected' : ''}>常规</option>
+                        <option value="500" ${element.fontWeight === '500' ? 'selected' : ''}>中等</option>
+                        <option value="600" ${element.fontWeight === '600' ? 'selected' : ''}>半粗</option>
+                        <option value="700" ${element.fontWeight === '700' ? 'selected' : ''}>粗体</option>
+                    </select>
+                `;
+            } else if (element.type === 'shape') {
+                fields += `
+                    <label>形状类型</label>
+                    <select id="edit-shapetype">
+                        <option value="rectangle" ${element.shapeType === 'rectangle' ? 'selected' : ''}>矩形</option>
+                        <option value="circle" ${element.shapeType === 'circle' ? 'selected' : ''}>圆形</option>
+                    </select>
+                    <label>宽度 (px)</label>
+                    <input type="number" id="edit-width" value="${element.width}">
+                    <label>高度 (px)</label>
+                    <input type="number" id="edit-height" value="${element.height}">
+                    <label>背景色</label>
+                    <input type="color" id="edit-bgcolor" value="${extractColor(element.backgroundColor)}">
+                `;
+            }
+
+            modalFields.innerHTML = fields;
+            editModal.classList.add('active');
+        }
+
+        // 提取颜色值
+        function extractColor(bg) {
+            if (bg.startsWith('#')) return bg;
+            if (bg.startsWith('rgb')) {
+                const match = bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+                if (match) {
+                    return rgbToHex(match[1], match[2], match[3]);
+                }
+            }
+            return '#667eea';
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = parseInt(x).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        // 保存编辑
+        function saveEdit() {
+            if (!selectedElement) return;
+
+            const element = elements.find(el => el.id === selectedElement);
+            if (!element) return;
+
+            const textInput = document.getElementById('edit-text');
+            if (textInput) element.text = textInput.value;
+
+            const widthInput = document.getElementById('edit-width');
+            if (widthInput) element.width = parseInt(widthInput.value);
+
+            const heightInput = document.getElementById('edit-height');
+            if (heightInput) element.height = parseInt(heightInput.value);
+
+            const bgColorInput = document.getElementById('edit-bgcolor');
+            if (bgColorInput) {
+                element.backgroundColor = bgColorInput.value;
+            }
+
+            const colorInput = document.getElementById('edit-color');
+            if (colorInput) element.color = colorInput.value;
+
+            const fontSizeInput = document.getElementById('edit-fontsize');
+            if (fontSizeInput) element.fontSize = parseInt(fontSizeInput.value);
+
+            const radiusInput = document.getElementById('edit-radius');
+            if (radiusInput) element.borderRadius = parseInt(radiusInput.value);
+
+            const fontWeightInput = document.getElementById('edit-fontweight');
+            if (fontWeightInput) element.fontWeight = fontWeightInput.value;
+
+            const shapeTypeInput = document.getElementById('edit-shapetype');
+            if (shapeTypeInput) {
+                element.shapeType = shapeTypeInput.value;
+                element.borderRadius = shapeTypeInput.value === 'circle' ? '50%' : 8;
+            }
+
+            // 重新渲染
+            const div = document.getElementById(`element-${element.id}`);
+            div.remove();
+            renderElement(element);
+
+            closeEdit();
+            showToast('已保存');
+        }
+
+        // 关闭编辑
+        function closeEdit() {
+            editModal.classList.remove('active');
+        }
+
+        // 获取类型名称
+        function getElementTypeName(type) {
+            return type === 'button' ? '按钮' : type === 'text' ? '文字' : '形状';
+        }
+
+        // 删除元素
+        function deleteElement(id) {
+            const div = document.getElementById(`element-${id}`);
+            if (div) div.remove();
+
+            elements = elements.filter(el => el.id !== id);
+            
+            if (selectedElement === id) {
+                selectedElement = null;
+            }
+
+            updateEmptyState();
+            showToast('已删除');
+        }
+
+        // 复制元素
+        function duplicateElement(id) {
+            const element = elements.find(el => el.id === id);
+            if (!element) return;
+
+            const newElement = { 
+                ...element, 
+                id: ++elementIdCounter, 
+                x: element.x + 30, 
+                y: element.y + 30 
+            };
+            elements.push(newElement);
+            renderElement(newElement);
+            selectElement(newElement.id);
+            updateEmptyState();
+            showToast('已复制');
+        }
+
+        // 更改背景
+        function changeBackground() {
+            const color = document.getElementById('bgColor').value;
+            canvas.style.background = color;
+            showToast('背景已更改');
+        }
+
+        // 缩放画布
+        function zoomCanvas(value) {
+            canvas.style.transform = `scale(${value / 100})`;
+            canvas.style.transformOrigin = 'top center';
+        }
+
+        // 导出画布
+        function exportCanvas() {
+            const data = {
+                elements: elements,
+                background: canvas.style.background || '#ffffff',
+                width: canvas.offsetWidth,
+                height: canvas.offsetHeight
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'canvas-design.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('已导出');
+        }
+
+        // 导入画布
+        function importCanvas() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        clearCanvas(false);
+                        
+                        if (data.background) {
+                            canvas.style.background = data.background;
+                            document.getElementById('bgColor').value = data.background;
+                        }
+                        
+                        data.elements.forEach(el => {
+                            elements.push(el);
+                            renderElement(el);
+                            elementIdCounter = Math.max(elementIdCounter, el.id);
+                        });
+                        
+                        updateEmptyState();
+                        showToast('已导入');
+                    } catch (err) {
+                        showToast('导入失败：文件格式错误');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // 清空画布
+        function clearCanvas(confirm = true) {
+            if (confirm && !window.confirm('确定要清空画布吗？此操作不可恢复')) {
+                return;
+            }
+            canvas.innerHTML = `
+                <div class="empty-state" id="emptyState">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    <p>点击上方按钮添加元素，或拖拽元素自由布局</p>
+                </div>
+            `;
+            elements = [];
+            selectedElement = null;
+            elementIdCounter = 0;
+            updateEmptyState();
+            if (confirm) showToast('已清空');
+        }
+    </script>
+</body>
+</html>
