@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ 雷霆战机 - 实时预览</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); 
+            color: #fff; 
+            font-family: 'Arial', sans-serif; 
+            padding: 20px; 
+            min-height: 100vh; 
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { text-align: center; color: #f39c12; margin-bottom: 30px; }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .config-panel {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .preview-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #4ecdc4;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .slider-group {
+            margin: 15px 0;
+        }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #95a5a6;
+        }
+        .slider-value {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #f39c12;
+            cursor: pointer;
+        }
+        
+        .action-btn {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover { transform: scale(1.05); }
+        .action-btn.secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+        .action-btn.success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+        
+        .preview-frame {
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .preview-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .status-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+        .status-bar.show { display: block; }
+        
+        .version-history {
+            margin-top: 20px;
+        }
+        .version-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .version-info {
+            flex: 1;
+        }
+        .version-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .version-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        
+        .token-box {
+            background: rgba(243, 156, 18, 0.1);
+            border: 2px solid #f39c12;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .token-input {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 14px;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px 0;
+        }
+        
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .preset-card {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .preset-card:hover {
+            border-color: #f39c12;
+            transform: scale(1.05);
+        }
+        .preset-card h4 {
+            color: #f39c12;
+            margin-bottom: 8px;
+        }
+        .preset-card p {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ 雷霆战机 - 实时预览 & 版本管理</h1>
+        
+        <div class="token-box">
+            <h3>🔑 GitHub Token</h3>
+            <input type="password" id="githubToken" class="token-input" placeholder="输入 GitHub Token (ghp_开头)">
+            <br>
+            <button class="action-btn" onclick="saveToken()">💾 保存 Token</button>
+            <div id="tokenStatus" style="margin-top: 10px; font-size: 12px;"></div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- 配置面板 -->
+            <div class="config-panel">
+                <div class="section">
+                    <h3 class="section-title">⚙️ 玩家数值</h3>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>速度</span>
+                            <span class="slider-value" id="value_speed">5</span>
+                        </div>
+                        <input type="range" id="speed" min="1" max="10" value="5" oninput="updateValue('speed', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>跳跃力</span>
+                            <span class="slider-value" id="value_jumpPower">-15</span>
+                        </div>
+                        <input type="range" id="jumpPower" min="-20" max="-5" value="-15" oninput="updateValue('jumpPower', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>血量</span>
+                            <span class="slider-value" id="value_health">3</span>
+                        </div>
+                        <input type="range" id="health" min="1" max="10" value="3" oninput="updateValue('health', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>伤害</span>
+                            <span class="slider-value" id="value_damage">1</span>
+                        </div>
+                        <input type="range" id="damage" min="1" max="10" value="1" oninput="updateValue('damage', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>射速</span>
+                            <span class="slider-value" id="value_fireRate">1</span>
+                        </div>
+                        <input type="range" id="fireRate" min="1" max="10" value="1" oninput="updateValue('fireRate', this.value)">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">👾 敌人数值</h3>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>敌人生成频率</span>
+                            <span class="slider-value" id="value_spawnRate">5</span>
+                        </div>
+                        <input type="range" id="spawnRate" min="1" max="10" value="5" oninput="updateValue('spawnRate', this.value)">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>重力系数</span>
+                            <span class="slider-value" id="value_gravity">0.8</span>
+                        </div>
+                        <input type="range" id="gravity" min="0.1" max="2.0" step="0.1" value="0.8" oninput="updateValue('gravity', this.value)">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">🎮 配置预设</h3>
+                    <div class="preset-grid">
+                        <div class="preset-card" onclick="loadPreset('easy')">
+                            <h4>简单模式</h4>
+                            <p>玩家血量 +50%</p>
+                        </div>
+                        <div class="preset-card" onclick="loadPreset('normal')">
+                            <h4>普通模式</h4>
+                            <p>默认配置</p>
+                        </div>
+                        <div class="preset-card" onclick="loadPreset('hard')">
+                            <h4>困难模式</h4>
+                            <p>敌人更强更快</p>
+                        </div>
+                        <div class="preset-card" onclick="loadPreset('insane')">
+                            <h4>疯狂模式</h4>
+                            <p>极限挑战</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="action-btn success" onclick="deployConfig()">🚀 部署配置</button>
+                    <button class="action-btn secondary" onclick="resetConfig()">🔄 重置默认</button>
+                </div>
+            </div>
+            
+            <!-- 预览面板 -->
+            <div class="preview-panel">
+                <h3 class="section-title">🎮 实时预览</h3>
+                <div class="preview-frame">
+                    <iframe id="gamePreview" src="../index.html"></iframe>
+                </div>
+                
+                <div class="version-history">
+                    <h3 class="section-title">📜 版本历史</h3>
+                    <div id="versionList">
+                        <p style="color: #95a5a6; text-align: center;">加载中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="statusBar" class="status-bar"></div>
+    
+    <script>
+        const GITHUB_REPO = 'guoguoxia5211/thunder-fighter-game';
+        let githubToken = localStorage.getItem('github_token') || '';
+        
+        let config = {
+            version: "1.0.0",
+            player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+            enemies: { spawnRate: 5 },
+            game: { gravity: 0.8 }
+        };
+        
+        let versionHistory = [];
+        
+        window.onload = function() {
+            if (githubToken) {
+                document.getElementById('githubToken').value = githubToken;
+                document.getElementById('tokenStatus').textContent = '✅ Token 已保存';
+            }
+            loadVersionHistory();
+        };
+        
+        function saveToken() {
+            const token = document.getElementById('githubToken').value.trim();
+            if (!token) { alert('请输入 Token'); return; }
+            if (!token.startsWith('ghp_')) { alert('Token 格式错误'); return; }
+            githubToken = token;
+            localStorage.setItem('github_token', token);
+            document.getElementById('tokenStatus').textContent = '✅ Token 已保存';
+            showStatus('✅ Token 已保存！', 'success');
+        };
+        
+        function updateValue(key, value) {
+            document.getElementById('value_' + key).textContent = value;
+            
+            if (key === 'speed') config.player.speed = parseFloat(value);
+            if (key === 'jumpPower') config.player.jumpPower = parseFloat(value);
+            if (key === 'health') config.player.health = parseFloat(value);
+            if (key === 'damage') config.player.damage = parseFloat(value);
+            if (key === 'fireRate') config.player.fireRate = parseFloat(value);
+            if (key === 'spawnRate') config.enemies.spawnRate = parseFloat(value);
+            if (key === 'gravity') config.game.gravity = parseFloat(value);
+            
+            // 实时应用到预览
+            applyToPreview();
+        }
+        
+        function applyToPreview() {
+            const iframe = document.getElementById('gamePreview');
+            const configScript = `
+                if (window.updateGameConfig) {
+                    window.updateGameConfig(${JSON.stringify(config)});
+                }
+            `;
+            iframe.contentWindow.postMessage({ type: 'UPDATE_CONFIG', config: config }, '*');
+        }
+        
+        function loadPreset(type) {
+            const presets = {
+                easy: { speed: 7, jumpPower: -18, health: 5, damage: 2, fireRate: 2, spawnRate: 3, gravity: 0.6 },
+                normal: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1, spawnRate: 5, gravity: 0.8 },
+                hard: { speed: 4, jumpPower: -12, health: 2, damage: 1, fireRate: 1, spawnRate: 7, gravity: 1.0 },
+                insane: { speed: 3, jumpPower: -10, health: 1, damage: 1, fireRate: 1, spawnRate: 10, gravity: 1.2 }
+            };
+            
+            const preset = presets[type];
+            if (!preset) return;
+            
+            // 更新配置
+            config.player.speed = preset.speed;
+            config.player.jumpPower = preset.jumpPower;
+            config.player.health = preset.health;
+            config.player.damage = preset.damage;
+            config.player.fireRate = preset.fireRate;
+            config.enemies.spawnRate = preset.spawnRate;
+            config.game.gravity = preset.gravity;
+            
+            // 更新滑块
+            document.getElementById('speed').value = preset.speed;
+            document.getElementById('jumpPower').value = preset.jumpPower;
+            document.getElementById('health').value = preset.health;
+            document.getElementById('damage').value = preset.damage;
+            document.getElementById('fireRate').value = preset.fireRate;
+            document.getElementById('spawnRate').value = preset.spawnRate;
+            document.getElementById('gravity').value = preset.gravity;
+            
+            // 更新显示值
+            document.getElementById('value_speed').textContent = preset.speed;
+            document.getElementById('value_jumpPower').textContent = preset.jumpPower;
+            document.getElementById('value_health').textContent = preset.health;
+            document.getElementById('value_damage').textContent = preset.damage;
+            document.getElementById('value_fireRate').textContent = preset.fireRate;
+            document.getElementById('value_spawnRate').textContent = preset.spawnRate;
+            document.getElementById('value_gravity').textContent = preset.gravity;
+            
+            // 应用到预览
+            applyToPreview();
+            
+            showStatus('✅ 已加载 ' + type + ' 模式预设', 'success');
+        }
+        
+        async function deployConfig() {
+            if (!githubToken) {
+                showStatus('❌ 请先保存 GitHub Token', 'error');
+                return;
+            }
+            
+            showStatus('⏳ 正在部署配置...', 'info');
+            
+            try {
+                // 获取当前 sha
+                const shaResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
+                    headers: { 'Authorization': 'token ' + githubToken }
+                });
+                
+                let sha = null;
+                if (shaResponse.ok) {
+                    const data = await shaResponse.json();
+                    sha = data.sha;
+                }
+                
+                // 保存版本历史
+                const version = {
+                    version: config.version,
+                    timestamp: new Date().toISOString(),
+                    config: JSON.parse(JSON.stringify(config))
+                };
+                versionHistory.unshift(version);
+                if (versionHistory.length > 10) {
+                    versionHistory.pop();
+                }
+                localStorage.setItem('version_history_' + GITHUB_REPO, JSON.stringify(versionHistory));
+                
+                // 上传配置文件
+                const configBase64 = btoa(JSON.stringify(config, null, 2));
+                const uploadData = {
+                    message: 'Update game config v' + config.version,
+                    content: configBase64
+                };
+                if (sha) {
+                    uploadData.sha = sha;
+                }
+                
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/config.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'token ' + githubToken,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(uploadData)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message);
+                }
+                
+                showStatus('✅ 部署成功！游戏将自动刷新', 'success');
+                
+                // 刷新预览
+                setTimeout(() => {
+                    const iframe = document.getElementById('gamePreview');
+                    iframe.src = iframe.src;
+                }, 2000);
+                
+                // 更新版本列表
+                loadVersionHistory();
+                
+            } catch (error) {
+                showStatus('❌ 部署失败：' + error.message, 'error');
+            }
+        }
+        
+        function loadVersionHistory() {
+            const saved = localStorage.getItem('version_history_' + GITHUB_REPO);
+            if (saved) {
+                versionHistory = JSON.parse(saved);
+            }
+            
+            const versionList = document.getElementById('versionList');
+            if (versionHistory.length === 0) {
+                versionList.innerHTML = '<p style="color: #95a5a6; text-align: center;">暂无版本历史</p>';
+                return;
+            }
+            
+            let html = '';
+            versionHistory.forEach((version, index) => {
+                const date = new Date(version.timestamp).toLocaleString('zh-CN');
+                html += `
+                    <div class="version-item">
+                        <div class="version-info">
+                            <strong>${version.version}</strong><br>
+                            <small style="color: #95a5a6;">${date}</small>
+                        </div>
+                        <div class="version-actions">
+                            <button class="version-btn" onclick="loadVersion(${index})">加载</button>
+                            ${index > 0 ? '<button class="version-btn" onclick="rollbackVersion(' + index + ')">回滚</button>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            versionList.innerHTML = html;
+        }
+        
+        function loadVersion(index) {
+            const version = versionHistory[index];
+            if (!version) return;
+            
+            config = JSON.parse(JSON.stringify(version.config));
+            
+            // 更新滑块
+            document.getElementById('speed').value = config.player.speed;
+            document.getElementById('jumpPower').value = config.player.jumpPower;
+            document.getElementById('health').value = config.player.health;
+            document.getElementById('damage').value = config.player.damage;
+            document.getElementById('fireRate').value = config.player.fireRate;
+            document.getElementById('spawnRate').value = config.enemies.spawnRate;
+            document.getElementById('gravity').value = config.game.gravity;
+            
+            // 更新显示值
+            document.getElementById('value_speed').textContent = config.player.speed;
+            document.getElementById('value_jumpPower').textContent = config.player.jumpPower;
+            document.getElementById('value_health').textContent = config.player.health;
+            document.getElementById('value_damage').textContent = config.player.damage;
+            document.getElementById('value_fireRate').textContent = config.player.fireRate;
+            document.getElementById('value_spawnRate').textContent = config.enemies.spawnRate;
+            document.getElementById('value_gravity').textContent = config.game.gravity;
+            
+            applyToPreview();
+            showStatus('✅ 已加载版本 ' + version.version, 'success');
+        }
+        
+        function rollbackVersion(index) {
+            if (!confirm('确定要回滚到这个版本吗？')) return;
+            loadVersion(index);
+            deployConfig();
+        }
+        
+        function resetConfig() {
+            if (confirm('确定要重置为默认配置吗？')) {
+                config = {
+                    version: "1.0.0",
+                    player: { speed: 5, jumpPower: -15, health: 3, damage: 1, fireRate: 1 },
+                    enemies: { spawnRate: 5 },
+                    game: { gravity: 0.8 }
+                };
+                
+                document.getElementById('speed').value = 5;
+                document.getElementById('jumpPower').value = -15;
+                document.getElementById('health').value = 3;
+                document.getElementById('damage').value = 1;
+                document.getElementById('fireRate').value = 1;
+                document.getElementById('spawnRate').value = 5;
+                document.getElementById('gravity').value = 0.8;
+                
+                document.getElementById('value_speed').textContent = '5';
+                document.getElementById('value_jumpPower').textContent = '-15';
+                document.getElementById('value_health').textContent = '3';
+                document.getElementById('value_damage').textContent = '1';
+                document.getElementById('value_fireRate').textContent = '1';
+                document.getElementById('value_spawnRate').textContent = '5';
+                document.getElementById('value_gravity').textContent = '0.8';
+                
+                applyToPreview();
+                showStatus('✅ 配置已重置为默认值', 'success');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.textContent = message;
+            statusBar.style.background = type === 'success' ? 'rgba(46, 204, 113, 0.9)' : 
+                                         type === 'error' ? 'rgba(231, 76, 60, 0.9)' : 'rgba(52, 152, 219, 0.9)';
+            statusBar.classList.add('show');
+            setTimeout(() => statusBar.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
