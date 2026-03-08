@@ -74,29 +74,35 @@
     <button onclick="testLoad()" style="background: #3498db; margin-left: 10px;">📥 测试加载</button>
     <button onclick="clearStorage()" style="background: #e74c3c; margin-left: 10px;">🗑️ 清除缓存</button>
     
+    <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;">
+        <h3 style="margin-bottom: 10px; color: #3498db;">📋 调试信息</h3>
+        <pre id="debugInfo" style="color: #2ecc71; font-size: 12px;">等待操作...</pre>
+    </div>
+    
     <script>
-        // 页面加载时加载配置
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('页面加载完成');
-            loadConfig();
-        });
+        const debugInfo = document.getElementById('debugInfo');
+        
+        function log(message) {
+            console.log(message);
+            debugInfo.textContent = message + '\n\n' + debugInfo.textContent;
+        }
         
         function getConfig() {
+            log('1. 读取 localStorage...');
             const saved = localStorage.getItem('thunder_config');
-            console.log('读取 localStorage:', saved);
+            log('   读取结果：' + (saved ? '有数据' : '无数据'));
             
             if (saved) {
                 try {
                     const config = JSON.parse(saved);
-                    console.log('解析成功:', config);
+                    log('   解析成功：' + JSON.stringify(config));
                     return config;
                 } catch (e) {
-                    console.error('解析失败:', e);
+                    log('   解析失败：' + e.message);
                 }
             }
             
-            // 默认配置
-            console.log('使用默认配置');
+            log('   使用默认配置');
             return {
                 player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
                 enemies: { spawnRate: 5 },
@@ -105,15 +111,26 @@
         }
         
         function loadConfig() {
+            log('2. 开始加载配置到界面...');
             const config = getConfig();
             
             // 更新滑块的值
-            document.getElementById('speed').value = config.player.speed;
-            document.getElementById('health').value = config.player.health;
-            document.getElementById('damage').value = config.player.damage;
-            document.getElementById('fireRate').value = config.player.fireRate;
-            document.getElementById('spawnRate').value = config.enemies.spawnRate;
-            document.getElementById('gravity').value = config.game.gravity;
+            const speedSlider = document.getElementById('speed');
+            const healthSlider = document.getElementById('health');
+            const damageSlider = document.getElementById('damage');
+            const fireRateSlider = document.getElementById('fireRate');
+            const spawnRateSlider = document.getElementById('spawnRate');
+            const gravitySlider = document.getElementById('gravity');
+            
+            log('3. 更新滑块值...');
+            log('   血量滑块：' + healthSlider.value + ' → ' + config.player.health);
+            
+            speedSlider.value = config.player.speed;
+            healthSlider.value = config.player.health;
+            damageSlider.value = config.player.damage;
+            fireRateSlider.value = config.player.fireRate;
+            spawnRateSlider.value = config.enemies.spawnRate;
+            gravitySlider.value = config.game.gravity;
             
             // 更新显示值
             document.getElementById('speedValue').textContent = config.player.speed;
@@ -123,11 +140,12 @@
             document.getElementById('spawnRateValue').textContent = config.enemies.spawnRate;
             document.getElementById('gravityValue').textContent = config.game.gravity;
             
-            console.log('配置已加载到界面');
+            log('4. 配置加载完成！');
             showStatus('✅ 配置已加载');
         }
         
         function updateConfig() {
+            log('5. 更新配置...');
             const config = {
                 player: {
                     speed: parseFloat(document.getElementById('speed').value),
@@ -153,29 +171,32 @@
             
             // 保存到 localStorage
             localStorage.setItem('thunder_config', JSON.stringify(config));
-            console.log('配置已保存:', config);
+            log('6. 配置已保存到 localStorage: ' + JSON.stringify(config));
             
             showStatus('✅ 已自动保存');
         }
         
         function testSave() {
+            log('7. 测试保存...');
             const config = {
                 player: { speed: 10, health: 10, damage: 10, fireRate: 10 },
                 enemies: { spawnRate: 10 },
                 game: { gravity: 2.0 }
             };
             localStorage.setItem('thunder_config', JSON.stringify(config));
-            console.log('测试保存:', config);
+            log('8. 测试数据已保存：血量=10');
             showStatus('✅ 测试数据已保存 (血量=10)');
         }
         
         function testLoad() {
+            log('9. 测试加载...');
             loadConfig();
         }
         
         function clearStorage() {
+            log('10. 清除缓存...');
             localStorage.removeItem('thunder_config');
-            console.log('缓存已清除');
+            log('11. 缓存已清除');
             showStatus('🗑️ 缓存已清除，请刷新页面');
         }
         
@@ -185,6 +206,10 @@
             status.style.display = 'block';
             setTimeout(() => { status.style.display = 'none'; }, 2000);
         }
+        
+        // 页面加载完成后立即加载配置
+        log('0. 页面加载完成');
+        loadConfig();
     </script>
 </body>
 </html>
