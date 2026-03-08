@@ -591,6 +591,30 @@
             }
         });
 
+        // 接收配置消息 (实时预览)
+        window.addEventListener("message", function(event) {
+            if (event.data && event.data.type === "UPDATE_CONFIG") {
+                const cfg = event.data.config;
+                console.log("收到配置更新:", cfg);
+                if (cfg && cfg.player) {
+                    window.gameConfig = window.gameConfig || {};
+                    window.gameConfig.playerSpeed = cfg.player.speed || 5;
+                    window.gameConfig.playerHealth = cfg.player.health || 3;
+                    window.gameConfig.playerDamage = cfg.player.damage || 1;
+                    window.gameConfig.playerFireRate = cfg.player.fireRate || 1;
+                }
+                if (cfg && cfg.enemies) {
+                    window.gameConfig = window.gameConfig || {};
+                    window.gameConfig.enemySpawnRate = cfg.enemies.spawnRate || 5;
+                }
+                if (cfg && cfg.game) {
+                    window.gameConfig = window.gameConfig || {};
+                    window.gameConfig.gravity = cfg.game.gravity || 0.8;
+                }
+                console.log("游戏配置已更新:", window.gameConfig);
+            }
+        });
+
     </script>
 </body>
 </html>
