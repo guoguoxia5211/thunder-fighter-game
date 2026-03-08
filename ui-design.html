@@ -407,12 +407,14 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 11px; font-weight: 900;" onclick="selectFont(this)">粗黑体</div>
-                            <div class="font-preset" style="font-family: 'Brush Script MT'; font-size: 13px; font-style: italic;" onclick="selectFont(this)">书法体</div>
-                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 9px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">像素风</div>
-                            <div class="font-preset" style="font-family: 'Georgia'; font-size: 11px; font-style: italic;" onclick="selectFont(this)">优雅宋</div>
-                            <div class="font-preset" style="font-family: 'Helvetica Neue'; font-size: 11px; font-weight: 700;" onclick="selectFont(this)">现代黑</div>
-                            <div class="font-preset" style="font-family: 'Comic Sans MS'; font-size: 12px; font-weight: 600;" onclick="selectFont(this)">可爱体</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 10px; font-weight: 900;" onclick="selectFont(this)">粗黑体</div>
+                            <div class="font-preset" style="font-family: 'Brush Script MT'; font-size: 11px; font-style: italic;" onclick="selectFont(this)">书法体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 8px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">像素风</div>
+                            <div class="font-preset" style="font-family: 'Georgia'; font-size: 10px; font-style: italic;" onclick="selectFont(this)">优雅宋</div>
+                            <div class="font-preset" style="font-family: 'Helvetica Neue'; font-size: 10px; font-weight: 700;" onclick="selectFont(this)">现代黑</div>
+                            <div class="font-preset" style="font-family: 'Comic Sans MS'; font-size: 11px; font-weight: 600;" onclick="selectFont(this)">可爱体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 10px; font-style: italic; letter-spacing: 2px;" onclick="selectFont(this)">潦草体</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 9px; font-weight: 900; text-shadow: 0 0 3px #00ffff; letter-spacing: 2px;" onclick="selectFont(this)">赛博朋克</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -735,37 +737,49 @@
                     family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
                     size: '40px', weight: '900', 
                     textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '1px',
-                    fontStyle: 'normal'
+                    fontStyle: 'normal', transform: 'none'
                 },
                 '书法体': { 
                     family: "'Brush Script MT', 'Comic Sans MS', cursive", 
                     size: '44px', weight: '400', 
                     textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'italic'
+                    fontStyle: 'italic', transform: 'none'
                 },
                 '像素风': { 
                     family: "'Courier New', 'Monaco', monospace", 
                     size: '26px', weight: '700', 
                     textShadow: 'none', letterSpacing: '5px',
-                    fontStyle: 'normal'
+                    fontStyle: 'normal', transform: 'none'
                 },
                 '优雅宋': { 
                     family: "'Georgia', 'Times New Roman', serif", 
                     size: '36px', weight: '400', 
                     textShadow: 'none', letterSpacing: '3px',
-                    fontStyle: 'italic'
+                    fontStyle: 'italic', transform: 'none'
                 },
                 '现代黑': { 
                     family: "'Helvetica Neue', 'Microsoft YaHei', sans-serif", 
                     size: '38px', weight: '700', 
                     textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '2px',
-                    fontStyle: 'normal'
+                    fontStyle: 'normal', transform: 'none'
                 },
                 '可爱体': { 
                     family: "'Comic Sans MS', 'Chalkboard', cursive", 
                     size: '40px', weight: '600', 
                     textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
-                    fontStyle: 'normal'
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '潦草体': { 
+                    family: "'Courier New', 'Lucida Console', monospace", 
+                    size: '42px', weight: '400', 
+                    textShadow: '2px 2px 0px rgba(0,0,0,0.2)', letterSpacing: '4px',
+                    fontStyle: 'italic', transform: 'skewX(-5deg)'
+                },
+                '赛博朋克': { 
+                    family: "'Arial Black', 'Impact', sans-serif", 
+                    size: '38px', weight: '900', 
+                    textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #ff00ff, 0 0 40px #ff00ff', letterSpacing: '6px',
+                    fontStyle: 'normal', transform: 'scaleX(1.15)'
                 }
             };
             const fontName = el.textContent.trim();
@@ -781,7 +795,7 @@
             logo.style.textShadow = config.textShadow;
             logo.style.letterSpacing = config.letterSpacing;
             logo.style.fontStyle = config.fontStyle;
-            logo.style.transform = 'none';
+            logo.style.transform = config.transform;
             
             // 强制重绘
             logo.style.display = 'none';
