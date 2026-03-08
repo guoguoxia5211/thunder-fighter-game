@@ -407,10 +407,10 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif;" onclick="selectFont(this)">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif;" onclick="selectFont(this)">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif;" onclick="selectFont(this)">优雅</div>
-                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif;" onclick="selectFont(this)">圆角</div>
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 16px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
+                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 16px; font-weight: 900;" onclick="selectFont(this)">冲击</div>
+                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 14px; font-weight: 400;" onclick="selectFont(this)">优雅</div>
+                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif; font-size: 15px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -728,22 +728,26 @@
         }
 
         function selectFont(el) {
-            const fontMap = {
-                '粗黑': "'Arial Black', 'Microsoft YaHei', sans-serif",
-                '冲击': "'Impact', 'Arial Black', sans-serif",
-                '优雅': "'Georgia', 'Times New Roman', serif",
-                '圆角': "'VAG Rounded', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif"
+            const fontConfig = {
+                '粗黑': { family: "'Arial Black', 'Microsoft YaHei', sans-serif", size: '32px', weight: '900' },
+                '冲击': { family: "'Impact', 'Arial Black', sans-serif", size: '32px', weight: '900' },
+                '优雅': { family: "'Georgia', 'Times New Roman', serif", size: '30px', weight: '400' },
+                '圆角': { family: "'VAG Rounded', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif", size: '30px', weight: '600' }
             };
             const fontName = el.textContent.trim();
-            const fontFamily = fontMap[fontName];
+            const config = fontConfig[fontName];
+            
+            if (!config) return;
             
             currentFont = fontName;
             const logo = document.getElementById('gameLogo');
-            logo.style.fontFamily = fontFamily;
+            logo.style.fontFamily = config.family;
+            logo.style.fontSize = config.size;
+            logo.style.fontWeight = config.weight;
             
             // 强制重绘
             logo.style.display = 'none';
-            logo.offsetHeight; // 触发重绘
+            logo.offsetHeight;
             logo.style.display = 'block';
             
             document.querySelectorAll('.font-preset').forEach(p => p.classList.remove('selected'));
