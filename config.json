@@ -1,8 +1,15 @@
 {
-  "playerDamage": 10,
-  "playerHealth": 3,
-  "playerSpeed": 5,
-  "playerFireRate": 1,
-  "enemySpawnRate": 5,
-  "gravity": 0.8
+  "version": "1.4.3",
+  "player": {
+    "speed": 5,
+    "health": 3,
+    "damage": 10,
+    "fireRate": 1
+  },
+  "enemies": {
+    "spawnRate": 5
+  },
+  "game": {
+    "gravity": 0.8
+  }
 }
