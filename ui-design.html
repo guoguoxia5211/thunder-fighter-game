@@ -407,10 +407,10 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif;" onclick="applyFont('Arial Black', event); event.stopPropagation();">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif;" onclick="applyFont('Impact', event); event.stopPropagation();">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif;" onclick="applyFont('Georgia', event); event.stopPropagation();">优雅</div>
-                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif;" onclick="applyFont('VAG Rounded', event); event.stopPropagation();">圆角</div>
+                            <div class="font-preset" data-font="Arial Black" style="font-family: 'Arial Black', sans-serif;" onclick="selectFont(this)">粗黑</div>
+                            <div class="font-preset" data-font="Impact" style="font-family: 'Impact', sans-serif;" onclick="selectFont(this)">冲击</div>
+                            <div class="font-preset" data-font="Georgia" style="font-family: 'Georgia', serif;" onclick="selectFont(this)">优雅</div>
+                            <div class="font-preset" data-font="VAG Rounded" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif;" onclick="selectFont(this)">圆角</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -727,11 +727,12 @@
             autoSave();
         }
 
-        function applyFont(font, evt) {
+        function selectFont(el) {
+            const font = el.getAttribute('data-font');
             currentFont = font;
             document.getElementById('gameLogo').style.fontFamily = font;
             document.querySelectorAll('.font-preset').forEach(p => p.classList.remove('selected'));
-            (evt || event).target.classList.add('selected');
+            el.classList.add('selected');
             showToast('字体：' + font);
             autoSave();
         }
