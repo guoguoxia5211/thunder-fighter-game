@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&family=Press+Start+2P&family=Long+Cang&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&family=Six+Caps&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -408,18 +408,16 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 11px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 11px; font-weight: 900;" onclick="selectFont(this)">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 10px; font-weight: 400; font-style: italic;" onclick="selectFont(this)">优雅</div>
-                            <div class="font-preset" style="font-family: 'Verdana', sans-serif; font-size: 10px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 10px; font-weight: 900; text-shadow: 0 0 3px #00d4ff; letter-spacing: 2px;" onclick="selectFont(this)">科幻</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe'; font-size: 14px;" onclick="selectFont(this)">漫画</div>
-                            <div class="font-preset" style="font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 2px;" onclick="selectFont(this)">像素</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 15px;" onclick="selectFont(this)">手写</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 14px; letter-spacing: 2px;" onclick="selectFont(this)">潦草</div>
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 10px; font-weight: 900; text-shadow: 0 0 5px #ff6600, 0 0 10px #ff3300; letter-spacing: 3px;" onclick="selectFont(this)">机甲</div>
-                            <div class="font-preset" style="font-family: 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;" onclick="selectFont(this)">复古</div>
-                            <div class="font-preset" style="font-family: 'Trebuchet MS', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);" onclick="selectFont(this)">极简</div>
+                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe'; font-size: 13px;" onclick="selectFont(this)">站酷快乐</div>
+                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 14px;" onclick="selectFont(this)">马善政毛笔</div>
+                            <div class="font-preset" style="font-family: 'Long Cang'; font-size: 14px;" onclick="selectFont(this)">龙仓草书</div>
+                            <div class="font-preset" style="font-family: 'ZCOOL QingKe HuangYou'; font-size: 13px;" onclick="selectFont(this)">站酷庆科</div>
+                            <div class="font-preset" style="font-family: 'ZCOOL XiaoWei'; font-size: 12px;" onclick="selectFont(this)">站酷小薇</div>
+                            <div class="font-preset" style="font-family: 'Noto Serif SC'; font-size: 12px; font-weight: 900;" onclick="selectFont(this)">思源宋体</div>
+                            <div class="font-preset" style="font-family: 'Noto Sans SC'; font-size: 12px; font-weight: 900;" onclick="selectFont(this)">思源黑体</div>
+                            <div class="font-preset" style="font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 2px;" onclick="selectFont(this)">像素方块</div>
+                            <div class="font-preset" style="font-family: 'Six Caps'; font-size: 13px; letter-spacing: 3px;" onclick="selectFont(this)">六字标题</div>
+                            <div class="font-preset" style="font-family: 'Times New Roman'; font-size: 11px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">复古衬线</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -738,77 +736,64 @@
 
         function selectFont(el) {
             const fontConfig = {
-                '粗黑': { 
-                    family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
-                    size: '36px', weight: '900', 
-                    textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '1px',
-                    fontStyle: 'normal'
-                },
-                '冲击': { 
-                    family: "'Impact', 'Arial Black', sans-serif", 
-                    size: '36px', weight: '900', 
-                    textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '2px',
-                    fontStyle: 'normal'
-                },
-                '优雅': { 
-                    family: "'Georgia', 'Times New Roman', serif", 
-                    size: '32px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'italic'
-                },
-                '圆角': { 
-                    family: "'Verdana', 'Microsoft YaHei', sans-serif", 
-                    size: '34px', weight: '500', 
-                    textShadow: 'none', letterSpacing: '1px',
-                    fontStyle: 'normal'
-                },
-                '科幻': { 
-                    family: "'Arial Black', 'Arial', sans-serif", 
-                    size: '34px', weight: '900', 
-                    textShadow: '0 0 15px rgba(0,212,255,0.5)', letterSpacing: '3px',
-                    fontStyle: 'normal'
-                },
-                '漫画': { 
+                '站酷快乐': { 
                     family: "'ZCOOL KuaiLe', cursive", 
                     size: '38px', weight: '400', 
                     textShadow: 'none', letterSpacing: '2px',
                     fontStyle: 'normal'
                 },
-                '像素': { 
-                    family: "'Press Start 2P', monospace", 
-                    size: '22px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '4px',
-                    fontStyle: 'normal'
-                },
-                '手写': { 
+                '马善政毛笔': { 
                     family: "'Ma Shan Zheng', cursive", 
-                    size: '40px', weight: '400', 
+                    size: '42px', weight: '400', 
                     textShadow: 'none', letterSpacing: '1px',
                     fontStyle: 'normal'
                 },
-                '潦草': { 
-                    family: "'Ma Shan Zheng', cursive", 
-                    size: '38px', weight: '400', 
+                '龙仓草书': { 
+                    family: "'Long Cang', cursive", 
+                    size: '44px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '3px',
+                    fontStyle: 'normal'
+                },
+                '站酷庆科': { 
+                    family: "'ZCOOL QingKe HuangYou', cursive", 
+                    size: '40px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'normal'
+                },
+                '站酷小薇': { 
+                    family: "'ZCOOL XiaoWei', serif", 
+                    size: '36px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'normal'
+                },
+                '思源宋体': { 
+                    family: "'Noto Serif SC', serif", 
+                    size: '36px', weight: '900', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'normal'
+                },
+                '思源黑体': { 
+                    family: "'Noto Sans SC', sans-serif", 
+                    size: '36px', weight: '900', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '1px',
+                    fontStyle: 'normal'
+                },
+                '像素方块': { 
+                    family: "'Press Start 2P', monospace", 
+                    size: '24px', weight: '400', 
                     textShadow: 'none', letterSpacing: '4px',
                     fontStyle: 'normal'
                 },
-                '机甲': { 
-                    family: "'Arial Black', 'Arial', sans-serif", 
-                    size: '36px', weight: '900', 
-                    textShadow: '0 0 10px rgba(255,102,0,0.8), 0 0 20px rgba(255,51,0,0.6)', letterSpacing: '4px',
+                '六字标题': { 
+                    family: "'Six Caps', sans-serif", 
+                    size: '48px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '8px',
                     fontStyle: 'normal'
                 },
-                '复古': { 
-                    family: "'Times New Roman', 'Times', serif", 
-                    size: '32px', weight: '700', 
-                    textShadow: 'none', letterSpacing: '6px',
-                    fontStyle: 'normal',
-                    transform: 'scaleX(1.2)'
-                },
-                '极简': { 
-                    family: "'Trebuchet MS', 'Helvetica', sans-serif", 
-                    size: '34px', weight: '700', 
-                    textShadow: '0 2px 4px rgba(0,0,0,0.3)', letterSpacing: '8px',
+                '复古衬线': { 
+                    family: "'Times New Roman', serif", 
+                    size: '36px', weight: '700', 
+                    textShadow: 'none', letterSpacing: '4px',
                     fontStyle: 'normal'
                 }
             };
@@ -825,7 +810,7 @@
             logo.style.textShadow = config.textShadow;
             logo.style.letterSpacing = config.letterSpacing;
             logo.style.fontStyle = config.fontStyle;
-            logo.style.transform = config.transform || 'none';
+            logo.style.transform = 'none';
             
             // 强制重绘
             logo.style.display = 'none';
