@@ -16,8 +16,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 80px;
+            overflow: hidden;
         }
 
         /* 顶部标题栏 */
@@ -25,19 +24,21 @@
             background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(0,212,255,0.2);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            height: 55px;
         }
 
         .header h1 {
-            font-size: 18px;
+            font-size: 16px;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -46,14 +47,14 @@
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .header-btn {
-            padding: 8px 14px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
-            font-size: 13px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -62,7 +63,6 @@
         .header-btn.primary {
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
         }
 
         .header-btn.secondary {
@@ -71,30 +71,46 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* 预览区 - 固定在顶部 */
+        /* 主容器 - 左右布局 */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding-top: 55px;
+        }
+
+        /* 左侧预览区 */
         .preview-section {
-            padding: 25px 20px;
+            width: 45%;
+            min-width: 280px;
+            max-width: 420px;
+            background: rgba(15, 12, 41, 0.5);
+            padding: 20px;
             display: flex;
             justify-content: center;
-            background: rgba(15, 12, 41, 0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            align-items: flex-start;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            overflow-y: auto;
         }
 
         #preview {
-            width: 375px;
-            max-width: 100%;
-            height: 667px;
+            width: 100%;
+            max-width: 280px;
+            height: 500px;
             background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.1);
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.1);
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(255,255,255,0.1);
+            transform-origin: top center;
         }
 
-        /* 配置区 - 可滚动 */
+        /* 右侧配置区 */
         .config-section {
-            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(26, 26, 62, 0.3);
         }
 
         /* 配置面板 */
@@ -102,47 +118,40 @@
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.3s;
         }
 
-        .config-panel:hover {
+        .config-panel.active {
             background: rgba(255,255,255,0.05);
             border-color: rgba(0,212,255,0.2);
         }
 
         .config-header {
-            padding: 16px 20px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            background: rgba(255,255,255,0.02);
-            transition: background 0.3s;
-        }
-
-        .config-header:hover {
-            background: rgba(255,255,255,0.05);
         }
 
         .config-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 15px;
+            gap: 8px;
+            font-size: 14px;
             font-weight: 600;
             color: #fff;
         }
 
         .config-icon {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .toggle-icon {
-            font-size: 18px;
+            font-size: 16px;
             color: rgba(255,255,255,0.4);
             transition: transform 0.3s;
         }
@@ -154,7 +163,7 @@
 
         .config-content {
             display: none;
-            padding: 20px;
+            padding: 16px;
         }
 
         .config-panel.active .config-content {
@@ -163,8 +172,8 @@
 
         /* 配置子项 */
         .config-subsection {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
@@ -175,17 +184,17 @@
         }
 
         .config-subsection h4 {
-            font-size: 13px;
+            font-size: 12px;
             color: #00d4ff;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             font-weight: 600;
         }
 
         /* 控制项 */
         .control-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .control-item {
@@ -194,34 +203,33 @@
 
         .control-item label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .control-item input[type="text"] {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             background: rgba(255,255,255,0.05);
             color: #fff;
         }
 
         .control-item input[type="color"] {
             width: 100%;
-            height: 40px;
+            height: 36px;
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 2px;
             cursor: pointer;
-            background: rgba(255,255,255,0.05);
         }
 
         .control-item input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 5px;
             -webkit-appearance: none;
             background: rgba(255,255,255,0.1);
             border-radius: 3px;
@@ -229,59 +237,54 @@
 
         .control-item input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,212,255,0.4);
         }
 
         .value-display {
             text-align: right;
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(0,212,255,0.8);
             margin-top: 4px;
-            font-weight: 600;
         }
 
         /* 渐变预设 */
         .gradient-presets {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .gradient-preset {
-            height: 40px;
-            border-radius: 8px;
+            height: 36px;
+            border-radius: 6px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.3s;
         }
 
         .gradient-preset.selected {
             border-color: #00d4ff;
-            box-shadow: 0 0 15px rgba(0,212,255,0.4);
+            box-shadow: 0 0 10px rgba(0,212,255,0.4);
         }
 
         /* 主题预设 */
         .theme-presets {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+            gap: 6px;
         }
 
         .theme-preset {
-            padding: 12px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.3s;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #fff;
         }
@@ -293,66 +296,60 @@
         /* 游戏标题区 */
         .game-title {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 15px 30px;
         }
 
         .game-logo {
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 900;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0,212,255,0.5);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
 
         .game-subtitle {
-            font-size: 14px;
+            font-size: 11px;
             color: rgba(255,255,255,0.5);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
         }
 
         /* 菜单区 */
         .menu-section {
-            padding: 20px 30px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
         }
 
         .menu-btn {
             width: 100%;
-            padding: 16px 20px;
+            padding: 12px 16px;
             border: none;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            position: relative;
-            transition: all 0.3s;
+            gap: 8px;
         }
 
         .btn-start {
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
-            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
         }
 
         .btn-skin {
             background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
             color: #fff;
-            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
         }
 
         .btn-achievement {
             background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
             color: #fff;
-            box-shadow: 0 6px 20px rgba(161,140,209,0.4);
         }
 
         .btn-settings {
@@ -364,20 +361,20 @@
         /* 底部信息 */
         .footer-info {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(255,255,255,0.35);
         }
 
         .player-level {
             display: inline-block;
-            padding: 5px 12px;
+            padding: 4px 10px;
             background: rgba(0,212,255,0.15);
-            border-radius: 12px;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            margin-bottom: 6px;
             border: 1px solid rgba(0,212,255,0.3);
             color: #00d4ff;
             font-weight: 600;
@@ -407,123 +404,35 @@
             50% { opacity: 1; }
         }
 
-        /* 动画 */
-        @keyframes slideInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .preview-section {
+                width: 100%;
+                max-width: none;
+                min-width: auto;
+                padding: 15px;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+
+            #preview {
+                max-width: 320px;
+                height: 568px;
+            }
+
+            .config-section {
+                padding: 12px;
+            }
         }
 
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .game-title { animation: slideInDown 0.8s ease-out 0.2s both; }
-        .game-logo { animation: scaleIn 0.8s ease-out 0.4s both; }
-        
-        .menu-btn {
-            opacity: 0;
-            animation: slideInUp 0.6s ease-out both;
-        }
-        .menu-btn:nth-child(1) { animation-delay: 0.6s; }
-        .menu-btn:nth-child(2) { animation-delay: 0.7s; }
-        .menu-btn:nth-child(3) { animation-delay: 0.8s; }
-        .menu-btn:nth-child(4) { animation-delay: 0.9s; }
-
-        /* 底部操作栏 */
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 12, 41, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 12px 20px;
-            display: flex;
-            gap: 12px;
-            border-top: 1px solid rgba(0,212,255,0.2);
-            z-index: 100;
-        }
-
-        .bottom-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .bottom-btn.primary {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
-        }
-
-        .bottom-btn.secondary {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* 星星开关 */
-        .switch-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-        }
-
-        .switch-label {
-            font-size: 13px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255,255,255,0.2);
-            transition: .3s;
-            border-radius: 26px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
     </style>
 </head>
 <body>
@@ -536,178 +445,175 @@
         </div>
     </div>
 
-    <!-- 预览区 -->
-    <div class="preview-section">
-        <div id="preview">
-            <div class="stars" id="stars"></div>
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧预览 -->
+        <div class="preview-section">
+            <div id="preview">
+                <div class="stars" id="stars"></div>
 
-            <div class="game-title">
-                <div class="game-logo" id="gameLogo">雷霆战机</div>
-                <div class="game-subtitle" id="gameSubtitle">THUNDER FIGHTER</div>
-            </div>
-
-            <div class="menu-section">
-                <button class="menu-btn btn-start" id="btnStart">
-                    <span>🚀</span>
-                    <span id="btnStartText">开始游戏</span>
-                </button>
-                <button class="menu-btn btn-skin" id="btnSkin">
-                    <span>👕</span>
-                    <span id="btnSkinText">皮肤系统</span>
-                </button>
-                <button class="menu-btn btn-achievement" id="btnAchieve">
-                    <span>🏆</span>
-                    <span id="btnAchieveText">成就系统</span>
-                </button>
-                <button class="menu-btn btn-settings" id="btnSettings">
-                    <span>⚙️</span>
-                    <span id="btnSettingsText">设置</span>
-                </button>
-            </div>
-
-            <div class="footer-info">
-                <div class="player-level" id="playerLevel">Lv.99 王牌飞行员</div>
-                <div id="versionInfo">Version 1.0.0</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 配置区 -->
-    <div class="config-section">
-        <!-- 快捷主题 -->
-        <div class="config-panel active">
-            <div class="config-header">
-                <div class="config-title">
-                    <span class="config-icon">🎨</span>
-                    <span>快捷主题</span>
+                <div class="game-title">
+                    <div class="game-logo" id="gameLogo">雷霆战机</div>
+                    <div class="game-subtitle" id="gameSubtitle">THUNDER FIGHTER</div>
                 </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="config-content">
-                <div class="theme-presets">
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)" onclick="applyTheme('cyber')">赛博</div>
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTheme('neon')">霓虹</div>
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTheme('ocean')">海洋</div>
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyTheme('sunset')">日落</div>
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" onclick="applyTheme('purple')">紫罗兰</div>
-                    <div class="theme-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTheme('matrix')">矩阵</div>
+
+                <div class="menu-section">
+                    <button class="menu-btn btn-start" id="btnStart">
+                        <span>🚀</span>
+                        <span id="btnStartText">开始游戏</span>
+                    </button>
+                    <button class="menu-btn btn-skin" id="btnSkin">
+                        <span>👕</span>
+                        <span id="btnSkinText">皮肤系统</span>
+                    </button>
+                    <button class="menu-btn btn-achievement" id="btnAchieve">
+                        <span>🏆</span>
+                        <span id="btnAchieveText">成就系统</span>
+                    </button>
+                    <button class="menu-btn btn-settings" id="btnSettings">
+                        <span>⚙️</span>
+                        <span id="btnSettingsText">设置</span>
+                    </button>
+                </div>
+
+                <div class="footer-info">
+                    <div class="player-level" id="playerLevel">Lv.99 王牌飞行员</div>
+                    <div id="versionInfo">Version 1.0.0</div>
                 </div>
             </div>
         </div>
 
-        <!-- 标题样式 -->
-        <div class="config-panel" onclick="togglePanel(this)">
-            <div class="config-header">
-                <div class="config-title">
-                    <span class="config-icon">📝</span>
-                    <span>标题样式</span>
+        <!-- 右侧配置 -->
+        <div class="config-section">
+            <!-- 快捷主题 -->
+            <div class="config-panel active">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🎨</span>
+                        <span>快捷主题</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
                 </div>
-                <span class="toggle-icon">▶</span>
+                <div class="config-content">
+                    <div class="theme-presets">
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)" onclick="applyTheme('cyber')">赛博</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTheme('neon')">霓虹</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTheme('ocean')">海洋</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyTheme('sunset')">日落</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" onclick="applyTheme('purple')">紫罗兰</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTheme('matrix')">矩阵</div>
+                    </div>
+                </div>
             </div>
-            <div class="config-content">
-                <div class="config-subsection">
-                    <h4>标题大小</h4>
-                    <input type="range" min="30" max="60" value="42" oninput="updateLogoStyle()">
-                    <div class="value-display" id="logoSizeVal">42px</div>
+
+            <!-- 标题样式 -->
+            <div class="config-panel active" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">📝</span>
+                        <span>标题</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
                 </div>
-                <div class="config-subsection">
-                    <h4>标题渐变</h4>
-                    <div class="gradient-presets">
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradient(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradient(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTitleGradient(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTitleGradient(this)"></div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>大小</h4>
+                        <input type="range" min="24" max="48" value="32" oninput="updateLogoStyle()">
+                        <div class="value-display" id="logoSizeVal">32px</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>渐变</h4>
+                        <div class="gradient-presets">
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTitleGradient(this)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 背景 -->
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🌌</span>
+                        <span>背景</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>颜色</h4>
+                        <div class="control-row">
+                            <div class="control-item">
+                                <label>上</label>
+                                <input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()">
+                            </div>
+                            <div class="control-item">
+                                <label>下</label>
+                                <input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>星星</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateStars()">
+                        <div class="value-display" id="starsVal">50 颗</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按钮 -->
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🔘</span>
+                        <span>按钮</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>开始按钮</h4>
+                        <div class="control-row">
+                            <div class="control-item">
+                                <label>颜色 1</label>
+                                <input type="color" id="btn1Color1" value="#00d4ff" oninput="updateBtn1Style()">
+                            </div>
+                            <div class="control-item">
+                                <label>颜色 2</label>
+                                <input type="color" id="btn1Color2" value="#0099ff" oninput="updateBtn1Style()">
+                            </div>
+                        </div>
+                        <label>圆角</label>
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn1Style()">
+                        <div class="value-display" id="btn1RadiusVal">10px</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文字 -->
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">⚙️</span>
+                        <span>文字</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <label>标题</label>
+                        <input type="text" id="logoInput" value="雷霆战机" oninput="update()">
+                    </div>
+                    <div class="config-subsection">
+                        <label>副标题</label>
+                        <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()">
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- 背景 -->
-        <div class="config-panel" onclick="togglePanel(this)">
-            <div class="config-header">
-                <div class="config-title">
-                    <span class="config-icon">🌌</span>
-                    <span>背景</span>
-                </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="config-content">
-                <div class="config-subsection">
-                    <h4>背景色</h4>
-                    <div class="control-row">
-                        <div class="control-item">
-                            <label>颜色 1</label>
-                            <input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()">
-                        </div>
-                        <div class="control-item">
-                            <label>颜色 2</label>
-                            <input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()">
-                        </div>
-                    </div>
-                </div>
-                <div class="config-subsection">
-                    <h4>星星</h4>
-                    <input type="range" min="0" max="100" value="50" oninput="updateStars()">
-                    <div class="value-display" id="starsVal">50 颗</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 按钮 -->
-        <div class="config-panel" onclick="togglePanel(this)">
-            <div class="config-header">
-                <div class="config-title">
-                    <span class="config-icon">🔘</span>
-                    <span>按钮样式</span>
-                </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="config-content">
-                <div class="config-subsection">
-                    <h4>开始按钮</h4>
-                    <div class="control-row">
-                        <div class="control-item">
-                            <label>颜色 1</label>
-                            <input type="color" id="btn1Color1" value="#00d4ff" oninput="updateBtn1Style()">
-                        </div>
-                        <div class="control-item">
-                            <label>颜色 2</label>
-                            <input type="color" id="btn1Color2" value="#0099ff" oninput="updateBtn1Style()">
-                        </div>
-                    </div>
-                    <label>圆角</label>
-                    <input type="range" min="0" max="30" value="12" oninput="updateBtn1Style()">
-                    <div class="value-display" id="btn1RadiusVal">12px</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 文字 -->
-        <div class="config-panel" onclick="togglePanel(this)">
-            <div class="config-header">
-                <div class="config-title">
-                    <span class="config-icon">⚙️</span>
-                    <span>文字内容</span>
-                </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="config-content">
-                <div class="config-subsection">
-                    <label>游戏标题</label>
-                    <input type="text" id="logoInput" value="雷霆战机" oninput="update()">
-                </div>
-                <div class="config-subsection">
-                    <label>副标题</label>
-                    <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 底部操作栏 -->
-    <div class="bottom-bar">
-        <button class="bottom-btn secondary" onclick="toggleAllPanels()">📋 全部</button>
-        <button class="bottom-btn primary" onclick="exportDesign()">💾 导出</button>
     </div>
 
     <script>
@@ -726,12 +632,6 @@
 
         function togglePanel(panel) {
             panel.classList.toggle('active');
-        }
-
-        function toggleAllPanels() {
-            const panels = document.querySelectorAll('.config-panel');
-            const allActive = Array.from(panels).every(p => p.classList.contains('active'));
-            panels.forEach(p => p.classList.toggle('active', !allActive));
         }
 
         function update() {
@@ -794,25 +694,19 @@
         }
 
         function resetDesign() {
-            if (confirm('确定要重置所有设置吗？')) location.reload();
+            if (confirm('确定要重置吗？')) location.reload();
         }
 
         function exportDesign() {
             const design = {
                 logo: document.getElementById('gameLogo').textContent,
-                subtitle: document.getElementById('gameSubtitle').textContent,
-                buttons: [
-                    document.getElementById('btnStartText').textContent,
-                    document.getElementById('btnSkinText').textContent,
-                    document.getElementById('btnAchieveText').textContent,
-                    document.getElementById('btnSettingsText').textContent
-                ]
+                subtitle: document.getElementById('gameSubtitle').textContent
             };
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'thunder-fighter-ui.json';
+            a.download = 'ui-design.json';
             a.click();
             URL.revokeObjectURL(url);
         }
