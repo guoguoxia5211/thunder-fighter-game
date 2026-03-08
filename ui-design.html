@@ -85,6 +85,7 @@
             transition: all 0.3s;
         }
         .config-panel.active { background: rgba(255,255,255,0.05); border-color: rgba(0,212,255,0.2); }
+        .config-panel:hover { border-color: rgba(0,212,255,0.4); }
         .config-header {
             padding: 14px 16px;
             display: flex;
@@ -106,24 +107,25 @@
         .control-row { display: flex; gap: 8px; margin-bottom: 12px; }
         .control-item { flex: 1; }
         .control-item label { display: block; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; font-weight: 500; }
-        .control-item input[type="text"], .control-item input[type="number"] {
+        .control-item input[type="text"], .control-item input[type="number"], .control-item select {
             width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff; transition: all 0.3s;
         }
-        .control-item input:focus { outline: none; border-color: #00d4ff; background: rgba(255,255,255,0.08); }
-        .control-item input[type="color"] { width: 100%; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px; cursor: pointer; background: rgba(255,255,255,0.05); }
+        .control-item input:focus, .control-item select:focus { outline: none; border-color: #00d4ff; background: rgba(255,255,255,0.08); }
+        .control-item input[type="color"] { width: 100%; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px; cursor: pointer; background: rgba(255,255,255,0.05); transition: all 0.3s; }
+        .control-item input[type="color"]:hover { border-color: rgba(0,212,255,0.5); }
         .control-item input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
         .control-item input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none; width: 18px; height: 18px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 10px rgba(0,212,255,0.4); transition: all 0.3s;
         }
         .control-item input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 4px 15px rgba(0,212,255,0.6); }
-        .control-item select { width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff; }
         .value-display { text-align: right; font-size: 10px; color: rgba(0,212,255,0.8); margin-top: 4px; font-weight: 600; }
-        .gradient-presets, .texture-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-        .gradient-preset, .texture-preset {
-            height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        .gradient-presets, .texture-presets, .font-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .gradient-preset, .texture-preset, .font-preset {
+            height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: relative; overflow: hidden;
         }
-        .gradient-preset:hover, .texture-preset:hover { transform: scale(1.08); }
-        .gradient-preset.selected, .texture-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
+        .gradient-preset:hover, .texture-preset:hover, .font-preset:hover { transform: scale(1.08); }
+        .gradient-preset.selected, .texture-preset.selected, .font-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
+        .font-preset { display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; background: rgba(255,255,255,0.1); }
         .texture-preset { background-size: cover; background-position: center; }
         .theme-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .theme-preset { padding: 12px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; text-align: center; font-size: 12px; font-weight: 600; color: #fff; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -136,6 +138,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin-bottom: 6px; letter-spacing: 1px;
             filter: drop-shadow(0 0 10px rgba(0,212,255,0.5));
+            transition: all 0.3s;
         }
         .game-subtitle { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; }
         .menu-section { padding: 15px 20px; display: flex; flex-direction: column; gap: 10px; }
@@ -143,6 +146,8 @@
             width: 100%; padding: 12px 16px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         .menu-btn:hover { transform: translateY(-2px); }
         .menu-btn:active { transform: translateY(0) scale(0.98); }
@@ -161,34 +166,64 @@
         .texture-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.3; mix-blend-mode: overlay; }
         .grid-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; z-index: 10; }
         .grid-overlay.active { display: block; background-image: linear-gradient(rgba(0,212,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.15) 1px, transparent 1px); background-size: 20px 20px; }
-        /* 工具栏 */
-        .toolbar {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 200;
-        }
+        .toolbar { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
         .toolbar-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            border: none;
+            width: 50px; height: 50px; border-radius: 12px; border: none;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
+            color: #fff; font-size: 20px; cursor: pointer;
             box-shadow: 0 6px 20px rgba(0,212,255,0.4);
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
         .toolbar-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 30px rgba(0,212,255,0.6); }
         .toolbar-btn:active { transform: scale(0.95); }
         .toolbar-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+        /* Toast 提示 */
+        .toast {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,212,255,0.3);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 300;
+        }
+        .toast.show { transform: translateX(0); }
+        /* 涟漪效果 */
+        .ripple {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+        @keyframes rippleEffect {
+            to { transform: scale(4); opacity: 0; }
+        }
+        /* 选中高亮 */
+        .highlight-border {
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,212,255,0.6);
+            pointer-events: none;
+            animation: highlightPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes highlightPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
         @media (max-width: 768px) {
             .main-container { flex-direction: column; }
             .preview-section { width: 100%; max-width: none; min-width: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -208,6 +243,9 @@
         </div>
     </div>
 
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast">已保存</div>
+
     <div class="main-container">
         <div class="preview-section">
             <div id="preview">
@@ -221,19 +259,19 @@
                 </div>
 
                 <div class="menu-section">
-                    <button class="menu-btn btn-start" id="btnStart">
+                    <button class="menu-btn btn-start" id="btnStart" onclick="handleClick(this, event)">
                         <span>🚀</span>
                         <span id="btnStartText">开始游戏</span>
                     </button>
-                    <button class="menu-btn btn-skin" id="btnSkin">
+                    <button class="menu-btn btn-skin" id="btnSkin" onclick="handleClick(this, event)">
                         <span>👕</span>
                         <span id="btnSkinText">皮肤系统</span>
                     </button>
-                    <button class="menu-btn btn-achievement" id="btnAchieve">
+                    <button class="menu-btn btn-achievement" id="btnAchieve" onclick="handleClick(this, event)">
                         <span>🏆</span>
                         <span id="btnAchieveText">成就系统</span>
                     </button>
-                    <button class="menu-btn btn-settings" id="btnSettings">
+                    <button class="menu-btn btn-settings" id="btnSettings" onclick="handleClick(this, event)">
                         <span>⚙️</span>
                         <span id="btnSettingsText">设置</span>
                     </button>
@@ -287,6 +325,38 @@
                         <h4>底纹强度</h4>
                         <input type="range" min="0" max="100" value="30" oninput="updateTextureOpacity()" onclick="event.stopPropagation()">
                         <div class="value-display" id="textureOpacityVal">30%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">📝</span><span>字体设置</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>标题字体</h4>
+                        <div class="font-presets">
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif;" onclick="applyFont('Arial Black')">粗黑</div>
+                            <div class="font-preset" style="font-family: 'Impact', sans-serif;" onclick="applyFont('Impact')">冲击</div>
+                            <div class="font-preset" style="font-family: 'Georgia', serif;" onclick="applyFont('Georgia')">优雅</div>
+                            <div class="font-preset" style="font-family: 'Courier New', monospace;" onclick="applyFont('Courier New')">代码</div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>字重</h4>
+                        <select onchange="applyFontWeight(this.value)" onclick="event.stopPropagation()">
+                            <option value="300">细体</option>
+                            <option value="400">常规</option>
+                            <option value="600" selected>半粗</option>
+                            <option value="900">特粗</option>
+                        </select>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>字间距</h4>
+                        <input type="range" min="0" max="10" value="1" step="0.5" oninput="applyLetterSpacing(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="letterSpacingVal">1px</div>
                     </div>
                 </div>
             </div>
@@ -470,6 +540,8 @@
         let currentStars = 50;
         let textureOpacity = 0.3;
         let gridVisible = false;
+        let currentFont = 'Arial Black';
+        let currentFontWeight = '600';
 
         function createStars(count) {
             const container = document.getElementById('stars');
@@ -484,9 +556,7 @@
             }
         }
 
-        // 修复面板切换逻辑 - 只有点击标题才切换
         function togglePanel(panel, event) {
-            // 只有点击 header 才切换
             if (event.target.closest('.config-header')) {
                 panel.classList.toggle('active');
             }
@@ -496,22 +566,81 @@
             const panels = document.querySelectorAll('.config-panel');
             const allActive = Array.from(panels).every(p => p.classList.contains('active'));
             panels.forEach(p => p.classList.toggle('active', !allActive));
+            showToast(allActive ? '已收起所有面板' : '已展开所有面板');
         }
 
         function toggleGrid() {
             gridVisible = !gridVisible;
             document.getElementById('gridOverlay').classList.toggle('active', gridVisible);
+            showToast(gridVisible ? '网格已开启' : '网格已关闭');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function handleClick(btn, event) {
+            // 涟漪效果
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = btn.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (x - size/2) + 'px';
+            ripple.style.top = (y - size/2) + 'px';
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+
+            // 高亮效果
+            const existing = document.querySelector('.highlight-border');
+            if (existing) existing.remove();
+            
+            const highlight = document.createElement('div');
+            highlight.className = 'highlight-border';
+            btn.appendChild(highlight);
+            setTimeout(() => highlight.remove(), 2000);
+
+            showToast('按钮：' + btn.querySelector('span:last-child').textContent);
         }
 
         function update() {
             document.getElementById('gameLogo').textContent = document.getElementById('logoInput').value;
             document.getElementById('gameSubtitle').textContent = document.getElementById('subtitleInput').value;
+            autoSave();
+        }
+
+        function applyFont(font) {
+            currentFont = font;
+            document.getElementById('gameLogo').style.fontFamily = font;
+            document.querySelectorAll('.font-preset').forEach(p => p.classList.remove('selected'));
+            event.target.classList.add('selected');
+            showToast('字体：' + font);
+            autoSave();
+        }
+
+        function applyFontWeight(weight) {
+            currentFontWeight = weight;
+            document.getElementById('gameLogo').style.fontWeight = weight;
+            showToast('字重：' + weight);
+            autoSave();
+        }
+
+        function applyLetterSpacing(value) {
+            document.getElementById('gameLogo').style.letterSpacing = value + 'px';
+            document.getElementById('letterSpacingVal').textContent = value + 'px';
+            autoSave();
         }
 
         function updateBtnText(type) {
             const map = { start: 'btnStartText', skin: 'btnSkinText', achieve: 'btnAchieveText', settings: 'btnSettingsText' };
             const inputId = 'btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'TextInput';
             document.getElementById(map[type]).textContent = document.getElementById(inputId).value;
+            autoSave();
         }
 
         function updateBtn(type) {
@@ -535,12 +664,14 @@
             }
             btn.style.background = bg;
             btn.style.borderRadius = radius + 'px';
+            autoSave();
         }
 
         function updateLogoStyle() {
             const size = event.target.value;
             document.getElementById('gameLogo').style.fontSize = size + 'px';
             document.getElementById('logoSizeVal').textContent = size + 'px';
+            autoSave();
         }
 
         function applyTitleGradient(el) {
@@ -549,12 +680,15 @@
             const bg = getComputedStyle(el).background;
             document.getElementById('gameLogo').style.background = bg;
             document.getElementById('gameLogo').style.webkitBackgroundClip = 'text';
+            showToast('渐变已应用');
+            autoSave();
         }
 
         function updateBgStyle() {
             const c1 = document.getElementById('bgColor1').value;
             const c2 = document.getElementById('bgColor2').value;
             document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
+            autoSave();
         }
 
         function updateStars() {
@@ -562,6 +696,7 @@
             currentStars = parseInt(value);
             createStars(currentStars);
             document.getElementById('starsVal').textContent = value + '颗';
+            autoSave();
         }
 
         function updateGlow() {
@@ -569,6 +704,7 @@
             const glow = value / 50;
             document.getElementById('gameLogo').style.textShadow = `0 0 ${10 + glow*10}px rgba(0,212,255,${0.3 + glow*0.2})`;
             document.getElementById('glowVal').textContent = value + '%';
+            autoSave();
         }
 
         function applyTexture(type) {
@@ -588,6 +724,8 @@
             
             document.getElementById('textureOverlay').style.background = textures[type];
             document.getElementById('textureOverlay').style.backgroundSize = type === 'grid' ? '20px 20px' : (type === 'radial' ? '60px 60px' : 'auto');
+            showToast('底纹：' + type);
+            autoSave();
         }
 
         function updateTextureOpacity() {
@@ -595,6 +733,7 @@
             textureOpacity = value / 100;
             document.getElementById('textureOverlay').style.opacity = textureOpacity;
             document.getElementById('textureOpacityVal').textContent = value + '%';
+            autoSave();
         }
 
         function applyTheme(theme) {
@@ -616,23 +755,38 @@
                 document.getElementById('btn' + key.charAt(0).toUpperCase() + key.slice(1) + 'Color2').value = t.btns[key][1];
                 updateBtn(key);
             });
+            showToast('主题：' + theme);
         }
 
-        function resetDesign() { if (confirm('确定要重置所有设置吗？')) location.reload(); }
+        let saveTimeout;
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                showToast('💾 自动保存');
+            }, 500);
+        }
+
+        function resetDesign() { 
+            if (confirm('确定要重置所有设置吗？')) {
+                location.reload();
+            }
+        }
         
         function exportDesign() {
             const design = {
                 logo: document.getElementById('gameLogo').textContent,
                 subtitle: document.getElementById('gameSubtitle').textContent,
+                font: currentFont,
+                fontWeight: currentFontWeight,
                 theme: 'custom'
             };
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'ui-design.json'; a.click();
             URL.revokeObjectURL(url);
+            showToast('✅ 已导出');
         }
 
-        // 初始化
         createStars(50);
         update();
     </script>
