@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.cnpmjs.org/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap" rel="stylesheet">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap');</style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -734,14 +735,14 @@
 
         function selectFont(el) {
             const fontConfig = {
-                '粗黑': { family: "'Arial Black', 'Microsoft YaHei', sans-serif", size: '32px', weight: '900' },
-                '冲击': { family: "'Impact', 'Arial Black', sans-serif", size: '32px', weight: '900' },
-                '优雅': { family: "'Georgia', 'Times New Roman', serif", size: '30px', weight: '400' },
-                '圆角': { family: "'VAG Rounded', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif", size: '30px', weight: '600' },
-                '科幻': { family: "'Orbitron', sans-serif", size: '30px', weight: '700' },
-                '漫画': { family: "'Bangers', cursive", size: '34px', weight: '400' },
-                '像素': { family: "'Press Start 2P', cursive", size: '24px', weight: '400' },
-                '手写': { family: "'Pacifico', cursive", size: '32px', weight: '400' }
+                '粗黑': { family: "'Arial Black', 'Helvetica Neue', sans-serif", size: '36px', weight: '900', transform: 'none' },
+                '冲击': { family: "'Impact', 'Haettenschweiler', sans-serif", size: '36px', weight: '900', transform: 'scaleX(1.1)' },
+                '优雅': { family: "'Georgia', 'Times New Roman', serif", size: '28px', weight: '400', transform: 'none' },
+                '圆角': { family: "'Verdana', 'Geneva', sans-serif", size: '30px', weight: '500', transform: 'none' },
+                '科幻': { family: "'Orbitron', 'Arial Black', sans-serif", size: '32px', weight: '700', transform: 'none' },
+                '漫画': { family: "'Bangers', 'Comic Sans MS', cursive", size: '38px', weight: '400', transform: 'none' },
+                '像素': { family: "'Press Start 2P', 'Courier New', monospace", size: '22px', weight: '400', transform: 'none' },
+                '手写': { family: "'Pacifico', 'Brush Script MT', cursive", size: '34px', weight: '400', transform: 'none' }
             };
             const fontName = el.textContent.trim();
             const config = fontConfig[fontName];
@@ -753,6 +754,8 @@
             logo.style.fontFamily = config.family;
             logo.style.fontSize = config.size;
             logo.style.fontWeight = config.weight;
+            logo.style.transform = config.transform;
+            logo.style.letterSpacing = fontName === '像素' ? '4px' : '2px';
             
             // 强制重绘
             logo.style.display = 'none';
