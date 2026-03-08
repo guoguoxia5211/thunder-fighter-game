@@ -16,7 +16,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: #0a0a1a;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         /* 顶部标题栏 */
@@ -29,9 +29,12 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(0,212,255,0.3);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
+            height: 60px;
         }
 
         .header h1 {
@@ -73,15 +76,15 @@
         /* 主容器 */
         .main-container {
             display: flex;
-            height: calc(100vh - 60px);
-            position: relative;
+            height: 100vh;
+            padding-top: 60px;
         }
 
         /* 左侧预览区 */
         .preview-section {
-            width: 375px;
+            width: 400px;
             background: #0f0f1f;
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -91,7 +94,7 @@
         }
 
         #preview {
-            width: 100%;
+            width: 375px;
             height: 667px;
             background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
             border-radius: 20px;
@@ -105,6 +108,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
+            background: rgba(26, 26, 62, 0.3);
         }
 
         /* 配置面板 */
@@ -446,106 +450,6 @@
             50% { opacity: 1; }
         }
 
-        /* 弹出式编辑框 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: rgba(26, 26, 62, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 1px solid rgba(0,212,255,0.3);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s ease;
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            color: #00d4ff;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .modal-close:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(90deg);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        /* 浮动按钮 */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,212,255,0.4);
-            transition: all 0.3s;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fab:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 6px 30px rgba(0,212,255,0.6);
-        }
-
-        .fab:active {
-            transform: scale(0.95);
-        }
-
         /* 动画 */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -567,17 +471,6 @@
             from {
                 opacity: 0;
                 transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -713,6 +606,22 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255,255,255,0.3);
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .preview-section {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .config-section {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -992,72 +901,6 @@
         </div>
     </div>
 
-    <!-- 浮动按钮 -->
-    <button class="fab" onclick="openModal()">⚙️</button>
-
-    <!-- 弹出式编辑框 -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>⚙️ 快速配置</h3>
-                <button class="modal-close" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="config-subsection">
-                    <h4>🎨 毛玻璃效果</h4>
-                    <div class="control-item">
-                        <label>模糊强度</label>
-                        <input type="range" min="0" max="40" value="10" id="modalGlassBlur" oninput="updateGlassEffectModal()">
-                        <div class="value-display" id="modalGlassVal">10px</div>
-                    </div>
-                    <div class="control-item">
-                        <label>透明度</label>
-                        <input type="range" min="0" max="100" value="80" id="modalGlassOpacity" oninput="updateGlassOpacityModal()">
-                        <div class="value-display" id="modalGlassOpacityVal">80%</div>
-                    </div>
-                </div>
-
-                <div class="config-subsection">
-                    <h4>🌈 标题渐变</h4>
-                    <div class="gradient-presets">
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradientModal(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradientModal(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTitleGradientModal(this)"></div>
-                        <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTitleGradientModal(this)"></div>
-                    </div>
-                </div>
-
-                <div class="config-subsection">
-                    <h4>🔘 开始按钮</h4>
-                    <div class="control-row">
-                        <div class="control-item">
-                            <label>颜色 1</label>
-                            <input type="color" id="modalBtn1Color1" value="#00d4ff" oninput="updateBtn1StyleModal()">
-                        </div>
-                        <div class="control-item">
-                            <label>颜色 2</label>
-                            <input type="color" id="modalBtn1Color2" value="#0099ff" oninput="updateBtn1StyleModal()">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="config-subsection">
-                    <h4>🌌 背景</h4>
-                    <div class="control-row">
-                        <div class="control-item">
-                            <label>颜色 1</label>
-                            <input type="color" id="modalBgColor1" value="#1a1a3e" oninput="updateBgStyleModal()">
-                        </div>
-                        <div class="control-item">
-                            <label>颜色 2</label>
-                            <input type="color" id="modalBgColor2" value="#0a0a1a" oninput="updateBgStyleModal()">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         // 创建星星
         function createStars(count) {
@@ -1077,23 +920,6 @@
         function togglePanel(panel) {
             panel.classList.toggle('active');
         }
-
-        // 打开弹窗
-        function openModal() {
-            document.getElementById('modalOverlay').classList.add('active');
-        }
-
-        // 关闭弹窗
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
-        }
-
-        // 点击遮罩关闭
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
 
         // 更新文字
         function update() {
@@ -1126,26 +952,11 @@
             document.getElementById('gameLogo').style.webkitBackgroundClip = 'text';
         }
 
-        // 应用标题渐变（弹窗）
-        function applyTitleGradientModal(el) {
-            applyTitleGradient(el);
-            closeModal();
-        }
-
         // 更新背景样式
         function updateBgStyle() {
             const c1 = document.getElementById('bgColor1').value;
             const c2 = document.getElementById('bgColor2').value;
             document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
-        }
-
-        // 更新背景样式（弹窗）
-        function updateBgStyleModal() {
-            const c1 = document.getElementById('modalBgColor1').value;
-            const c2 = document.getElementById('modalBgColor2').value;
-            document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
-            document.getElementById('bgColor1').value = c1;
-            document.getElementById('bgColor2').value = c2;
         }
 
         // 更新星星
@@ -1175,17 +986,6 @@
             btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
             btn.style.borderRadius = radius + 'px';
             document.getElementById('btn1RadiusVal').textContent = radius + 'px';
-        }
-
-        // 更新按钮 1 样式（弹窗）
-        function updateBtn1StyleModal() {
-            const btn = document.getElementById('btnStart');
-            const c1 = document.getElementById('modalBtn1Color1').value;
-            const c2 = document.getElementById('modalBtn1Color2').value;
-            
-            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
-            document.getElementById('btn1Color1').value = c1;
-            document.getElementById('btn1Color2').value = c2;
         }
 
         // 更新按钮 2 样式
@@ -1234,7 +1034,6 @@
             const value = event.target.value;
             const header = document.querySelector('.header');
             const panels = document.querySelectorAll('.config-panel');
-            const modal = document.querySelector('.modal-content');
             
             header.style.backdropFilter = `blur(${value}px)`;
             header.style.webkitBackdropFilter = `blur(${value}px)`;
@@ -1245,30 +1044,6 @@
             });
             
             document.getElementById('glassVal').textContent = value + 'px';
-            document.getElementById('modalGlassBlur').value = value;
-            document.getElementById('modalGlassVal').textContent = value + 'px';
-        }
-
-        // 更新毛玻璃效果（弹窗）
-        function updateGlassEffectModal() {
-            const value = event.target.value;
-            updateGlassEffectFromModal(value);
-        }
-
-        function updateGlassEffectFromModal(value) {
-            const header = document.querySelector('.header');
-            const panels = document.querySelectorAll('.config-panel');
-            
-            header.style.backdropFilter = `blur(${value}px)`;
-            header.style.webkitBackdropFilter = `blur(${value}px)`;
-            
-            panels.forEach(panel => {
-                panel.style.backdropFilter = `blur(${value/2}px)`;
-                panel.style.webkitBackdropFilter = `blur(${value/2}px)`;
-            });
-            
-            document.getElementById('glassVal').textContent = value + 'px';
-            document.getElementById('modalGlassVal').textContent = value + 'px';
         }
 
         // 更新毛玻璃透明度
@@ -1279,23 +1054,6 @@
             
             header.style.background = `rgba(26, 26, 62, ${opacity})`;
             document.getElementById('glassOpacityVal').textContent = value + '%';
-            document.getElementById('modalGlassOpacity').value = value;
-            document.getElementById('modalGlassOpacityVal').textContent = value + '%';
-        }
-
-        // 更新毛玻璃透明度（弹窗）
-        function updateGlassOpacityModal() {
-            const value = event.target.value;
-            updateGlassOpacityFromModal(value);
-        }
-
-        function updateGlassOpacityFromModal(value) {
-            const header = document.querySelector('.header');
-            const opacity = value / 100;
-            
-            header.style.background = `rgba(26, 26, 62, ${opacity})`;
-            document.getElementById('glassOpacityVal').textContent = value + '%';
-            document.getElementById('modalGlassOpacityVal').textContent = value + '%';
         }
 
         // 按钮点击效果
