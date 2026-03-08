@@ -735,53 +735,51 @@
             const fontConfig = {
                 '粗黑': { 
                     family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
-                    size: '40px', weight: '900', 
-                    textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'normal', fontStretch: 'normal'
+                    size: '36px', weight: '900', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '1px',
+                    fontStyle: 'normal'
                 },
                 '冲击': { 
                     family: "'Impact', 'Arial Black', sans-serif", 
-                    size: '40px', weight: '900', 
-                    textShadow: '3px 3px 0px rgba(0,0,0,0.3)', letterSpacing: '1px',
-                    fontStyle: 'normal', fontStretch: 'condensed'
+                    size: '36px', weight: '900', 
+                    textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '2px',
+                    fontStyle: 'normal'
                 },
                 '优雅': { 
                     family: "'Georgia', 'Times New Roman', serif", 
                     size: '32px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '3px',
-                    fontStyle: 'italic', fontStretch: 'normal'
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'italic'
                 },
                 '圆角': { 
                     family: "'Verdana', 'Microsoft YaHei', sans-serif", 
-                    size: '34px', weight: '600', 
-                    textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'normal', fontStretch: 'normal'
+                    size: '34px', weight: '500', 
+                    textShadow: 'none', letterSpacing: '1px',
+                    fontStyle: 'normal'
                 },
                 '科幻': { 
                     family: "'Arial Black', 'Arial', sans-serif", 
-                    size: '36px', weight: '900', 
-                    textShadow: '0 0 10px #00d4ff, 0 0 20px #00d4ff', letterSpacing: '4px',
-                    fontStyle: 'normal', fontStretch: 'normal',
-                    transform: 'scaleX(1.1)'
+                    size: '34px', weight: '900', 
+                    textShadow: '0 0 15px rgba(0,212,255,0.5)', letterSpacing: '3px',
+                    fontStyle: 'normal'
                 },
                 '漫画': { 
                     family: "'Comic Sans MS', 'Chalkboard', cursive", 
-                    size: '42px', weight: '700', 
-                    textShadow: '2px 2px 0px #ff6b6b', letterSpacing: '2px',
-                    fontStyle: 'normal', fontStretch: 'normal'
+                    size: '36px', weight: '600', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
+                    fontStyle: 'normal'
                 },
                 '像素': { 
                     family: "'Courier New', 'Monaco', monospace", 
-                    size: '24px', weight: '700', 
-                    textShadow: 'none', letterSpacing: '6px',
-                    fontStyle: 'normal', fontStretch: 'normal',
-                    imageRendering: 'pixelated'
+                    size: '26px', weight: '600', 
+                    textShadow: 'none', letterSpacing: '4px',
+                    fontStyle: 'normal'
                 },
                 '手写': { 
                     family: "'Brush Script MT', 'Comic Sans MS', cursive", 
-                    size: '38px', weight: '400', 
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.2)', letterSpacing: '1px',
-                    fontStyle: 'italic', fontStretch: 'normal'
+                    size: '36px', weight: '400', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
+                    fontStyle: 'italic'
                 }
             };
             const fontName = el.textContent.trim();
@@ -797,8 +795,7 @@
             logo.style.textShadow = config.textShadow;
             logo.style.letterSpacing = config.letterSpacing;
             logo.style.fontStyle = config.fontStyle;
-            logo.style.transform = config.transform || 'none';
-            if (config.imageRendering) logo.style.imageRendering = config.imageRendering;
+            logo.style.transform = 'none';
             
             // 强制重绘
             logo.style.display = 'none';
