@@ -398,8 +398,8 @@
                 </div>
             </div>
 
-            <div class="config-panel active">
-                <div class="config-header">
+            <div class="config-panel active" id="fontPanel">
+                <div class="config-header" onclick="togglePanel(this.parentElement, event)">
                     <div class="config-title"><span class="config-icon">📝</span><span>字体设置</span></div>
                     <span class="toggle-icon">▶</span>
                 </div>
@@ -407,15 +407,15 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif;" onclick="applyFont('Arial Black', event)">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif;" onclick="applyFont('Impact', event)">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif;" onclick="applyFont('Georgia', event)">优雅</div>
-                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif;" onclick="applyFont('VAG Rounded', event)">圆角</div>
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif;" onclick="applyFont('Arial Black'); event.stopPropagation();">粗黑</div>
+                            <div class="font-preset" style="font-family: 'Impact', sans-serif;" onclick="applyFont('Impact'); event.stopPropagation();">冲击</div>
+                            <div class="font-preset" style="font-family: 'Georgia', serif;" onclick="applyFont('Georgia'); event.stopPropagation();">优雅</div>
+                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif;" onclick="applyFont('VAG Rounded'); event.stopPropagation();">圆角</div>
                         </div>
                     </div>
                     <div class="config-subsection">
                         <h4>字重</h4>
-                        <select onchange="applyFontWeight(this.value)" onclick="event.stopPropagation()">
+                        <select onchange="applyFontWeight(this.value); event.stopPropagation();">
                             <option value="300">细体</option>
                             <option value="400">常规</option>
                             <option value="600" selected>半粗</option>
@@ -424,7 +424,7 @@
                     </div>
                     <div class="config-subsection">
                         <h4>字间距</h4>
-                        <input type="range" min="0" max="10" value="2" step="0.5" oninput="applyLetterSpacing(this.value)" onclick="event.stopPropagation()">
+                        <input type="range" min="0" max="10" value="2" step="0.5" oninput="applyLetterSpacing(this.value); event.stopPropagation();" onclick="event.stopPropagation()">
                         <div class="value-display" id="letterSpacingVal">2px</div>
                     </div>
                 </div>
