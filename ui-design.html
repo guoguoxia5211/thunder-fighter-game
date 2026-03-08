@@ -43,9 +43,12 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
         }
-        .header-btn.primary { background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: #fff; }
+        .header-btn.primary { background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: #fff; box-shadow: 0 4px 15px rgba(0,212,255,0.3); }
+        .header-btn.primary:hover { transform: translateY(-2px); }
         .header-btn.secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .header-btn.secondary:hover { background: rgba(255,255,255,0.15); }
         .main-container { display: flex; height: 100vh; padding-top: 55px; }
         .preview-section {
             width: 35%;
@@ -79,9 +82,18 @@
             margin-bottom: 12px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s;
         }
         .config-panel.active { background: rgba(255,255,255,0.05); border-color: rgba(0,212,255,0.2); }
-        .config-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .config-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .config-header:hover { background: rgba(255,255,255,0.05); }
         .config-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #fff; }
         .config-icon { font-size: 16px; }
         .toggle-icon { font-size: 16px; color: rgba(255,255,255,0.4); transition: transform 0.3s; }
@@ -90,28 +102,33 @@
         .config-panel.active .config-content { display: block; }
         .config-subsection { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
         .config-subsection:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .config-subsection h4 { font-size: 12px; color: #00d4ff; margin-bottom: 10px; font-weight: 600; }
+        .config-subsection h4 { font-size: 12px; color: #00d4ff; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .control-row { display: flex; gap: 8px; margin-bottom: 12px; }
         .control-item { flex: 1; }
-        .control-item label { display: block; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+        .control-item label { display: block; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; font-weight: 500; }
         .control-item input[type="text"], .control-item input[type="number"] {
-            width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff;
+            width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff; transition: all 0.3s;
         }
-        .control-item input[type="color"] { width: 100%; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px; cursor: pointer; }
-        .control-item input[type="range"] { width: 100%; height: 5px; -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .control-item input:focus { outline: none; border-color: #00d4ff; background: rgba(255,255,255,0.08); }
+        .control-item input[type="color"] { width: 100%; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px; cursor: pointer; background: rgba(255,255,255,0.05); }
+        .control-item input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
         .control-item input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 18px; height: 18px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 50%; cursor: pointer;
+            -webkit-appearance: none; width: 18px; height: 18px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 10px rgba(0,212,255,0.4); transition: all 0.3s;
         }
+        .control-item input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 4px 15px rgba(0,212,255,0.6); }
         .control-item select { width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff; }
-        .value-display { text-align: right; font-size: 10px; color: rgba(0,212,255,0.8); margin-top: 4px; }
-        .gradient-presets, .texture-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+        .value-display { text-align: right; font-size: 10px; color: rgba(0,212,255,0.8); margin-top: 4px; font-weight: 600; }
+        .gradient-presets, .texture-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
         .gradient-preset, .texture-preset {
-            height: 36px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s;
+            height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .gradient-preset.selected, .texture-preset.selected { border-color: #00d4ff; box-shadow: 0 0 10px rgba(0,212,255,0.4); }
+        .gradient-preset:hover, .texture-preset:hover { transform: scale(1.08); }
+        .gradient-preset.selected, .texture-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
         .texture-preset { background-size: cover; background-position: center; }
-        .theme-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .theme-preset { padding: 10px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; text-align: center; font-size: 11px; font-weight: 600; color: #fff; }
+        .theme-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .theme-preset { padding: 12px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; text-align: center; font-size: 12px; font-weight: 600; color: #fff; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .theme-preset:hover { transform: scale(1.05); }
+        .theme-preset.selected { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
         .game-title { text-align: center; padding: 35px 15px 25px; }
         .game-logo {
             font-size: 28px; font-weight: 900;
@@ -120,15 +137,18 @@
             margin-bottom: 6px; letter-spacing: 1px;
             filter: drop-shadow(0 0 10px rgba(0,212,255,0.5));
         }
-        .game-subtitle { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 3px; }
+        .game-subtitle { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; }
         .menu-section { padding: 15px 20px; display: flex; flex-direction: column; gap: 10px; }
         .menu-btn {
             width: 100%; padding: 12px 16px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .menu-btn:hover { transform: translateY(-2px); }
+        .menu-btn:active { transform: translateY(0) scale(0.98); }
         .btn-start { background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: #fff; box-shadow: 0 4px 15px rgba(0,212,255,0.4); }
-        .btn-skin { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); color: #fff; }
-        .btn-achievement { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color: #fff; }
+        .btn-skin { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); color: #fff; box-shadow: 0 4px 15px rgba(255,107,107,0.4); }
+        .btn-achievement { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color: #fff; box-shadow: 0 4px 15px rgba(161,140,209,0.4); }
         .btn-settings { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
         .footer-info { position: absolute; bottom: 15px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.35); }
         .player-level {
@@ -138,12 +158,37 @@
         .stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
         .star { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,0.8); border-radius: 50%; animation: twinkle 2s infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        .texture-overlay {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;
-            opacity: 0.3; mix-blend-mode: overlay;
+        .texture-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.3; mix-blend-mode: overlay; }
+        .grid-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; z-index: 10; }
+        .grid-overlay.active { display: block; background-image: linear-gradient(rgba(0,212,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.15) 1px, transparent 1px); background-size: 20px 20px; }
+        /* 工具栏 */
+        .toolbar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 200;
         }
-        .grid-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; }
-        .grid-overlay.active { display: block; background-image: linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px); background-size: 20px 20px; }
+        .toolbar-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toolbar-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 30px rgba(0,212,255,0.6); }
+        .toolbar-btn:active { transform: scale(0.95); }
+        .toolbar-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
         @media (max-width: 768px) {
             .main-container { flex-direction: column; }
             .preview-section { width: 100%; max-width: none; min-width: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -219,7 +264,7 @@
                 </div>
             </div>
 
-            <div class="config-panel active" onclick="togglePanel(this)">
+            <div class="config-panel active" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">🌌</span><span>背景底纹</span></div>
                     <span class="toggle-icon">▶</span>
@@ -240,13 +285,13 @@
                     </div>
                     <div class="config-subsection">
                         <h4>底纹强度</h4>
-                        <input type="range" min="0" max="100" value="30" oninput="updateTextureOpacity()">
+                        <input type="range" min="0" max="100" value="30" oninput="updateTextureOpacity()" onclick="event.stopPropagation()">
                         <div class="value-display" id="textureOpacityVal">30%</div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">🚀</span><span>开始按钮</span></div>
                     <span class="toggle-icon">▶</span>
@@ -254,25 +299,25 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>文字</h4>
-                        <input type="text" id="btnStartTextInput" value="开始游戏" oninput="updateBtnText('start')">
+                        <input type="text" id="btnStartTextInput" value="开始游戏" oninput="updateBtnText('start')" onclick="event.stopPropagation()">
                     </div>
                     <div class="config-subsection">
                         <h4>颜色</h4>
                         <div class="control-row">
-                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnStartColor1" value="#00d4ff" oninput="updateBtn('start')"></div>
-                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnStartColor2" value="#0099ff" oninput="updateBtn('start')"></div>
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnStartColor1" value="#00d4ff" oninput="updateBtn('start')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnStartColor2" value="#0099ff" oninput="updateBtn('start')" onclick="event.stopPropagation()"></div>
                         </div>
                     </div>
                     <div class="config-subsection">
                         <h4>样式</h4>
                         <label>圆角</label>
-                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('start')">
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('start')" onclick="event.stopPropagation()">
                         <div class="value-display" id="btnStartRadiusVal">10px</div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">👕</span><span>皮肤按钮</span></div>
                     <span class="toggle-icon">▶</span>
@@ -280,25 +325,25 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>文字</h4>
-                        <input type="text" id="btnSkinTextInput" value="皮肤系统" oninput="updateBtnText('skin')">
+                        <input type="text" id="btnSkinTextInput" value="皮肤系统" oninput="updateBtnText('skin')" onclick="event.stopPropagation()">
                     </div>
                     <div class="config-subsection">
                         <h4>颜色</h4>
                         <div class="control-row">
-                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnSkinColor1" value="#ff6b6b" oninput="updateBtn('skin')"></div>
-                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnSkinColor2" value="#ff8e53" oninput="updateBtn('skin')"></div>
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnSkinColor1" value="#ff6b6b" oninput="updateBtn('skin')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnSkinColor2" value="#ff8e53" oninput="updateBtn('skin')" onclick="event.stopPropagation()"></div>
                         </div>
                     </div>
                     <div class="config-subsection">
                         <h4>样式</h4>
                         <label>圆角</label>
-                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('skin')">
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('skin')" onclick="event.stopPropagation()">
                         <div class="value-display" id="btnSkinRadiusVal">10px</div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">🏆</span><span>成就按钮</span></div>
                     <span class="toggle-icon">▶</span>
@@ -306,25 +351,25 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>文字</h4>
-                        <input type="text" id="btnAchieveTextInput" value="成就系统" oninput="updateBtnText('achieve')">
+                        <input type="text" id="btnAchieveTextInput" value="成就系统" oninput="updateBtnText('achieve')" onclick="event.stopPropagation()">
                     </div>
                     <div class="config-subsection">
                         <h4>颜色</h4>
                         <div class="control-row">
-                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnAchieveColor1" value="#a18cd1" oninput="updateBtn('achieve')"></div>
-                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnAchieveColor2" value="#fbc2eb" oninput="updateBtn('achieve')"></div>
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnAchieveColor1" value="#a18cd1" oninput="updateBtn('achieve')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnAchieveColor2" value="#fbc2eb" oninput="updateBtn('achieve')" onclick="event.stopPropagation()"></div>
                         </div>
                     </div>
                     <div class="config-subsection">
                         <h4>样式</h4>
                         <label>圆角</label>
-                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('achieve')">
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('achieve')" onclick="event.stopPropagation()">
                         <div class="value-display" id="btnAchieveRadiusVal">10px</div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">⚙️</span><span>设置按钮</span></div>
                     <span class="toggle-icon">▶</span>
@@ -332,25 +377,25 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>文字</h4>
-                        <input type="text" id="btnSettingsTextInput" value="设置" oninput="updateBtnText('settings')">
+                        <input type="text" id="btnSettingsTextInput" value="设置" oninput="updateBtnText('settings')" onclick="event.stopPropagation()">
                     </div>
                     <div class="config-subsection">
                         <h4>颜色</h4>
                         <div class="control-row">
-                            <div class="control-item"><label>背景</label><input type="color" id="btnSettingsBg" value="#ffffff" style="opacity:0.1" oninput="updateBtn('settings')"></div>
-                            <div class="control-item"><label>边框</label><input type="color" id="btnSettingsBorder" value="#ffffff" oninput="updateBtn('settings')"></div>
+                            <div class="control-item"><label>背景</label><input type="color" id="btnSettingsBg" value="#ffffff" style="opacity:0.1" oninput="updateBtn('settings')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>边框</label><input type="color" id="btnSettingsBorder" value="#ffffff" oninput="updateBtn('settings')" onclick="event.stopPropagation()"></div>
                         </div>
                     </div>
                     <div class="config-subsection">
                         <h4>样式</h4>
                         <label>圆角</label>
-                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('settings')">
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('settings')" onclick="event.stopPropagation()">
                         <div class="value-display" id="btnSettingsRadiusVal">10px</div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">📝</span><span>标题</span></div>
                     <span class="toggle-icon">▶</span>
@@ -358,12 +403,12 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>文字</h4>
-                        <input type="text" id="logoInput" value="雷霆战机" oninput="update()">
-                        <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()" style="margin-top:8px;">
+                        <input type="text" id="logoInput" value="雷霆战机" oninput="update()" onclick="event.stopPropagation()">
+                        <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()" style="margin-top:8px;" onclick="event.stopPropagation()">
                     </div>
                     <div class="config-subsection">
                         <h4>大小</h4>
-                        <input type="range" min="20" max="48" value="28" oninput="updateLogoStyle()">
+                        <input type="range" min="20" max="48" value="28" oninput="updateLogoStyle()" onclick="event.stopPropagation()">
                         <div class="value-display" id="logoSizeVal">28px</div>
                     </div>
                     <div class="config-subsection">
@@ -378,7 +423,7 @@
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">🌌</span><span>背景</span></div>
                     <span class="toggle-icon">▶</span>
@@ -387,14 +432,14 @@
                     <div class="config-subsection">
                         <h4>渐变</h4>
                         <div class="control-row">
-                            <div class="control-item"><label>上</label><input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()"></div>
-                            <div class="control-item"><label>下</label><input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()"></div>
+                            <div class="control-item"><label>上</label><input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>下</label><input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()" onclick="event.stopPropagation()"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">✨</span><span>特效</span></div>
                     <span class="toggle-icon">▶</span>
@@ -402,12 +447,12 @@
                 <div class="config-content">
                     <div class="config-subsection">
                         <h4>星星</h4>
-                        <input type="range" min="0" max="200" value="50" oninput="updateStars()">
+                        <input type="range" min="0" max="200" value="50" oninput="updateStars()" onclick="event.stopPropagation()">
                         <div class="value-display" id="starsVal">50 颗</div>
                     </div>
                     <div class="config-subsection">
                         <h4>发光</h4>
-                        <input type="range" min="0" max="100" value="50" oninput="updateGlow()">
+                        <input type="range" min="0" max="100" value="50" oninput="updateGlow()" onclick="event.stopPropagation()">
                         <div class="value-display" id="glowVal">50%</div>
                     </div>
                 </div>
@@ -415,9 +460,16 @@
         </div>
     </div>
 
+    <!-- 快捷工具栏 -->
+    <div class="toolbar">
+        <button class="toolbar-btn secondary" onclick="toggleAllPanels()" title="展开/收起">📋</button>
+        <button class="toolbar-btn" onclick="toggleGrid()" title="网格线">📐</button>
+    </div>
+
     <script>
         let currentStars = 50;
         let textureOpacity = 0.3;
+        let gridVisible = false;
 
         function createStars(count) {
             const container = document.getElementById('stars');
@@ -432,7 +484,24 @@
             }
         }
 
-        function togglePanel(panel) { panel.classList.toggle('active'); }
+        // 修复面板切换逻辑 - 只有点击标题才切换
+        function togglePanel(panel, event) {
+            // 只有点击 header 才切换
+            if (event.target.closest('.config-header')) {
+                panel.classList.toggle('active');
+            }
+        }
+
+        function toggleAllPanels() {
+            const panels = document.querySelectorAll('.config-panel');
+            const allActive = Array.from(panels).every(p => p.classList.contains('active'));
+            panels.forEach(p => p.classList.toggle('active', !allActive));
+        }
+
+        function toggleGrid() {
+            gridVisible = !gridVisible;
+            document.getElementById('gridOverlay').classList.toggle('active', gridVisible);
+        }
 
         function update() {
             document.getElementById('gameLogo').textContent = document.getElementById('logoInput').value;
@@ -441,7 +510,8 @@
 
         function updateBtnText(type) {
             const map = { start: 'btnStartText', skin: 'btnSkinText', achieve: 'btnAchieveText', settings: 'btnSettingsText' };
-            document.getElementById(map[type]).textContent = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'TextInput').value;
+            const inputId = 'btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'TextInput';
+            document.getElementById(map[type]).textContent = document.getElementById(inputId).value;
         }
 
         function updateBtn(type) {
@@ -452,13 +522,15 @@
                 const borderCol = document.getElementById('btnSettingsBorder').value;
                 bg = bgCol + '11';
                 btn.style.borderColor = borderCol + '33';
-                radius = event.target.value;
+                const slider = event.target.closest('input[type="range"]');
+                radius = slider ? slider.value : 10;
                 document.getElementById('btnSettingsRadiusVal').textContent = radius + 'px';
             } else {
                 const c1 = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'Color1').value;
                 const c2 = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'Color2').value;
                 bg = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
-                radius = event.target.value;
+                const slider = event.target.closest('input[type="range"]');
+                radius = slider ? slider.value : 10;
                 document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'RadiusVal').textContent = radius + 'px';
             }
             btn.style.background = bg;
@@ -487,8 +559,8 @@
 
         function updateStars() {
             const value = event.target.value;
-            currentStars = value;
-            createStars(value);
+            currentStars = parseInt(value);
+            createStars(currentStars);
             document.getElementById('starsVal').textContent = value + '颗';
         }
 
@@ -546,15 +618,21 @@
             });
         }
 
-        function resetDesign() { if (confirm('确定要重置吗？')) location.reload(); }
+        function resetDesign() { if (confirm('确定要重置所有设置吗？')) location.reload(); }
+        
         function exportDesign() {
-            const design = { logo: document.getElementById('gameLogo').textContent, subtitle: document.getElementById('gameSubtitle').textContent };
+            const design = {
+                logo: document.getElementById('gameLogo').textContent,
+                subtitle: document.getElementById('gameSubtitle').textContent,
+                theme: 'custom'
+            };
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'ui-design.json'; a.click();
             URL.revokeObjectURL(url);
         }
 
+        // 初始化
         createStars(50);
         update();
     </script>
