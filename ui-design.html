@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link rel="preconnect" href="https://fonts.font.im">
-    <link rel="dns-prefetch" href="https://fonts.font.im">
-    <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&family=Press+Start+2P&family=Long+Cang&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -330,17 +327,23 @@
 
             <div class="config-panel active">
                 <div class="config-header">
-                    <div class="config-title"><span class="config-icon">🎨</span><span>快捷主题</span></div>
+                    <div class="config-title"><span class="config-icon">🎨</span><span>界面风格</span></div>
                     <span class="toggle-icon">▶</span>
                 </div>
                 <div class="config-content">
                     <div class="theme-presets">
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)" onclick="applyTheme('cyber')">赛博</div>
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTheme('neon')">霓虹</div>
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTheme('ocean')">海洋</div>
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyTheme('sunset')">日落</div>
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" onclick="applyTheme('purple')">紫罗兰</div>
-                        <div class="theme-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTheme('matrix')">矩阵</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%); border: 2px solid #00d4ff;" onclick="applyUIStyle('scifi')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">🚀 科幻未来</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #ff6b6b 0%, #ffe66d 100%); border: 2px solid #fff;" onclick="applyUIStyle('japanese')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">⛩️ 日式和风</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%); border: 2px solid #8b4513;" onclick="applyUIStyle('wasteland')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">☢️ 末日废土</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border: 2px solid #ffb6c1;" onclick="applyUIStyle('cartoon')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">🌸 清新卡通</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -410,14 +413,14 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe'; font-size: 12px;" onclick="selectFont(this)">站酷快乐</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 14px;" onclick="selectFont(this)">马善政毛笔</div>
-                            <div class="font-preset" style="font-family: 'Long Cang'; font-size: 14px;" onclick="selectFont(this)">龙仓草书</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL QingKe HuangYou'; font-size: 13px;" onclick="selectFont(this)">站酷庆科</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL XiaoWei'; font-size: 12px;" onclick="selectFont(this)">站酷小薇</div>
-                            <div class="font-preset" style="font-family: 'Press Start 2P'; font-size: 8px; letter-spacing: 2px;" onclick="selectFont(this)">像素方块</div>
-                            <div class="font-preset" style="font-family: 'Noto Sans SC'; font-size: 12px; font-weight: 900;" onclick="selectFont(this)">思源黑体</div>
-                            <div class="font-preset" style="font-family: 'Noto Sans SC'; font-size: 12px; font-weight: 900; text-shadow: 0 0 3px #00ffff; letter-spacing: 3px;" onclick="selectFont(this)">赛博朋克</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 10px; font-weight: 900;" onclick="selectFont(this)">粗黑体</div>
+                            <div class="font-preset" style="font-family: 'Brush Script MT'; font-size: 11px; font-style: italic;" onclick="selectFont(this)">书法体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 8px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">像素风</div>
+                            <div class="font-preset" style="font-family: 'Georgia'; font-size: 10px; font-style: italic;" onclick="selectFont(this)">优雅宋</div>
+                            <div class="font-preset" style="font-family: 'Helvetica Neue'; font-size: 10px; font-weight: 700;" onclick="selectFont(this)">现代黑</div>
+                            <div class="font-preset" style="font-family: 'Comic Sans MS'; font-size: 11px; font-weight: 600;" onclick="selectFont(this)">可爱体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 10px; font-style: italic; letter-spacing: 2px;" onclick="selectFont(this)">潦草体</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 9px; font-weight: 900; text-shadow: 0 0 3px #00ffff; letter-spacing: 2px;" onclick="selectFont(this)">赛博朋克</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -736,51 +739,51 @@
 
         function selectFont(el) {
             const fontConfig = {
-                '站酷快乐': { 
-                    family: "'ZCOOL KuaiLe', cursive", 
-                    size: '40px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
+                '粗黑体': { 
+                    family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
+                    size: '40px', weight: '900', 
+                    textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '1px',
                     fontStyle: 'normal', transform: 'none'
                 },
-                '马善政毛笔': { 
-                    family: "'Ma Shan Zheng', cursive", 
+                '书法体': { 
+                    family: "'Brush Script MT', 'Comic Sans MS', cursive", 
                     size: '44px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '1px',
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'italic', transform: 'none'
+                },
+                '像素风': { 
+                    family: "'Courier New', 'Monaco', monospace", 
+                    size: '26px', weight: '700', 
+                    textShadow: 'none', letterSpacing: '5px',
                     fontStyle: 'normal', transform: 'none'
                 },
-                '龙仓草书': { 
-                    family: "'Long Cang', cursive", 
-                    size: '46px', weight: '400', 
+                '优雅宋': { 
+                    family: "'Georgia', 'Times New Roman', serif", 
+                    size: '36px', weight: '400', 
                     textShadow: 'none', letterSpacing: '3px',
-                    fontStyle: 'normal', transform: 'none'
+                    fontStyle: 'italic', transform: 'none'
                 },
-                '站酷庆科': { 
-                    family: "'ZCOOL QingKe HuangYou', cursive", 
-                    size: '42px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'normal', transform: 'none'
-                },
-                '站酷小薇': { 
-                    family: "'ZCOOL XiaoWei', serif", 
-                    size: '38px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
-                    fontStyle: 'normal', transform: 'none'
-                },
-                '像素方块': { 
-                    family: "'Press Start 2P', monospace", 
-                    size: '24px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '4px',
-                    fontStyle: 'normal', transform: 'none'
-                },
-                '思源黑体': { 
-                    family: "'Noto Sans SC', sans-serif", 
-                    size: '38px', weight: '900', 
+                '现代黑': { 
+                    family: "'Helvetica Neue', 'Microsoft YaHei', sans-serif", 
+                    size: '38px', weight: '700', 
                     textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '2px',
                     fontStyle: 'normal', transform: 'none'
                 },
+                '可爱体': { 
+                    family: "'Comic Sans MS', 'Chalkboard', cursive", 
+                    size: '40px', weight: '600', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '潦草体': { 
+                    family: "'Courier New', 'Lucida Console', monospace", 
+                    size: '42px', weight: '400', 
+                    textShadow: '2px 2px 0px rgba(0,0,0,0.2)', letterSpacing: '4px',
+                    fontStyle: 'italic', transform: 'skewX(-5deg)'
+                },
                 '赛博朋克': { 
-                    family: "'Noto Sans SC', sans-serif", 
-                    size: '40px', weight: '900', 
+                    family: "'Arial Black', 'Impact', sans-serif", 
+                    size: '38px', weight: '900', 
                     textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #ff00ff, 0 0 40px #ff00ff', letterSpacing: '6px',
                     fontStyle: 'normal', transform: 'scaleX(1.15)'
                 }
@@ -924,26 +927,97 @@
             autoSave();
         }
 
-        function applyTheme(theme) {
-            const themes = {
-                cyber: { bg1: '#1a1a3e', bg2: '#0a0a1a', btns: { start: ['#00d4ff','#0099ff'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } },
-                neon: { bg1: '#2d1b4e', bg2: '#1a0f2e', btns: { start: ['#f093fb','#f5576c'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } },
-                ocean: { bg1: '#1a3a5c', bg2: '#0a1a2e', btns: { start: ['#4facfe','#00f2fe'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } },
-                sunset: { bg1: '#3a1a3e', bg2: '#1a0a1e', btns: { start: ['#fa709a','#fee140'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } },
-                purple: { bg1: '#2a1a4e', bg2: '#1a0a2e', btns: { start: ['#a18cd1','#fbc2eb'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } },
-                matrix: { bg1: '#0a2a1e', bg2: '#0a1a14', btns: { start: ['#43e97b','#38f9d7'], skin: ['#ff6b6b','#ff8e53'], achieve: ['#a18cd1','#fbc2eb'] } }
+        function applyUIStyle(style) {
+            const uiStyles = {
+                'scifi': {
+                    bg: 'linear-gradient(180deg, #0f0c29 0%, #1a1a3e 50%, #0a0a1a 100%)',
+                    btnStart: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)',
+                    btnSkin: 'linear-gradient(135deg, #00ff88 0%, #00cc6a 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #ff00ff 0%, #cc00cc 100%)',
+                    btnSettings: 'rgba(0,212,255,0.1)',
+                    btnBorder: 'rgba(0,212,255,0.3)',
+                    logoGradient: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff00ff 100%)',
+                    logoShadow: '0 0 20px rgba(0,212,255,0.8), 0 0 40px rgba(0,212,255,0.4)',
+                    btnRadius: '12px',
+                    stars: 80
+                },
+                'japanese': {
+                    bg: 'linear-gradient(180deg, #ff6b6b 0%, #ffe66d 50%, #ff6b6b 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff0000 0%, #cc0000 100%)',
+                    btnSkin: 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #ffd700 0%, #ffaa00 100%)',
+                    btnSettings: 'rgba(255,255,255,0.2)',
+                    btnBorder: 'rgba(255,255,255,0.4)',
+                    logoGradient: 'linear-gradient(135deg, #ff0000 0%, #ff6600 50%, #ff0000 100%)',
+                    logoShadow: '0 0 20px rgba(255,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.3)',
+                    btnRadius: '8px',
+                    stars: 30
+                },
+                'wasteland': {
+                    bg: 'linear-gradient(180deg, #8b4513 0%, #cd853f 50%, #daa520 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff4500 0%, #cc3700 100%)',
+                    btnSkin: 'linear-gradient(135deg, #8b7355 0%, #6b5b45 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #cd853f 0%, #a06525 100%)',
+                    btnSettings: 'rgba(139,69,19,0.3)',
+                    btnBorder: 'rgba(139,69,19,0.5)',
+                    logoGradient: 'linear-gradient(135deg, #8b4513 0%, #cd853f 50%, #daa520 100%)',
+                    logoShadow: '0 0 15px rgba(139,69,19,0.8), 3px 3px 6px rgba(0,0,0,0.5)',
+                    btnRadius: '6px',
+                    stars: 20
+                },
+                'cartoon': {
+                    bg: 'linear-gradient(180deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%)',
+                    btnSkin: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    btnSettings: 'rgba(255,255,255,0.5)',
+                    btnBorder: 'rgba(255,255,255,0.6)',
+                    logoGradient: 'linear-gradient(135deg, #ff6b6b 0%, #4facfe 50%, #a18cd1 100%)',
+                    logoShadow: '0 4px 15px rgba(255,107,107,0.4)',
+                    btnRadius: '20px',
+                    stars: 50
+                }
             };
-            const t = themes[theme];
-            document.getElementById('bgColor1').value = t.bg1;
-            document.getElementById('bgColor2').value = t.bg2;
-            updateBgStyle();
             
-            Object.keys(t.btns).forEach(key => {
-                document.getElementById('btn' + key.charAt(0).toUpperCase() + key.slice(1) + 'Color1').value = t.btns[key][0];
-                document.getElementById('btn' + key.charAt(0).toUpperCase() + key.slice(1) + 'Color2').value = t.btns[key][1];
-                updateBtn(key);
-            });
-            showToast('主题：' + theme);
+            const ui = uiStyles[style];
+            if (!ui) return;
+            
+            // 应用背景
+            document.getElementById('preview').style.background = ui.bg;
+            
+            // 应用按钮样式
+            const btnStart = document.getElementById('btnStart');
+            btnStart.style.background = ui.btnStart;
+            btnStart.style.borderRadius = ui.btnRadius;
+            
+            const btnSkin = document.getElementById('btnSkin');
+            btnSkin.style.background = ui.btnSkin;
+            btnSkin.style.borderRadius = ui.btnRadius;
+            
+            const btnAchieve = document.getElementById('btnAchieve');
+            btnAchieve.style.background = ui.btnAchieve;
+            btnAchieve.style.borderRadius = ui.btnRadius;
+            
+            const btnSettings = document.getElementById('btnSettings');
+            btnSettings.style.background = ui.btnSettings;
+            btnSettings.style.borderColor = ui.btnBorder;
+            btnSettings.style.borderRadius = ui.btnRadius;
+            
+            // 应用标题样式
+            const logo = document.getElementById('gameLogo');
+            logo.style.background = ui.logoGradient;
+            logo.style.webkitBackgroundClip = 'text';
+            logo.style.textShadow = ui.logoShadow;
+            
+            // 更新星星数量
+            createStars(ui.stars);
+            
+            // 更新选中状态
+            document.querySelectorAll('.theme-preset').forEach(p => p.style.borderColor = 'transparent');
+            event.target.closest('.theme-preset').style.borderColor = '#fff';
+            
+            showToast('界面：' + (style === 'scifi' ? '科幻未来' : style === 'japanese' ? '日式和风' : style === 'wasteland' ? '末日废土' : '清新卡通'));
+            autoSave();
         }
 
         let saveTimeout;
