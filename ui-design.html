@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>雷霆战机 - UI 配置工具</title>
+    <title>雷霆战机 - UI 设计工具</title>
     <style>
         * {
             margin: 0;
@@ -14,53 +14,66 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #0a0a1a;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
             overflow: hidden;
         }
 
         /* 顶部标题栏 */
         .header {
-            background: rgba(26, 26, 62, 0.8);
+            background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 15px 20px;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0,212,255,0.3);
+            border-bottom: 1px solid rgba(0,212,255,0.2);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            height: 60px;
+            height: 65px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
         }
 
         .header h1 {
-            font-size: 18px;
-            color: #00d4ff;
-            font-weight: 600;
+            font-size: 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .header-btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .header-btn.primary {
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
+            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+        }
+
+        .header-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,212,255,0.5);
         }
 
         .header-btn.secondary {
@@ -69,7 +82,8 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .header-btn:hover {
+        .header-btn.secondary:hover {
+            background: rgba(255,255,255,0.15);
             transform: translateY(-2px);
         }
 
@@ -77,18 +91,18 @@
         .main-container {
             display: flex;
             height: 100vh;
-            padding-top: 60px;
+            padding-top: 65px;
         }
 
         /* 左侧预览区 */
         .preview-section {
-            width: 400px;
-            background: #0f0f1f;
-            padding: 30px 20px;
+            width: 420px;
+            background: rgba(15, 12, 41, 0.5);
+            padding: 40px 25px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            border-right: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.08);
             overflow-y: auto;
             flex-shrink: 0;
         }
@@ -97,71 +111,79 @@
             width: 375px;
             height: 667px;
             background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.1);
             overflow: hidden;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         /* 右侧配置区 */
         .config-section {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 25px;
             background: rgba(26, 26, 62, 0.3);
         }
 
         /* 配置面板 */
         .config-panel {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 12px;
-            margin-bottom: 16px;
+            border-radius: 16px;
+            margin-bottom: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s;
+        }
+
+        .config-panel:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(0,212,255,0.2);
         }
 
         .config-header {
-            padding: 16px 20px;
+            padding: 18px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.02);
             transition: background 0.3s;
         }
 
         .config-header:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
         }
 
         .config-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 15px;
+            gap: 12px;
+            font-size: 16px;
             font-weight: 600;
             color: #fff;
         }
 
         .config-icon {
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .toggle-icon {
             font-size: 18px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.4);
             transition: transform 0.3s;
         }
 
         .config-panel.active .toggle-icon {
             transform: rotate(90deg);
+            color: #00d4ff;
         }
 
         .config-content {
             display: none;
-            padding: 20px;
+            padding: 24px;
         }
 
         .config-panel.active .config-content {
@@ -170,9 +192,9 @@
 
         /* 配置子项 */
         .config-subsection {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
         .config-subsection:last-child {
@@ -182,17 +204,19 @@
         }
 
         .config-subsection h4 {
-            font-size: 13px;
+            font-size: 14px;
             color: #00d4ff;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* 控制项 */
         .control-row {
             display: flex;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .control-item {
@@ -201,30 +225,44 @@
 
         .control-item label {
             display: block;
-            font-size: 12px;
+            font-size: 13px;
             color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .control-item input[type="text"],
         .control-item input[type="number"],
         .control-item select {
             width: 100%;
-            padding: 8px 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            font-size: 14px;
             background: rgba(255,255,255,0.05);
             color: #fff;
+            transition: all 0.3s;
+        }
+
+        .control-item input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(255,255,255,0.08);
         }
 
         .control-item input[type="color"] {
             width: 100%;
-            height: 40px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            padding: 2px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 3px;
             cursor: pointer;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+
+        .control-item input[type="color"]:hover {
+            border-color: rgba(0,212,255,0.5);
         }
 
         .control-item input[type="range"] {
@@ -238,43 +276,53 @@
 
         .control-item input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: #00d4ff;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             border-radius: 50%;
             cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,212,255,0.4);
+            transition: all 0.3s;
+        }
+
+        .control-item input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         .value-display {
             text-align: right;
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 4px;
+            font-size: 12px;
+            color: rgba(0,212,255,0.8);
+            margin-top: 6px;
+            font-weight: 600;
         }
 
         /* 渐变预设 */
         .gradient-presets {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 12px;
         }
 
         .gradient-preset {
-            height: 40px;
-            border-radius: 6px;
+            height: 44px;
+            border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .gradient-preset:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .gradient-preset.selected {
             border-color: #00d4ff;
-            box-shadow: 0 2px 8px rgba(0,212,255,0.4);
+            box-shadow: 0 0 20px rgba(0,212,255,0.4);
+            transform: scale(1.1);
         }
 
         /* 开关 */
@@ -282,19 +330,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 12px 0;
         }
 
         .switch-label {
-            font-size: 13px;
+            font-size: 14px;
             color: rgba(255,255,255,0.8);
+            font-weight: 500;
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 26px;
+            width: 52px;
+            height: 28px;
         }
 
         .switch input {
@@ -312,23 +361,24 @@
             bottom: 0;
             background-color: rgba(255,255,255,0.2);
             transition: .3s;
-            border-radius: 26px;
+            border-radius: 28px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
+            height: 22px;
+            width: 22px;
             left: 3px;
             bottom: 3px;
             background-color: white;
             transition: .3s;
             border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         input:checked + .slider {
-            background-color: #00d4ff;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
         }
 
         input:checked + .slider:before {
@@ -356,11 +406,12 @@
             font-size: 14px;
             color: rgba(255,255,255,0.5);
             letter-spacing: 4px;
+            text-transform: uppercase;
         }
 
         /* 菜单区 */
         .menu-section {
-            padding: 20px 30px;
+            padding: 20px 35px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -370,7 +421,7 @@
             width: 100%;
             padding: 18px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
@@ -380,28 +431,29 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-start {
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0,212,255,0.4);
+            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
         }
 
         .btn-skin {
             background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(255,107,107,0.4);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
         }
 
         .btn-achievement {
             background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(161,140,209,0.4);
+            box-shadow: 0 6px 20px rgba(161,140,209,0.4);
         }
 
         .btn-settings {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.08);
             color: #fff;
             border: 1px solid rgba(255,255,255,0.2);
         }
@@ -414,15 +466,18 @@
             right: 0;
             text-align: center;
             font-size: 11px;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.35);
         }
 
         .player-level {
             display: inline-block;
-            padding: 4px 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
+            padding: 5px 14px;
+            background: rgba(0,212,255,0.15);
+            border-radius: 14px;
             margin-bottom: 8px;
+            border: 1px solid rgba(0,212,255,0.3);
+            color: #00d4ff;
+            font-weight: 600;
         }
 
         /* 星星背景 */
@@ -451,187 +506,144 @@
         }
 
         /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes glow {
-            0%, 100% {
-                box-shadow: 0 4px 20px rgba(0,212,255,0.4);
-            }
-            50% {
-                box-shadow: 0 4px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
-            }
+            0%, 100% { box-shadow: 0 4px 20px rgba(0,212,255,0.4); }
+            50% { box-shadow: 0 4px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3); }
         }
 
         @keyframes rippleEffect {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+            to { transform: scale(4); opacity: 0; }
         }
 
         /* 应用动画 */
-        .game-title {
-            animation: slideInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
-        }
-
-        .game-logo {
-            animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
-        }
-
+        .game-title { animation: slideInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both; }
+        .game-logo { animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both; }
+        
         .menu-btn {
             opacity: 0;
             animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
         }
-
         .menu-btn:nth-child(1) { animation-delay: 0.6s; }
         .menu-btn:nth-child(2) { animation-delay: 0.7s; }
         .menu-btn:nth-child(3) { animation-delay: 0.8s; }
         .menu-btn:nth-child(4) { animation-delay: 0.9s; }
 
-        .footer-info {
-            animation: fadeIn 1s ease-out 1.2s both;
-        }
-
-        .menu-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .menu-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-        }
-
+        .menu-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .menu-btn:hover { transform: translateY(-3px) scale(1.02); }
+        
         .btn-start:hover {
-            box-shadow: 0 6px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
+            box-shadow: 0 8px 30px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.3);
             animation: glow 2s ease-in-out infinite;
         }
+        
+        .btn-skin:hover { box-shadow: 0 8px 30px rgba(255,107,107,0.6); }
+        .btn-achievement:hover { box-shadow: 0 8px 30px rgba(161,140,209,0.6); }
+        .btn-settings:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+        .menu-btn:active { transform: translateY(-1px) scale(0.98); }
 
-        .btn-skin:hover {
-            box-shadow: 0 6px 30px rgba(255,107,107,0.6), 0 0 40px rgba(255,107,107,0.3);
+        /* 快捷操作栏 */
+        .quick-actions {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 200;
         }
 
-        .btn-achievement:hover {
-            box-shadow: 0 6px 30px rgba(161,140,209,0.6), 0 0 40px rgba(161,140,209,0.3);
+        .quick-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-settings:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
+        .quick-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 30px rgba(0,212,255,0.6);
         }
 
-        .menu-btn:active {
-            transform: translateY(-1px) scale(0.98);
+        .quick-btn:active {
+            transform: scale(0.95);
         }
 
-        .menu-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s ease;
+        /* 主题预设 */
+        .theme-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
         }
 
-        .menu-btn:hover::after {
-            left: 100%;
+        .theme-preset {
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
         }
 
-        .game-logo {
-            position: relative;
+        .theme-preset:hover {
+            transform: scale(1.05);
         }
 
-        .game-logo::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
-            animation: glow 3s ease-in-out infinite;
-            z-index: -1;
+        .theme-preset.selected {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
         }
 
         /* 滚动条 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
-        }
-
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
             border-radius: 4px;
         }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        /* 响应式 */
         @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .preview-section {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .config-section {
-                padding: 15px;
-            }
+            .main-container { flex-direction: column; }
+            .preview-section { width: 100%; padding: 25px; }
+            .config-section { padding: 18px; }
         }
     </style>
 </head>
 <body>
     <!-- 顶部标题栏 -->
     <div class="header">
-        <h1>🎮 雷霆战机 - UI 配置工具</h1>
+        <h1>🎮 雷霆战机 - UI 设计工具</h1>
         <div class="header-actions">
             <button class="header-btn secondary" onclick="resetDesign()">🔄 重置</button>
-            <button class="header-btn primary" onclick="exportDesign()">💾 导出</button>
+            <button class="header-btn primary" onclick="exportDesign()">💾 导出配置</button>
         </div>
     </div>
 
@@ -675,8 +687,29 @@
 
         <!-- 右侧配置区 -->
         <div class="config-section">
+            <!-- 快捷主题 -->
+            <div class="config-panel active">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🎨</span>
+                        <span>快捷主题</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="theme-presets">
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)" onclick="applyTheme('cyber')">赛博朋克</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTheme('neon')">霓虹灯</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTheme('ocean')">海洋</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="applyTheme('sunset')">日落</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" onclick="applyTheme('purple')">紫罗兰</div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTheme('matrix')">矩阵</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 美术配置 -->
-            <div class="config-panel active" onclick="togglePanel(this)">
+            <div class="config-panel" onclick="togglePanel(this)">
                 <div class="config-header">
                     <div class="config-title">
                         <span class="config-icon">🎨</span>
@@ -724,20 +757,6 @@
                     </div>
 
                     <div class="config-subsection">
-                        <h4>毛玻璃效果</h4>
-                        <div class="control-item">
-                            <label>模糊强度</label>
-                            <input type="range" min="0" max="40" value="10" oninput="updateGlassEffect()">
-                            <div class="value-display" id="glassVal">10px</div>
-                        </div>
-                        <div class="control-item">
-                            <label>透明度</label>
-                            <input type="range" min="0" max="100" value="80" oninput="updateGlassOpacity()">
-                            <div class="value-display" id="glassOpacityVal">80%</div>
-                        </div>
-                    </div>
-
-                    <div class="config-subsection">
                         <h4>按钮样式</h4>
                         <div class="control-item">
                             <label>开始按钮渐变</label>
@@ -750,36 +769,8 @@
                                 </div>
                             </div>
                             <label style="margin-top:8px">圆角</label>
-                            <input type="range" min="0" max="30" value="12" oninput="updateBtn1Style()">
-                            <div class="value-display" id="btn1RadiusVal">12px</div>
-                        </div>
-                        <div class="control-item" style="margin-top:12px">
-                            <label>皮肤按钮渐变</label>
-                            <div class="control-row">
-                                <div class="control-item">
-                                    <input type="color" id="btn2Color1" value="#ff6b6b" oninput="updateBtn2Style()">
-                                </div>
-                                <div class="control-item">
-                                    <input type="color" id="btn2Color2" value="#ff8e53" oninput="updateBtn2Style()">
-                                </div>
-                            </div>
-                            <label style="margin-top:8px">圆角</label>
-                            <input type="range" min="0" max="30" value="12" oninput="updateBtn2Style()">
-                            <div class="value-display" id="btn2RadiusVal">12px</div>
-                        </div>
-                        <div class="control-item" style="margin-top:12px">
-                            <label>成就按钮渐变</label>
-                            <div class="control-row">
-                                <div class="control-item">
-                                    <input type="color" id="btn3Color1" value="#a18cd1" oninput="updateBtn3Style()">
-                                </div>
-                                <div class="control-item">
-                                    <input type="color" id="btn3Color2" value="#fbc2eb" oninput="updateBtn3Style()">
-                                </div>
-                            </div>
-                            <label style="margin-top:8px">圆角</label>
-                            <input type="range" min="0" max="30" value="12" oninput="updateBtn3Style()">
-                            <div class="value-display" id="btn3RadiusVal">12px</div>
+                            <input type="range" min="0" max="30" value="14" oninput="updateBtn1Style()">
+                            <div class="value-display" id="btn1RadiusVal">14px</div>
                         </div>
                     </div>
                 </div>
@@ -805,57 +796,6 @@
                             <label>副标题</label>
                             <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()">
                         </div>
-                        <div class="control-item">
-                            <label>开始按钮</label>
-                            <input type="text" value="开始游戏" oninput="update()">
-                        </div>
-                        <div class="control-item">
-                            <label>皮肤按钮</label>
-                            <input type="text" value="皮肤系统" oninput="update()">
-                        </div>
-                        <div class="control-item">
-                            <label>成就按钮</label>
-                            <input type="text" value="成就系统" oninput="update()">
-                        </div>
-                        <div class="control-item">
-                            <label>设置按钮</label>
-                            <input type="text" value="设置" oninput="update()">
-                        </div>
-                    </div>
-
-                    <div class="config-subsection">
-                        <h4>玩家信息</h4>
-                        <div class="control-item">
-                            <label>玩家等级显示</label>
-                            <input type="text" value="Lv.99 王牌飞行员" oninput="update()">
-                        </div>
-                        <div class="control-item">
-                            <label>版本号</label>
-                            <input type="text" value="Version 1.0.0" oninput="update()">
-                        </div>
-                    </div>
-
-                    <div class="config-subsection">
-                        <h4>布局设置</h4>
-                        <div class="control-item">
-                            <label>标题上边距</label>
-                            <input type="range" min="20" max="100" value="60" oninput="updatePadding()">
-                            <div class="value-display" id="paddingVal">60px</div>
-                        </div>
-                        <div class="switch-row">
-                            <span class="switch-label">显示星星背景</span>
-                            <label class="switch">
-                                <input type="checkbox" checked onchange="toggleStarsDisplay(this.checked)">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="switch-row">
-                            <span class="switch-label">显示玩家信息</span>
-                            <label class="switch">
-                                <input type="checkbox" checked onchange="toggleFooterDisplay(this.checked)">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -878,31 +818,18 @@
                             <div class="value-display" id="shadowVal">20px</div>
                         </div>
                     </div>
-
-                    <div class="config-subsection">
-                        <h4>动画效果</h4>
-                        <div class="switch-row">
-                            <span class="switch-label">按钮悬停动画</span>
-                            <label class="switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="switch-row">
-                            <span class="switch-label">星星闪烁动画</span>
-                            <label class="switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 快捷操作 -->
+    <div class="quick-actions">
+        <button class="quick-btn" onclick="screenshot()" title="截图">📸</button>
+        <button class="quick-btn" onclick="toggleAllPanels()" title="展开/收起">📋</button>
+    </div>
+
     <script>
-        // 创建星星
         function createStars(count) {
             const container = document.getElementById('stars');
             container.innerHTML = '';
@@ -916,16 +843,19 @@
             }
         }
 
-        // 切换面板
         function togglePanel(panel) {
             panel.classList.toggle('active');
         }
 
-        // 更新文字
+        function toggleAllPanels() {
+            const panels = document.querySelectorAll('.config-panel');
+            const allActive = Array.from(panels).every(p => p.classList.contains('active'));
+            panels.forEach(p => p.classList.toggle('active', !allActive));
+        }
+
         function update() {
             document.getElementById('gameLogo').textContent = document.getElementById('logoInput').value;
             document.getElementById('gameSubtitle').textContent = document.getElementById('subtitleInput').value;
-            
             const inputs = document.querySelectorAll('.config-section input[type="text"]');
             const btns = ['btnStartText', 'btnSkinText', 'btnAchieveText', 'btnSettingsText'];
             inputs.forEach((input, index) => {
@@ -935,165 +865,95 @@
             });
         }
 
-        // 更新标题样式
         function updateLogoStyle() {
             const size = event.target.value;
             document.getElementById('gameLogo').style.fontSize = size + 'px';
             document.getElementById('logoSizeVal').textContent = size + 'px';
         }
 
-        // 应用标题渐变
         function applyTitleGradient(el) {
             document.querySelectorAll('.gradient-preset').forEach(p => p.classList.remove('selected'));
             el.classList.add('selected');
-            
             const bg = getComputedStyle(el).background;
             document.getElementById('gameLogo').style.background = bg;
             document.getElementById('gameLogo').style.webkitBackgroundClip = 'text';
         }
 
-        // 更新背景样式
         function updateBgStyle() {
             const c1 = document.getElementById('bgColor1').value;
             const c2 = document.getElementById('bgColor2').value;
             document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
         }
 
-        // 更新星星
         function updateStars() {
             const value = event.target.value;
             createStars(value);
             document.getElementById('starsVal').textContent = value + '颗';
         }
 
-        // 切换星星显示
-        function toggleStarsDisplay(show) {
-            document.getElementById('stars').style.display = show ? 'block' : 'none';
-        }
-
-        // 切换底部显示
-        function toggleFooterDisplay(show) {
-            document.querySelector('.footer-info').style.display = show ? 'block' : 'none';
-        }
-
-        // 更新按钮 1 样式
         function updateBtn1Style() {
             const btn = document.getElementById('btnStart');
             const c1 = document.getElementById('btn1Color1').value;
             const c2 = document.getElementById('btn1Color2').value;
             const radius = event.target.value;
-            
             btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
             btn.style.borderRadius = radius + 'px';
             document.getElementById('btn1RadiusVal').textContent = radius + 'px';
         }
 
-        // 更新按钮 2 样式
-        function updateBtn2Style() {
-            const btn = document.getElementById('btnSkin');
-            const c1 = document.getElementById('btn2Color1').value;
-            const c2 = document.getElementById('btn2Color2').value;
-            const radius = event.target.value;
-            
-            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
-            btn.style.borderRadius = radius + 'px';
-            document.getElementById('btn2RadiusVal').textContent = radius + 'px';
-        }
-
-        // 更新按钮 3 样式
-        function updateBtn3Style() {
-            const btn = document.getElementById('btnAchieve');
-            const c1 = document.getElementById('btn3Color1').value;
-            const c2 = document.getElementById('btn3Color2').value;
-            const radius = event.target.value;
-            
-            btn.style.background = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
-            btn.style.borderRadius = radius + 'px';
-            document.getElementById('btn3RadiusVal').textContent = radius + 'px';
-        }
-
-        // 更新阴影
         function updateShadow() {
             const value = event.target.value;
-            const btns = document.querySelectorAll('.menu-btn');
-            btns.forEach(btn => {
-                btn.style.boxShadow = `0 4px ${value}px rgba(0,0,0,0.3)`;
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.style.boxShadow = `0 6px ${value}px rgba(0,0,0,0.3)`;
             });
             document.getElementById('shadowVal').textContent = value + 'px';
         }
 
-        // 更新间距
-        function updatePadding() {
-            const value = event.target.value;
-            document.querySelector('.game-title').style.padding = `${value}px 20px 40px`;
-            document.getElementById('paddingVal').textContent = value + 'px';
+        function applyTheme(theme) {
+            const themes = {
+                cyber: { bg1: '#1a1a3e', bg2: '#0a0a1a', btn1: ['#00d4ff', '#0099ff'], title: ['#00d4ff', '#0099ff', '#ff0066'] },
+                neon: { bg1: '#2d1b4e', bg2: '#1a0f2e', btn1: ['#f093fb', '#f5576c'], title: ['#f093fb', '#f5576c', '#ffeb3b'] },
+                ocean: { bg1: '#1a3a5c', bg2: '#0a1a2e', btn1: ['#4facfe', '#00f2fe'], title: ['#4facfe', '#00f2fe', '#00d4ff'] },
+                sunset: { bg1: '#3a1a3e', bg2: '#1a0a1e', btn1: ['#fa709a', '#fee140'], title: ['#fa709a', '#fee140', '#ff6b6b'] },
+                purple: { bg1: '#2a1a4e', bg2: '#1a0a2e', btn1: ['#a18cd1', '#fbc2eb'], title: ['#a18cd1', '#fbc2eb', '#d4a5ff'] },
+                matrix: { bg1: '#0a2a1e', bg2: '#0a1a14', btn1: ['#43e97b', '#38f9d7'], title: ['#43e97b', '#38f9d7', '#00ff88'] }
+            };
+            const t = themes[theme];
+            if (!t) return;
+            document.getElementById('bgColor1').value = t.bg1;
+            document.getElementById('bgColor2').value = t.bg2;
+            document.getElementById('btn1Color1').value = t.btn1[0];
+            document.getElementById('btn1Color2').value = t.btn1[1];
+            updateBgStyle();
+            updateBtn1Style();
+            document.querySelectorAll('.theme-preset').forEach(p => p.classList.remove('selected'));
+            event.target.classList.add('selected');
         }
 
-        // 更新毛玻璃效果
-        function updateGlassEffect() {
-            const value = event.target.value;
-            const header = document.querySelector('.header');
-            const panels = document.querySelectorAll('.config-panel');
-            
-            header.style.backdropFilter = `blur(${value}px)`;
-            header.style.webkitBackdropFilter = `blur(${value}px)`;
-            
-            panels.forEach(panel => {
-                panel.style.backdropFilter = `blur(${value/2}px)`;
-                panel.style.webkitBackdropFilter = `blur(${value/2}px)`;
-            });
-            
-            document.getElementById('glassVal').textContent = value + 'px';
-        }
-
-        // 更新毛玻璃透明度
-        function updateGlassOpacity() {
-            const value = event.target.value;
-            const header = document.querySelector('.header');
-            const opacity = value / 100;
-            
-            header.style.background = `rgba(26, 26, 62, ${opacity})`;
-            document.getElementById('glassOpacityVal').textContent = value + '%';
-        }
-
-        // 按钮点击效果
         function handleClick(btn) {
             const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                background: rgba(255,255,255,0.6);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: rippleEffect 0.6s ease-out;
-                pointer-events: none;
-            `;
-            
+            ripple.style.cssText = `position:absolute;background:rgba(255,255,255,0.6);border-radius:50%;transform:scale(0);animation:rippleEffect 0.6s ease-out;pointer-events:none;`;
             const rect = btn.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
             const size = Math.max(rect.width, rect.height);
-            
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = (x - size/2) + 'px';
             ripple.style.top = (y - size/2) + 'px';
-            
             btn.appendChild(ripple);
             setTimeout(() => ripple.remove(), 600);
-            
             btn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                btn.style.transform = '';
-            }, 150);
+            setTimeout(() => btn.style.transform = '', 150);
         }
 
-        // 重置
+        function screenshot() {
+            alert('截图功能：按 Ctrl+Shift+S 或使用浏览器截图工具');
+        }
+
         function resetDesign() {
-            if (confirm('确定要重置所有设置吗？')) {
-                location.reload();
-            }
+            if (confirm('确定要重置所有设置吗？')) location.reload();
         }
 
-        // 导出
         function exportDesign() {
             const design = {
                 logo: document.getElementById('gameLogo').textContent,
@@ -1105,7 +965,6 @@
                     document.getElementById('btnSettingsText').textContent
                 ]
             };
-            
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1115,11 +974,8 @@
             URL.revokeObjectURL(url);
         }
 
-        // 初始化
         createStars(50);
         update();
-        updateGlassEffect();
-        updateGlassOpacity();
     </script>
 </body>
 </html>
