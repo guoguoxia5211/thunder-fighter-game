@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link rel="preconnect" href="https://fonts.font.im">
-    <link rel="dns-prefetch" href="https://fonts.font.im">
-    <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&family=Press+Start+2P&family=Long+Cang&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -410,12 +407,12 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe'; font-size: 13px;" onclick="selectFont(this)">站酷快乐</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 14px;" onclick="selectFont(this)">马善政毛笔</div>
-                            <div class="font-preset" style="font-family: 'Long Cang'; font-size: 14px;" onclick="selectFont(this)">龙仓草书</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL QingKe HuangYou'; font-size: 13px;" onclick="selectFont(this)">站酷庆科</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL XiaoWei'; font-size: 12px;" onclick="selectFont(this)">站酷小薇</div>
-                            <div class="font-preset" style="font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 2px;" onclick="selectFont(this)">像素方块</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 11px; font-weight: 900;" onclick="selectFont(this)">粗黑体</div>
+                            <div class="font-preset" style="font-family: 'Brush Script MT'; font-size: 13px; font-style: italic;" onclick="selectFont(this)">书法体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 9px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">像素风</div>
+                            <div class="font-preset" style="font-family: 'Georgia'; font-size: 11px; font-style: italic;" onclick="selectFont(this)">优雅宋</div>
+                            <div class="font-preset" style="font-family: 'Helvetica Neue'; font-size: 11px; font-weight: 700;" onclick="selectFont(this)">现代黑</div>
+                            <div class="font-preset" style="font-family: 'Comic Sans MS'; font-size: 12px; font-weight: 600;" onclick="selectFont(this)">可爱体</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -734,40 +731,40 @@
 
         function selectFont(el) {
             const fontConfig = {
-                '站酷快乐': { 
-                    family: "'ZCOOL KuaiLe', cursive", 
-                    size: '38px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
+                '粗黑体': { 
+                    family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
+                    size: '40px', weight: '900', 
+                    textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '1px',
                     fontStyle: 'normal'
                 },
-                '马善政毛笔': { 
-                    family: "'Ma Shan Zheng', cursive", 
-                    size: '42px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '1px',
-                    fontStyle: 'normal'
-                },
-                '龙仓草书': { 
-                    family: "'Long Cang', cursive", 
+                '书法体': { 
+                    family: "'Brush Script MT', 'Comic Sans MS', cursive", 
                     size: '44px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '3px',
-                    fontStyle: 'normal'
-                },
-                '站酷庆科': { 
-                    family: "'ZCOOL QingKe HuangYou', cursive", 
-                    size: '40px', weight: '400', 
                     textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'italic'
+                },
+                '像素风': { 
+                    family: "'Courier New', 'Monaco', monospace", 
+                    size: '26px', weight: '700', 
+                    textShadow: 'none', letterSpacing: '5px',
                     fontStyle: 'normal'
                 },
-                '站酷小薇': { 
-                    family: "'ZCOOL XiaoWei', serif", 
+                '优雅宋': { 
+                    family: "'Georgia', 'Times New Roman', serif", 
                     size: '36px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '2px',
+                    textShadow: 'none', letterSpacing: '3px',
+                    fontStyle: 'italic'
+                },
+                '现代黑': { 
+                    family: "'Helvetica Neue', 'Microsoft YaHei', sans-serif", 
+                    size: '38px', weight: '700', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '2px',
                     fontStyle: 'normal'
                 },
-                '像素方块': { 
-                    family: "'Press Start 2P', monospace", 
-                    size: '24px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '4px',
+                '可爱体': { 
+                    family: "'Comic Sans MS', 'Chalkboard', cursive", 
+                    size: '40px', weight: '600', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
                     fontStyle: 'normal'
                 }
             };
