@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>雷霆战机 - UI 美术设计工具</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 55px;
+        }
+        .header h1 {
+            font-size: 16px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        .header-actions { display: flex; gap: 8px; }
+        .header-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .header-btn.primary { background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: #fff; box-shadow: 0 4px 15px rgba(0,212,255,0.3); }
+        .header-btn.primary:hover { transform: translateY(-2px); }
+        .header-btn.secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .header-btn.secondary:hover { background: rgba(255,255,255,0.15); }
+        .main-container { display: flex; height: 100vh; padding-top: 55px; }
+        .preview-section {
+            width: var(--preview-width, 35%);
+            min-width: 240px;
+            max-width: 450px;
+            background: rgba(15, 12, 41, 0.5);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            overflow-y: auto;
+            transition: width 0.3s;
+        }
+        #preview {
+            width: 100%;
+            max-width: 260px;
+            height: 460px;
+            background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.1);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .config-section { flex: 1; overflow-y: auto; padding: 15px; background: rgba(26, 26, 62, 0.3); }
+        .config-panel {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s;
+        }
+        .config-panel.active { background: rgba(255,255,255,0.05); border-color: rgba(0,212,255,0.2); }
+        .config-panel:hover { border-color: rgba(0,212,255,0.4); }
+        .config-header {
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .config-header:hover { background: rgba(255,255,255,0.05); }
+        .config-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #fff; }
+        .config-icon { font-size: 16px; }
+        .toggle-icon { font-size: 16px; color: rgba(255,255,255,0.4); transition: transform 0.3s; }
+        .config-panel.active .toggle-icon { transform: rotate(90deg); color: #00d4ff; }
+        .config-content { display: none; padding: 16px; }
+        .config-panel.active .config-content { display: block; }
+        .config-subsection { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .config-subsection:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .config-subsection h4 { font-size: 12px; color: #00d4ff; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .control-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .control-item { flex: 1; }
+        .control-item label { display: block; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; font-weight: 500; }
+        .control-item input[type="text"], .control-item input[type="number"], .control-item select {
+            width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; background: rgba(255,255,255,0.05); color: #fff; transition: all 0.3s;
+        }
+        .control-item input:focus, .control-item select:focus { outline: none; border-color: #00d4ff; background: rgba(255,255,255,0.08); }
+        .control-item input[type="color"] { width: 100%; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px; cursor: pointer; background: rgba(255,255,255,0.05); transition: all 0.3s; }
+        .control-item input[type="color"]:hover { border-color: rgba(0,212,255,0.5); }
+        .control-item input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; }
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 18px; height: 18px; background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 10px rgba(0,212,255,0.4); transition: all 0.3s;
+        }
+        .control-item input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 4px 15px rgba(0,212,255,0.6); }
+        .value-display { text-align: right; font-size: 10px; color: rgba(0,212,255,0.8); margin-top: 4px; font-weight: 600; }
+        .gradient-presets, .texture-presets, .font-presets, .layout-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .gradient-preset, .texture-preset, .font-preset, .layout-preset {
+            height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: relative; overflow: hidden;
+        }
+        .gradient-preset:hover, .texture-preset:hover, .font-preset:hover, .layout-preset:hover { transform: scale(1.08); }
+        .gradient-preset.selected, .texture-preset.selected, .font-preset.selected, .layout-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
+        .font-preset, .layout-preset { display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; background: rgba(255,255,255,0.1); }
+        .texture-preset { background-size: cover; background-position: center; }
+        .theme-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .theme-preset { padding: 12px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; text-align: center; font-size: 12px; font-weight: 600; color: #fff; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .theme-preset:hover { transform: scale(1.05); }
+        .theme-preset.selected { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .game-title { text-align: center; padding: 35px 15px 25px; position: relative; }
+        .game-logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 20px rgba(0,212,255,0.8));
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+        .game-logo-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: logoGlow 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes logoGlow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+        .game-subtitle { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; }
+        .menu-section { padding: 15px 20px; display: flex; flex-direction: column; gap: 10px; }
+        .menu-btn {
+            width: 100%; padding: 12px 16px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-btn:hover { transform: translateY(-2px); }
+        .menu-btn:active { transform: translateY(0) scale(0.98); }
+        .btn-start { background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%); color: #fff; box-shadow: 0 4px 15px rgba(0,212,255,0.4); }
+        .btn-skin { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); color: #fff; box-shadow: 0 4px 15px rgba(255,107,107,0.4); }
+        .btn-achievement { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color: #fff; box-shadow: 0 4px 15px rgba(161,140,209,0.4); }
+        .btn-settings { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .footer-info { position: absolute; bottom: 15px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.35); }
+        .player-level {
+            display: inline-block; padding: 4px 10px; background: rgba(0,212,255,0.15); border-radius: 10px;
+            margin-bottom: 6px; border: 1px solid rgba(0,212,255,0.3); color: #00d4ff; font-weight: 600;
+        }
+        .stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
+        .star { position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,0.8); border-radius: 50%; animation: twinkle 2s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .texture-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.3; mix-blend-mode: overlay; }
+        .grid-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; display: none; z-index: 10; }
+        .grid-overlay.active { display: block; background-image: linear-gradient(rgba(0,212,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.15) 1px, transparent 1px); background-size: 20px 20px; }
+        .toolbar { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
+        .toolbar-btn {
+            width: 50px; height: 50px; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            color: #fff; font-size: 20px; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,212,255,0.4);
+            transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .toolbar-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 30px rgba(0,212,255,0.6); }
+        .toolbar-btn:active { transform: scale(0.95); }
+        .toolbar-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+        .toast {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,212,255,0.3);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 300;
+        }
+        .toast.show { transform: translateX(0); }
+        .ripple {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+        @keyframes rippleEffect {
+            to { transform: scale(4); opacity: 0; }
+        }
+        .highlight-border {
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,212,255,0.6);
+            pointer-events: none;
+            animation: highlightPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes highlightPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .preview-section { width: 100%; max-width: none; min-width: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+            #preview { max-width: 300px; height: 533px; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 雷霆战机 UI 美术设计</h1>
+        <div class="header-actions">
+            <button class="header-btn secondary" onclick="resetDesign()">🔄</button>
+            <button class="header-btn primary" onclick="exportDesign()">💾</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">已保存</div>
+
+    <div class="main-container">
+        <div class="preview-section" id="previewSection">
+            <div id="preview">
+                <div class="stars" id="stars"></div>
+                <div class="texture-overlay" id="textureOverlay"></div>
+                <div class="grid-overlay" id="gridOverlay"></div>
+                <div class="game-logo-bg" id="logoBg"></div>
+
+                <div class="game-title">
+                    <div class="game-logo" id="gameLogo">雷霆战机</div>
+                    <div class="game-subtitle" id="gameSubtitle">THUNDER FIGHTER</div>
+                </div>
+
+                <div class="menu-section">
+                    <button class="menu-btn btn-start" id="btnStart" onclick="handleClick(this, event)">
+                        <span>🚀</span>
+                        <span id="btnStartText">开始游戏</span>
+                    </button>
+                    <button class="menu-btn btn-skin" id="btnSkin" onclick="handleClick(this, event)">
+                        <span>👕</span>
+                        <span id="btnSkinText">皮肤系统</span>
+                    </button>
+                    <button class="menu-btn btn-achievement" id="btnAchieve" onclick="handleClick(this, event)">
+                        <span>🏆</span>
+                        <span id="btnAchieveText">成就系统</span>
+                    </button>
+                    <button class="menu-btn btn-settings" id="btnSettings" onclick="handleClick(this, event)">
+                        <span>⚙️</span>
+                        <span id="btnSettingsText">设置</span>
+                    </button>
+                </div>
+
+                <div class="footer-info">
+                    <div class="player-level" id="playerLevel">Lv.99 王牌飞行员</div>
+                    <div id="versionInfo">Version 1.0.0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <div class="config-panel active">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">📐</span><span>布局预设</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="layout-presets">
+                        <div class="layout-preset" onclick="applyLayout('compact', event)">紧凑</div>
+                        <div class="layout-preset selected" onclick="applyLayout('standard', event)">标准</div>
+                        <div class="layout-preset" onclick="applyLayout('spacious', event)">宽敞</div>
+                        <div class="layout-preset" onclick="applyLayout('focus', event)">专注</div>
+                    </div>
+                    <div class="config-subsection" style="margin-top:12px;">
+                        <h4>预览区宽度</h4>
+                        <input type="range" min="25" max="50" value="35" oninput="adjustPreviewWidth(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="previewWidthVal">35%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel active">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">🎨</span><span>界面风格</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="theme-presets">
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%); border: 2px solid #00d4ff;" onclick="applyUIStyle('scifi')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">🚀 科幻未来</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #ff6b6b 0%, #ffe66d 100%); border: 2px solid #fff;" onclick="applyUIStyle('japanese')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">⛩️ 日式和风</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%); border: 2px solid #8b4513;" onclick="applyUIStyle('wasteland')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">☢️ 末日废土</div>
+                        </div>
+                        <div class="theme-preset" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border: 2px solid #ffb6c1;" onclick="applyUIStyle('cartoon')">
+                            <div style="font-size: 10px; color: #fff; padding: 4px;">🌸 清新卡通</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">✨</span><span>标题特效</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>背景光晕</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateLogoGlow(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="logoGlowVal">50%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>文字阴影</h4>
+                        <input type="range" min="0" max="100" value="80" oninput="updateLogoShadow(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="logoShadowVal">80%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>图标装饰</h4>
+                        <label class="switch-row">
+                            <span class="switch-label">显示光晕背景</span>
+                            <label class="switch">
+                                <input type="checkbox" checked onchange="toggleLogoBg(this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">🌌</span><span>背景底纹</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>底纹预设</h4>
+                        <div class="texture-presets">
+                            <div class="texture-preset" style="background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 10px 10px;" onclick="applyTexture('dots')"></div>
+                            <div class="texture-preset" style="background: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px);" onclick="applyTexture('stripes')"></div>
+                            <div class="texture-preset" style="background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);" onclick="applyTexture('vignette')"></div>
+                            <div class="texture-preset" style="background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNCIgaGVpZ2h0PSI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjIiIGN5PSIyIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3N2Zz4=');" onclick="applyTexture('noise')"></div>
+                            <div class="texture-preset" style="background: linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent); background-size: 20px 20px;" onclick="applyTexture('grid')"></div>
+                            <div class="texture-preset" style="background: radial-gradient(ellipse at center, rgba(0,212,255,0.15) 0%, transparent 70%);" onclick="applyTexture('glow')"></div>
+                            <div class="texture-preset" style="background: conic-gradient(from 0deg, rgba(255,255,255,0.05) 0deg 30deg, transparent 30deg 60deg); background-size: 60px 60px;" onclick="applyTexture('radial')"></div>
+                            <div class="texture-preset" style="background: none;" onclick="applyTexture('none')"></div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>底纹强度</h4>
+                        <input type="range" min="0" max="100" value="30" oninput="updateTextureOpacity()" onclick="event.stopPropagation()">
+                        <div class="value-display" id="textureOpacityVal">30%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel active" id="fontPanel">
+                <div class="config-header" onclick="event.stopPropagation(); this.parentElement.classList.toggle('active')">
+                    <div class="config-title"><span class="config-icon">📝</span><span>字体设置</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>标题字体</h4>
+                        <div class="font-presets">
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 10px; font-weight: 900;" onclick="selectFont(this)">粗黑体</div>
+                            <div class="font-preset" style="font-family: 'Brush Script MT'; font-size: 11px; font-style: italic;" onclick="selectFont(this)">书法体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 8px; font-weight: 700; letter-spacing: 2px;" onclick="selectFont(this)">像素风</div>
+                            <div class="font-preset" style="font-family: 'Georgia'; font-size: 10px; font-style: italic;" onclick="selectFont(this)">优雅宋</div>
+                            <div class="font-preset" style="font-family: 'Helvetica Neue'; font-size: 10px; font-weight: 700;" onclick="selectFont(this)">现代黑</div>
+                            <div class="font-preset" style="font-family: 'Comic Sans MS'; font-size: 11px; font-weight: 600;" onclick="selectFont(this)">可爱体</div>
+                            <div class="font-preset" style="font-family: 'Courier New'; font-size: 10px; font-style: italic; letter-spacing: 2px;" onclick="selectFont(this)">潦草体</div>
+                            <div class="font-preset" style="font-family: 'Arial Black'; font-size: 9px; font-weight: 900; text-shadow: 0 0 3px #00ffff; letter-spacing: 2px;" onclick="selectFont(this)">赛博朋克</div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>字重</h4>
+                        <select onchange="applyFontWeight(this.value); event.stopPropagation();">
+                            <option value="300">细体</option>
+                            <option value="400">常规</option>
+                            <option value="600" selected>半粗</option>
+                            <option value="900">特粗</option>
+                        </select>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>字间距</h4>
+                        <input type="range" min="0" max="10" value="2" step="0.5" oninput="applyLetterSpacing(this.value); event.stopPropagation();" onclick="event.stopPropagation()">
+                        <div class="value-display" id="letterSpacingVal">2px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">🚀</span><span>开始按钮</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>文字</h4>
+                        <input type="text" id="btnStartTextInput" value="开始游戏" oninput="updateBtnText('start')" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="config-subsection">
+                        <h4>颜色</h4>
+                        <div class="control-row">
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnStartColor1" value="#00d4ff" oninput="updateBtn('start')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnStartColor2" value="#0099ff" oninput="updateBtn('start')" onclick="event.stopPropagation()"></div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>样式</h4>
+                        <label>圆角</label>
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('start')" onclick="event.stopPropagation()">
+                        <div class="value-display" id="btnStartRadiusVal">10px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">👕</span><span>皮肤按钮</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>文字</h4>
+                        <input type="text" id="btnSkinTextInput" value="皮肤系统" oninput="updateBtnText('skin')" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="config-subsection">
+                        <h4>颜色</h4>
+                        <div class="control-row">
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnSkinColor1" value="#ff6b6b" oninput="updateBtn('skin')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnSkinColor2" value="#ff8e53" oninput="updateBtn('skin')" onclick="event.stopPropagation()"></div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>样式</h4>
+                        <label>圆角</label>
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('skin')" onclick="event.stopPropagation()">
+                        <div class="value-display" id="btnSkinRadiusVal">10px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">🏆</span><span>成就按钮</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>文字</h4>
+                        <input type="text" id="btnAchieveTextInput" value="成就系统" oninput="updateBtnText('achieve')" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="config-subsection">
+                        <h4>颜色</h4>
+                        <div class="control-row">
+                            <div class="control-item"><label>颜色 1</label><input type="color" id="btnAchieveColor1" value="#a18cd1" oninput="updateBtn('achieve')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>颜色 2</label><input type="color" id="btnAchieveColor2" value="#fbc2eb" oninput="updateBtn('achieve')" onclick="event.stopPropagation()"></div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>样式</h4>
+                        <label>圆角</label>
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('achieve')" onclick="event.stopPropagation()">
+                        <div class="value-display" id="btnAchieveRadiusVal">10px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">⚙️</span><span>设置按钮</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>文字</h4>
+                        <input type="text" id="btnSettingsTextInput" value="设置" oninput="updateBtnText('settings')" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="config-subsection">
+                        <h4>颜色</h4>
+                        <div class="control-row">
+                            <div class="control-item"><label>背景</label><input type="color" id="btnSettingsBg" value="#ffffff" style="opacity:0.1" oninput="updateBtn('settings')" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>边框</label><input type="color" id="btnSettingsBorder" value="#ffffff" oninput="updateBtn('settings')" onclick="event.stopPropagation()"></div>
+                        </div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>样式</h4>
+                        <label>圆角</label>
+                        <input type="range" min="0" max="20" value="10" oninput="updateBtn('settings')" onclick="event.stopPropagation()">
+                        <div class="value-display" id="btnSettingsRadiusVal">10px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">📝</span><span>标题</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>文字</h4>
+                        <input type="text" id="logoInput" value="雷霆战机" oninput="update()" onclick="event.stopPropagation()">
+                        <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()" style="margin-top:8px;" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="config-subsection">
+                        <h4>大小</h4>
+                        <input type="range" min="20" max="48" value="28" oninput="updateLogoStyle()" onclick="event.stopPropagation()">
+                        <div class="value-display" id="logoSizeVal">28px</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>渐变</h4>
+                        <div class="gradient-presets">
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="applyTitleGradient(this)"></div>
+                            <div class="gradient-preset" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="applyTitleGradient(this)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">🌌</span><span>背景</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>渐变</h4>
+                        <div class="control-row">
+                            <div class="control-item"><label>上</label><input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()" onclick="event.stopPropagation()"></div>
+                            <div class="control-item"><label>下</label><input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()" onclick="event.stopPropagation()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">✨</span><span>特效</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>星星</h4>
+                        <input type="range" min="0" max="200" value="50" oninput="updateStars()" onclick="event.stopPropagation()">
+                        <div class="value-display" id="starsVal">50 颗</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>发光</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateGlow()" onclick="event.stopPropagation()">
+                        <div class="value-display" id="glowVal">50%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <button class="toolbar-btn secondary" onclick="toggleAllPanels()" title="展开/收起">📋</button>
+        <button class="toolbar-btn" onclick="toggleGrid()" title="网格线">📐</button>
+    </div>
+
+    <script>
+        let currentStars = 50;
+        let textureOpacity = 0.3;
+        let gridVisible = false;
+        let currentFont = 'Arial Black';
+        let currentFontWeight = '600';
+        let logoGlowEnabled = true;
+
+        function createStars(count) {
+            const container = document.getElementById('stars');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        function togglePanel(panel, event) {
+            if (event.target.closest('.config-header')) {
+                panel.classList.toggle('active');
+            }
+        }
+
+        function toggleAllPanels() {
+            const panels = document.querySelectorAll('.config-panel');
+            const allActive = Array.from(panels).every(p => p.classList.contains('active'));
+            panels.forEach(p => p.classList.toggle('active', !allActive));
+            showToast(allActive ? '已收起所有面板' : '已展开所有面板');
+        }
+
+        function toggleGrid() {
+            gridVisible = !gridVisible;
+            document.getElementById('gridOverlay').classList.toggle('active', gridVisible);
+            showToast(gridVisible ? '网格已开启' : '网格已关闭');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function handleClick(btn, event) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = btn.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (x - size/2) + 'px';
+            ripple.style.top = (y - size/2) + 'px';
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+
+            const existing = document.querySelector('.highlight-border');
+            if (existing) existing.remove();
+            
+            const highlight = document.createElement('div');
+            highlight.className = 'highlight-border';
+            btn.appendChild(highlight);
+            setTimeout(() => highlight.remove(), 2000);
+
+            showToast('按钮：' + btn.querySelector('span:last-child').textContent);
+        }
+
+        function applyLayout(layout, event) {
+            const layouts = {
+                compact: 25,
+                standard: 35,
+                spacious: 45,
+                focus: 50
+            };
+            const width = layouts[layout];
+            document.documentElement.style.setProperty('--preview-width', width + '%');
+            document.getElementById('previewWidthVal').textContent = width + '%';
+            document.querySelectorAll('.layout-preset').forEach(p => p.classList.remove('selected'));
+            event.target.classList.add('selected');
+            showToast('布局：' + layout);
+            autoSave();
+        }
+
+        function adjustPreviewWidth(value) {
+            document.documentElement.style.setProperty('--preview-width', value + '%');
+            document.getElementById('previewWidthVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function updateLogoGlow(value) {
+            const glow = document.getElementById('logoBg');
+            const opacity = value / 100;
+            glow.style.opacity = opacity;
+            document.getElementById('logoGlowVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function updateLogoShadow(value) {
+            const shadow = value / 100;
+            const size = 10 + shadow * 15;
+            const alpha = 0.3 + shadow * 0.5;
+            document.getElementById('gameLogo').style.filter = `drop-shadow(0 0 ${size}px rgba(0,212,255,${alpha}))`;
+            document.getElementById('logoShadowVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function toggleLogoBg(show) {
+            logoGlowEnabled = show;
+            document.getElementById('logoBg').style.display = show ? 'block' : 'none';
+            showToast(show ? '光晕已开启' : '光晕已关闭');
+            autoSave();
+        }
+
+        function update() {
+            document.getElementById('gameLogo').textContent = document.getElementById('logoInput').value;
+            document.getElementById('gameSubtitle').textContent = document.getElementById('subtitleInput').value;
+            autoSave();
+        }
+
+        function selectFont(el) {
+            const fontConfig = {
+                '粗黑体': { 
+                    family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
+                    size: '40px', weight: '900', 
+                    textShadow: '0 3px 6px rgba(0,0,0,0.3)', letterSpacing: '1px',
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '书法体': { 
+                    family: "'Brush Script MT', 'Comic Sans MS', cursive", 
+                    size: '44px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'italic', transform: 'none'
+                },
+                '像素风': { 
+                    family: "'Courier New', 'Monaco', monospace", 
+                    size: '26px', weight: '700', 
+                    textShadow: 'none', letterSpacing: '5px',
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '优雅宋': { 
+                    family: "'Georgia', 'Times New Roman', serif", 
+                    size: '36px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '3px',
+                    fontStyle: 'italic', transform: 'none'
+                },
+                '现代黑': { 
+                    family: "'Helvetica Neue', 'Microsoft YaHei', sans-serif", 
+                    size: '38px', weight: '700', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)', letterSpacing: '2px',
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '可爱体': { 
+                    family: "'Comic Sans MS', 'Chalkboard', cursive", 
+                    size: '40px', weight: '600', 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
+                    fontStyle: 'normal', transform: 'none'
+                },
+                '潦草体': { 
+                    family: "'Courier New', 'Lucida Console', monospace", 
+                    size: '42px', weight: '400', 
+                    textShadow: '2px 2px 0px rgba(0,0,0,0.2)', letterSpacing: '4px',
+                    fontStyle: 'italic', transform: 'skewX(-5deg)'
+                },
+                '赛博朋克': { 
+                    family: "'Arial Black', 'Impact', sans-serif", 
+                    size: '38px', weight: '900', 
+                    textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #ff00ff, 0 0 40px #ff00ff', letterSpacing: '6px',
+                    fontStyle: 'normal', transform: 'scaleX(1.15)'
+                }
+            };
+            const fontName = el.textContent.trim();
+            const config = fontConfig[fontName];
+            
+            if (!config) return;
+            
+            currentFont = fontName;
+            const logo = document.getElementById('gameLogo');
+            logo.style.fontFamily = config.family;
+            logo.style.fontSize = config.size;
+            logo.style.fontWeight = config.weight;
+            logo.style.textShadow = config.textShadow;
+            logo.style.letterSpacing = config.letterSpacing;
+            logo.style.fontStyle = config.fontStyle;
+            logo.style.transform = config.transform;
+            
+            // 强制重绘
+            logo.style.display = 'none';
+            logo.offsetHeight;
+            logo.style.display = 'block';
+            
+            document.querySelectorAll('.font-preset').forEach(p => p.classList.remove('selected'));
+            el.classList.add('selected');
+            showToast('字体：' + fontName);
+            autoSave();
+        }
+
+        function applyFontWeight(weight) {
+            currentFontWeight = weight;
+            document.getElementById('gameLogo').style.fontWeight = weight;
+            showToast('字重：' + weight);
+            autoSave();
+        }
+
+        function applyLetterSpacing(value) {
+            document.getElementById('gameLogo').style.letterSpacing = value + 'px';
+            document.getElementById('letterSpacingVal').textContent = value + 'px';
+            autoSave();
+        }
+
+        function updateBtnText(type) {
+            const map = { start: 'btnStartText', skin: 'btnSkinText', achieve: 'btnAchieveText', settings: 'btnSettingsText' };
+            const inputId = 'btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'TextInput';
+            document.getElementById(map[type]).textContent = document.getElementById(inputId).value;
+            autoSave();
+        }
+
+        function updateBtn(type) {
+            const btn = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1));
+            let bg, radius;
+            if (type === 'settings') {
+                const bgCol = document.getElementById('btnSettingsBg').value;
+                const borderCol = document.getElementById('btnSettingsBorder').value;
+                bg = bgCol + '11';
+                btn.style.borderColor = borderCol + '33';
+                const slider = event.target.closest('input[type="range"]');
+                radius = slider ? slider.value : 10;
+                document.getElementById('btnSettingsRadiusVal').textContent = radius + 'px';
+            } else {
+                const c1 = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'Color1').value;
+                const c2 = document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'Color2').value;
+                bg = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
+                const slider = event.target.closest('input[type="range"]');
+                radius = slider ? slider.value : 10;
+                document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1) + 'RadiusVal').textContent = radius + 'px';
+            }
+            btn.style.background = bg;
+            btn.style.borderRadius = radius + 'px';
+            autoSave();
+        }
+
+        function updateLogoStyle() {
+            const size = event.target.value;
+            document.getElementById('gameLogo').style.fontSize = size + 'px';
+            document.getElementById('logoSizeVal').textContent = size + 'px';
+            autoSave();
+        }
+
+        function applyTitleGradient(el) {
+            document.querySelectorAll('.gradient-preset').forEach(p => p.classList.remove('selected'));
+            el.classList.add('selected');
+            const bg = getComputedStyle(el).background;
+            document.getElementById('gameLogo').style.background = bg;
+            document.getElementById('gameLogo').style.webkitBackgroundClip = 'text';
+            showToast('渐变已应用');
+            autoSave();
+        }
+
+        function updateBgStyle() {
+            const c1 = document.getElementById('bgColor1').value;
+            const c2 = document.getElementById('bgColor2').value;
+            document.getElementById('preview').style.background = `linear-gradient(180deg, ${c1} 0%, ${c2} 100%)`;
+            autoSave();
+        }
+
+        function updateStars() {
+            const value = event.target.value;
+            currentStars = parseInt(value);
+            createStars(currentStars);
+            document.getElementById('starsVal').textContent = value + '颗';
+            autoSave();
+        }
+
+        function updateGlow() {
+            const value = event.target.value;
+            const glow = value / 50;
+            document.getElementById('gameLogo').style.textShadow = `0 0 ${10 + glow*10}px rgba(0,212,255,${0.3 + glow*0.2})`;
+            document.getElementById('glowVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function applyTexture(type) {
+            document.querySelectorAll('.texture-preset').forEach(p => p.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            const textures = {
+                dots: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                stripes: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px)',
+                vignette: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                noise: 'url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNCIgaGVpZ2h0PSI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjIiIGN5PSIyIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3N2Zz4=")',
+                grid: 'linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)',
+                glow: 'radial-gradient(ellipse at center, rgba(0,212,255,0.15) 0%, transparent 70%)',
+                radial: 'conic-gradient(from 0deg, rgba(255,255,255,0.05) 0deg 30deg, transparent 30deg 60deg)',
+                none: 'none'
+            };
+            
+            document.getElementById('textureOverlay').style.background = textures[type];
+            document.getElementById('textureOverlay').style.backgroundSize = type === 'grid' ? '20px 20px' : (type === 'radial' ? '60px 60px' : 'auto');
+            showToast('底纹：' + type);
+            autoSave();
+        }
+
+        function updateTextureOpacity() {
+            const value = event.target.value;
+            textureOpacity = value / 100;
+            document.getElementById('textureOverlay').style.opacity = textureOpacity;
+            document.getElementById('textureOpacityVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function applyUIStyle(style) {
+            const uiStyles = {
+                'scifi': {
+                    bg: 'linear-gradient(180deg, #0f0c29 0%, #1a1a3e 50%, #0a0a1a 100%)',
+                    btnStart: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 100%)',
+                    btnSkin: 'linear-gradient(135deg, #00ff88 0%, #00cc6a 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #ff00ff 0%, #cc00cc 100%)',
+                    btnSettings: 'rgba(0,212,255,0.1)',
+                    btnBorder: 'rgba(0,212,255,0.3)',
+                    logoGradient: 'linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff00ff 100%)',
+                    logoShadow: '0 0 20px rgba(0,212,255,0.8), 0 0 40px rgba(0,212,255,0.4)',
+                    btnRadius: '12px',
+                    stars: 80
+                },
+                'japanese': {
+                    bg: 'linear-gradient(180deg, #ff6b6b 0%, #ffe66d 50%, #ff6b6b 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff0000 0%, #cc0000 100%)',
+                    btnSkin: 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #ffd700 0%, #ffaa00 100%)',
+                    btnSettings: 'rgba(255,255,255,0.2)',
+                    btnBorder: 'rgba(255,255,255,0.4)',
+                    logoGradient: 'linear-gradient(135deg, #ff0000 0%, #ff6600 50%, #ff0000 100%)',
+                    logoShadow: '0 0 20px rgba(255,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.3)',
+                    btnRadius: '8px',
+                    stars: 30
+                },
+                'wasteland': {
+                    bg: 'linear-gradient(180deg, #8b4513 0%, #cd853f 50%, #daa520 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff4500 0%, #cc3700 100%)',
+                    btnSkin: 'linear-gradient(135deg, #8b7355 0%, #6b5b45 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #cd853f 0%, #a06525 100%)',
+                    btnSettings: 'rgba(139,69,19,0.3)',
+                    btnBorder: 'rgba(139,69,19,0.5)',
+                    logoGradient: 'linear-gradient(135deg, #8b4513 0%, #cd853f 50%, #daa520 100%)',
+                    logoShadow: '0 0 15px rgba(139,69,19,0.8), 3px 3px 6px rgba(0,0,0,0.5)',
+                    btnRadius: '6px',
+                    stars: 20
+                },
+                'cartoon': {
+                    bg: 'linear-gradient(180deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%)',
+                    btnStart: 'linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%)',
+                    btnSkin: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    btnAchieve: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                    btnSettings: 'rgba(255,255,255,0.5)',
+                    btnBorder: 'rgba(255,255,255,0.6)',
+                    logoGradient: 'linear-gradient(135deg, #ff6b6b 0%, #4facfe 50%, #a18cd1 100%)',
+                    logoShadow: '0 4px 15px rgba(255,107,107,0.4)',
+                    btnRadius: '20px',
+                    stars: 50
+                }
+            };
+            
+            const ui = uiStyles[style];
+            if (!ui) return;
+            
+            // 应用背景
+            document.getElementById('preview').style.background = ui.bg;
+            
+            // 应用按钮样式
+            const btnStart = document.getElementById('btnStart');
+            btnStart.style.background = ui.btnStart;
+            btnStart.style.borderRadius = ui.btnRadius;
+            
+            const btnSkin = document.getElementById('btnSkin');
+            btnSkin.style.background = ui.btnSkin;
+            btnSkin.style.borderRadius = ui.btnRadius;
+            
+            const btnAchieve = document.getElementById('btnAchieve');
+            btnAchieve.style.background = ui.btnAchieve;
+            btnAchieve.style.borderRadius = ui.btnRadius;
+            
+            const btnSettings = document.getElementById('btnSettings');
+            btnSettings.style.background = ui.btnSettings;
+            btnSettings.style.borderColor = ui.btnBorder;
+            btnSettings.style.borderRadius = ui.btnRadius;
+            
+            // 应用标题样式
+            const logo = document.getElementById('gameLogo');
+            logo.style.background = ui.logoGradient;
+            logo.style.webkitBackgroundClip = 'text';
+            logo.style.textShadow = ui.logoShadow;
+            
+            // 更新星星数量
+            createStars(ui.stars);
+            
+            // 更新选中状态
+            document.querySelectorAll('.theme-preset').forEach(p => p.style.borderColor = 'transparent');
+            event.target.closest('.theme-preset').style.borderColor = '#fff';
+            
+            showToast('界面：' + (style === 'scifi' ? '科幻未来' : style === 'japanese' ? '日式和风' : style === 'wasteland' ? '末日废土' : '清新卡通'));
+            autoSave();
+        }
+
+        let saveTimeout;
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                showToast('💾 自动保存');
+            }, 500);
+        }
+
+        function resetDesign() { 
+            if (confirm('确定要重置所有设置吗？')) {
+                location.reload();
+            }
+        }
+        
+        function exportDesign() {
+            const design = {
+                logo: document.getElementById('gameLogo').textContent,
+                subtitle: document.getElementById('gameSubtitle').textContent,
+                font: currentFont,
+                fontWeight: currentFontWeight,
+                layout: document.getElementById('previewWidthVal').textContent,
+                theme: 'custom'
+            };
+            const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'ui-design.json'; a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ 已导出');
+        }
+
+        createStars(50);
+        update();
+    </script>
+</body>
+</html>
