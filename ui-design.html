@@ -4,21 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @font-face {
-            font-family: 'ZCOOL KuaiLe';
-            src: local('ZCOOL KuaiLe'), local('ZCOOLKuaiLe-Regular');
-        }
-        @font-face {
-            font-family: 'Ma Shan Zheng';
-            src: local('Ma Shan Zheng'), local('MaShanZheng-Regular');
-        }
-        @font-face {
-            font-family: 'Press Start 2P';
-            src: local('Press Start 2P'), local('PressStart2P-Regular');
-        }
-</style>
+    <link href="https://fonts.font.im/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -427,10 +413,10 @@
                             <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 10px; font-weight: 400; font-style: italic;" onclick="selectFont(this)">优雅</div>
                             <div class="font-preset" style="font-family: 'Verdana', sans-serif; font-size: 10px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
                             <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 10px; font-weight: 900; text-shadow: 0 0 3px #00d4ff; letter-spacing: 2px;" onclick="selectFont(this)">科幻</div>
-                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe', cursive; font-size: 12px; font-weight: 400;" onclick="selectFont(this)">漫画</div>
-                            <div class="font-preset" style="font-family: 'Press Start 2P', monospace; font-size: 8px; font-weight: 400; letter-spacing: 2px;" onclick="selectFont(this)">像素</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng', cursive; font-size: 13px; font-weight: 400;" onclick="selectFont(this)">手写</div>
-                            <div class="font-preset" style="font-family: 'Ma Shan Zheng', cursive; font-size: 12px; font-weight: 400; letter-spacing: 2px;" onclick="selectFont(this)">潦草</div>
+                            <div class="font-preset" style="font-family: 'ZCOOL KuaiLe'; font-size: 14px;" onclick="selectFont(this)">漫画</div>
+                            <div class="font-preset" style="font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 2px;" onclick="selectFont(this)">像素</div>
+                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 15px;" onclick="selectFont(this)">手写</div>
+                            <div class="font-preset" style="font-family: 'Ma Shan Zheng'; font-size: 14px; letter-spacing: 2px;" onclick="selectFont(this)">潦草</div>
                             <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 10px; font-weight: 900; text-shadow: 0 0 5px #ff6600, 0 0 10px #ff3300; letter-spacing: 3px;" onclick="selectFont(this)">机甲</div>
                             <div class="font-preset" style="font-family: 'Times New Roman', serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;" onclick="selectFont(this)">复古</div>
                             <div class="font-preset" style="font-family: 'Trebuchet MS', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);" onclick="selectFont(this)">极简</div>
@@ -783,27 +769,27 @@
                     fontStyle: 'normal'
                 },
                 '漫画': { 
-                    family: "'ZCOOL KuaiLe', 'Comic Sans MS', cursive", 
+                    family: "'ZCOOL KuaiLe', cursive", 
                     size: '38px', weight: '400', 
-                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '2px',
+                    textShadow: 'none', letterSpacing: '2px',
                     fontStyle: 'normal'
                 },
                 '像素': { 
-                    family: "'Press Start 2P', 'Courier New', monospace", 
-                    size: '24px', weight: '400', 
+                    family: "'Press Start 2P', monospace", 
+                    size: '22px', weight: '400', 
                     textShadow: 'none', letterSpacing: '4px',
                     fontStyle: 'normal'
                 },
                 '手写': { 
-                    family: "'Ma Shan Zheng', 'Brush Script MT', cursive", 
+                    family: "'Ma Shan Zheng', cursive", 
                     size: '40px', weight: '400', 
-                    textShadow: '0 2px 4px rgba(0,0,0,0.15)', letterSpacing: '1px',
+                    textShadow: 'none', letterSpacing: '1px',
                     fontStyle: 'normal'
                 },
                 '潦草': { 
-                    family: "'Ma Shan Zheng', 'Papyrus', cursive", 
+                    family: "'Ma Shan Zheng', cursive", 
                     size: '38px', weight: '400', 
-                    textShadow: 'none', letterSpacing: '3px',
+                    textShadow: 'none', letterSpacing: '4px',
                     fontStyle: 'normal'
                 },
                 '机甲': { 
