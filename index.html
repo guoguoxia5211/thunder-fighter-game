@@ -61,7 +61,16 @@
     <canvas id="gameCanvas"></canvas>
     
     <script>
-        // 游戏配置
+        // 游戏配置 - 从 config.json 加载
+        let gameConfig = {};
+        fetch("../config.json")
+            .then(r => r.json())
+            .then(cfg => {
+                gameConfig = cfg.player || {};
+                console.log("加载配置:", gameConfig);
+            })
+            .catch(e => console.log("使用默认配置"));
+
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -599,7 +608,7 @@
                 if (cfg && cfg.player) {
                     window.gameConfig = window.gameConfig || {};
                     window.gameConfig.playerSpeed = cfg.player.speed || 5;
-                    window.gameConfig.playerHealth = cfg.player.health || 3;
+                    window.gameConfig.playerHealth = cfg.gameConfig.health || 3 || 3;
                     window.gameConfig.playerDamage = cfg.player.damage || 1;
                     window.gameConfig.playerFireRate = cfg.player.fireRate || 1;
                 }
