@@ -399,7 +399,7 @@
             </div>
 
             <div class="config-panel active" id="fontPanel">
-                <div class="config-header" onclick="togglePanel(this.parentElement, event)">
+                <div class="config-header" onclick="event.stopPropagation(); this.parentElement.classList.toggle('active')">
                     <div class="config-title"><span class="config-icon">📝</span><span>字体设置</span></div>
                     <span class="toggle-icon">▶</span>
                 </div>
