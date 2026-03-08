@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>雷霆战机 - UI 设计工具</title>
+    <title>雷霆战机 - UI 美术设计工具</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,6 @@
             overflow: hidden;
         }
 
-        /* 顶部标题栏 */
         .header {
             background: rgba(15, 12, 41, 0.95);
             backdrop-filter: blur(20px);
@@ -57,7 +56,6 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
         .header-btn.primary {
@@ -71,18 +69,16 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* 主容器 - 左右布局 */
         .main-container {
             display: flex;
             height: 100vh;
             padding-top: 55px;
         }
 
-        /* 左侧预览区 */
         .preview-section {
-            width: 45%;
-            min-width: 280px;
-            max-width: 420px;
+            width: 35%;
+            min-width: 260px;
+            max-width: 380px;
             background: rgba(15, 12, 41, 0.5);
             padding: 20px;
             display: flex;
@@ -94,18 +90,16 @@
 
         #preview {
             width: 100%;
-            max-width: 280px;
-            height: 500px;
+            max-width: 260px;
+            height: 460px;
             background: linear-gradient(180deg, #1a1a3e 0%, #0a0a1a 100%);
-            border-radius: 18px;
+            border-radius: 16px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.1);
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(255,255,255,0.1);
-            transform-origin: top center;
         }
 
-        /* 右侧配置区 */
         .config-section {
             flex: 1;
             overflow-y: auto;
@@ -113,7 +107,6 @@
             background: rgba(26, 26, 62, 0.3);
         }
 
-        /* 配置面板 */
         .config-panel {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(10px);
@@ -146,9 +139,7 @@
             color: #fff;
         }
 
-        .config-icon {
-            font-size: 16px;
-        }
+        .config-icon { font-size: 16px; }
 
         .toggle-icon {
             font-size: 16px;
@@ -166,11 +157,8 @@
             padding: 16px;
         }
 
-        .config-panel.active .config-content {
-            display: block;
-        }
+        .config-panel.active .config-content { display: block; }
 
-        /* 配置子项 */
         .config-subsection {
             margin-bottom: 16px;
             padding-bottom: 16px;
@@ -190,16 +178,13 @@
             font-weight: 600;
         }
 
-        /* 控制项 */
         .control-row {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
 
-        .control-item {
-            flex: 1;
-        }
+        .control-item { flex: 1; }
 
         .control-item label {
             display: block;
@@ -208,7 +193,8 @@
             margin-bottom: 4px;
         }
 
-        .control-item input[type="text"] {
+        .control-item input[type="text"],
+        .control-item input[type="number"] {
             width: 100%;
             padding: 8px 10px;
             border: 1px solid rgba(255,255,255,0.15);
@@ -244,6 +230,16 @@
             cursor: pointer;
         }
 
+        .control-item select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            font-size: 13px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+
         .value-display {
             text-align: right;
             font-size: 10px;
@@ -251,7 +247,6 @@
             margin-top: 4px;
         }
 
-        /* 渐变预设 */
         .gradient-presets {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -271,7 +266,6 @@
             box-shadow: 0 0 10px rgba(0,212,255,0.4);
         }
 
-        /* 主题预设 */
         .theme-presets {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -289,33 +283,56 @@
             color: #fff;
         }
 
-        .theme-preset.selected {
-            border-color: #fff;
+        .effect-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
         }
 
-        /* 游戏标题区 */
+        .effect-preset {
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            text-align: center;
+            font-size: 11px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .effect-preset:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(0,212,255,0.5);
+        }
+
+        .effect-preset.active {
+            background: rgba(0,212,255,0.2);
+            border-color: #00d4ff;
+        }
+
         .game-title {
             text-align: center;
-            padding: 40px 15px 30px;
+            padding: 35px 15px 25px;
         }
 
         .game-logo {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: 1px;
+            filter: drop-shadow(0 0 10px rgba(0,212,255,0.5));
         }
 
         .game-subtitle {
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(255,255,255,0.5);
             letter-spacing: 3px;
         }
 
-        /* 菜单区 */
         .menu-section {
             padding: 15px 20px;
             display: flex;
@@ -340,6 +357,7 @@
         .btn-start {
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
             color: #fff;
+            box-shadow: 0 4px 15px rgba(0,212,255,0.4);
         }
 
         .btn-skin {
@@ -358,7 +376,6 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* 底部信息 */
         .footer-info {
             position: absolute;
             bottom: 15px;
@@ -380,7 +397,6 @@
             font-weight: 600;
         }
 
-        /* 星星背景 */
         .stars {
             position: absolute;
             top: 0;
@@ -404,53 +420,49 @@
             50% { opacity: 1; }
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .preview-section {
-                width: 100%;
-                max-width: none;
-                min-width: auto;
-                padding: 15px;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-            }
-
-            #preview {
-                max-width: 320px;
-                height: 568px;
-            }
-
-            .config-section {
-                padding: 12px;
-            }
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            display: none;
         }
 
-        /* 滚动条 */
+        .grid-overlay.active {
+            display: block;
+            background-image: 
+                linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .preview-section { width: 100%; max-width: none; min-width: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+            #preview { max-width: 300px; height: 533px; }
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
     </style>
 </head>
 <body>
-    <!-- 顶部标题栏 -->
     <div class="header">
-        <h1>🎮 雷霆战机 UI 设计</h1>
+        <h1>🎮 雷霆战机 UI 美术设计</h1>
         <div class="header-actions">
             <button class="header-btn secondary" onclick="resetDesign()">🔄</button>
             <button class="header-btn primary" onclick="exportDesign()">💾</button>
         </div>
     </div>
 
-    <!-- 主容器 -->
     <div class="main-container">
-        <!-- 左侧预览 -->
         <div class="preview-section">
             <div id="preview">
                 <div class="stars" id="stars"></div>
+                <div class="grid-overlay" id="gridOverlay"></div>
 
                 <div class="game-title">
                     <div class="game-logo" id="gameLogo">雷霆战机</div>
@@ -483,9 +495,7 @@
             </div>
         </div>
 
-        <!-- 右侧配置 -->
         <div class="config-section">
-            <!-- 快捷主题 -->
             <div class="config-panel active">
                 <div class="config-header">
                     <div class="config-title">
@@ -506,23 +516,131 @@
                 </div>
             </div>
 
-            <!-- 标题样式 -->
             <div class="config-panel active" onclick="togglePanel(this)">
                 <div class="config-header">
                     <div class="config-title">
-                        <span class="config-icon">📝</span>
-                        <span>标题</span>
+                        <span class="config-icon">✨</span>
+                        <span>光影效果</span>
                     </div>
                     <span class="toggle-icon">▶</span>
                 </div>
                 <div class="config-content">
                     <div class="config-subsection">
-                        <h4>大小</h4>
-                        <input type="range" min="24" max="48" value="32" oninput="updateLogoStyle()">
-                        <div class="value-display" id="logoSizeVal">32px</div>
+                        <h4>环境光</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateAmbientLight()">
+                        <div class="value-display" id="ambientVal">50%</div>
                     </div>
                     <div class="config-subsection">
-                        <h4>渐变</h4>
+                        <h4>发光强度</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateGlow()">
+                        <div class="value-display" id="glowVal">50%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>阴影</h4>
+                        <input type="range" min="0" max="100" value="30" oninput="updateShadow()">
+                        <div class="value-display" id="shadowVal">30%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🎭</span>
+                        <span>色彩校正</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>饱和度</h4>
+                        <input type="range" min="0" max="200" value="100" oninput="updateSaturate()">
+                        <div class="value-display" id="saturateVal">100%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>对比度</h4>
+                        <input type="range" min="50" max="150" value="100" oninput="updateContrast()">
+                        <div class="value-display" id="contrastVal">100%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>色温</h4>
+                        <div class="control-row">
+                            <div class="control-item">
+                                <input type="color" id="warmColor" value="#ffd700" oninput="updateColorTemp()">
+                            </div>
+                            <div class="control-item">
+                                <input type="color" id="coolColor" value="#4169e1" oninput="updateColorTemp()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">🌌</span>
+                        <span>粒子特效</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>星星密度</h4>
+                        <input type="range" min="0" max="200" value="50" oninput="updateStars()">
+                        <div class="value-display" id="starsVal">50 颗</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>星星大小</h4>
+                        <input type="range" min="1" max="5" value="2" oninput="updateStarSize()">
+                        <div class="value-display" id="starSizeVal">2px</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>闪烁频率</h4>
+                        <select onchange="updateTwinkleSpeed(this.value)">
+                            <option value="3">慢</option>
+                            <option value="2" selected>中</option>
+                            <option value="1">快</option>
+                        </select>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>特效预设</h4>
+                        <div class="effect-presets">
+                            <div class="effect-preset" onclick="applyEffect('starry')">星空</div>
+                            <div class="effect-preset" onclick="applyEffect('meteor')">流星</div>
+                            <div class="effect-preset" onclick="applyEffect('nebula')">星云</div>
+                            <div class="effect-preset" onclick="applyEffect('void')">虚空</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this)">
+                <div class="config-header">
+                    <div class="config-title">
+                        <span class="config-icon">📐</span>
+                        <span>构图辅助</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>网格线</h4>
+                        <label class="switch-row">
+                            <span class="switch-label">显示网格</span>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleGrid(this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>标题样式</h4>
+                        <input type="range" min="20" max="48" value="28" oninput="updateLogoStyle()">
+                        <div class="value-display" id="logoSizeVal">28px</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>标题渐变</h4>
                         <div class="gradient-presets">
                             <div class="gradient-preset" style="background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%)" onclick="applyTitleGradient(this)"></div>
                             <div class="gradient-preset" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="applyTitleGradient(this)"></div>
@@ -533,43 +651,11 @@
                 </div>
             </div>
 
-            <!-- 背景 -->
-            <div class="config-panel" onclick="togglePanel(this)">
-                <div class="config-header">
-                    <div class="config-title">
-                        <span class="config-icon">🌌</span>
-                        <span>背景</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="config-content">
-                    <div class="config-subsection">
-                        <h4>颜色</h4>
-                        <div class="control-row">
-                            <div class="control-item">
-                                <label>上</label>
-                                <input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()">
-                            </div>
-                            <div class="control-item">
-                                <label>下</label>
-                                <input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="config-subsection">
-                        <h4>星星</h4>
-                        <input type="range" min="0" max="100" value="50" oninput="updateStars()">
-                        <div class="value-display" id="starsVal">50 颗</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 按钮 -->
             <div class="config-panel" onclick="togglePanel(this)">
                 <div class="config-header">
                     <div class="config-title">
                         <span class="config-icon">🔘</span>
-                        <span>按钮</span>
+                        <span>按钮美术</span>
                     </div>
                     <span class="toggle-icon">▶</span>
                 </div>
@@ -593,23 +679,27 @@
                 </div>
             </div>
 
-            <!-- 文字 -->
             <div class="config-panel" onclick="togglePanel(this)">
                 <div class="config-header">
                     <div class="config-title">
-                        <span class="config-icon">⚙️</span>
-                        <span>文字</span>
+                        <span class="config-icon">🌌</span>
+                        <span>背景</span>
                     </div>
                     <span class="toggle-icon">▶</span>
                 </div>
                 <div class="config-content">
                     <div class="config-subsection">
-                        <label>标题</label>
-                        <input type="text" id="logoInput" value="雷霆战机" oninput="update()">
-                    </div>
-                    <div class="config-subsection">
-                        <label>副标题</label>
-                        <input type="text" id="subtitleInput" value="THUNDER FIGHTER" oninput="update()">
+                        <h4>渐变</h4>
+                        <div class="control-row">
+                            <div class="control-item">
+                                <label>上</label>
+                                <input type="color" id="bgColor1" value="#1a1a3e" oninput="updateBgStyle()">
+                            </div>
+                            <div class="control-item">
+                                <label>下</label>
+                                <input type="color" id="bgColor2" value="#0a0a1a" oninput="updateBgStyle()">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -617,6 +707,10 @@
     </div>
 
     <script>
+        let currentStars = 50;
+        let starSize = 2;
+        let twinkleSpeed = 2;
+
         function createStars(count) {
             const container = document.getElementById('stars');
             container.innerHTML = '';
@@ -625,6 +719,9 @@
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
+                star.style.width = starSize + 'px';
+                star.style.height = starSize + 'px';
+                star.style.animationDuration = twinkleSpeed + 's';
                 star.style.animationDelay = Math.random() * 2 + 's';
                 container.appendChild(star);
             }
@@ -661,8 +758,66 @@
 
         function updateStars() {
             const value = event.target.value;
+            currentStars = value;
             createStars(value);
             document.getElementById('starsVal').textContent = value + '颗';
+        }
+
+        function updateStarSize() {
+            const value = event.target.value;
+            starSize = value;
+            createStars(currentStars);
+            document.getElementById('starSizeVal').textContent = value + 'px';
+        }
+
+        function updateTwinkleSpeed(value) {
+            twinkleSpeed = value;
+            createStars(currentStars);
+        }
+
+        function updateAmbientLight() {
+            const value = event.target.value;
+            document.getElementById('preview').style.filter = `brightness(${50 + parseInt(value)/2}%)`;
+            document.getElementById('ambientVal').textContent = value + '%';
+        }
+
+        function updateGlow() {
+            const value = event.target.value;
+            const glow = value / 50;
+            document.getElementById('gameLogo').style.textShadow = `0 0 ${10 + glow*10}px rgba(0,212,255,${0.3 + glow*0.2})`;
+            document.getElementById('glowVal').textContent = value + '%';
+        }
+
+        function updateShadow() {
+            const value = event.target.value;
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.style.boxShadow = `0 4px ${value/3}px rgba(0,0,0,0.3)`;
+            });
+            document.getElementById('shadowVal').textContent = value + '%';
+        }
+
+        function updateSaturate() {
+            const value = event.target.value;
+            document.getElementById('preview').style.filter = `saturate(${value}%)`;
+            document.getElementById('saturateVal').textContent = value + '%';
+        }
+
+        function updateContrast() {
+            const value = event.target.value;
+            const preview = document.getElementById('preview');
+            const current = preview.style.filter || '';
+            preview.style.filter = current.replace(/contrast\(\d+%\)/, '') + ` contrast(${value}%)`;
+            document.getElementById('contrastVal').textContent = value + '%';
+        }
+
+        function updateColorTemp() {
+            const warm = document.getElementById('warmColor').value;
+            const cool = document.getElementById('coolColor').value;
+            document.getElementById('preview').style.background = `linear-gradient(180deg, ${warm}22 0%, ${cool}22 100%)`;
+        }
+
+        function toggleGrid(show) {
+            document.getElementById('gridOverlay').classList.toggle('active', show);
         }
 
         function updateBtn1Style() {
@@ -693,6 +848,24 @@
             updateBtn1Style();
         }
 
+        function applyEffect(effect) {
+            document.querySelectorAll('.effect-preset').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const effects = {
+                starry: { stars: 100, size: 2, speed: 2 },
+                meteor: { stars: 30, size: 3, speed: 1 },
+                nebula: { stars: 80, size: 3, speed: 3 },
+                void: { stars: 10, size: 1, speed: 4 }
+            };
+            
+            const e = effects[effect];
+            document.getElementById('stars').value = e.stars;
+            starSize = e.size;
+            twinkleSpeed = e.speed;
+            createStars(e.stars);
+        }
+
         function resetDesign() {
             if (confirm('确定要重置吗？')) location.reload();
         }
@@ -712,7 +885,6 @@
         }
 
         createStars(50);
-        update();
     </script>
 </body>
 </html>
