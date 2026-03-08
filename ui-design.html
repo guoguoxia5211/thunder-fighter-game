@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
-    <link href="https://fonts.googleapis.cnpmjs.org/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap" rel="stylesheet">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap');</style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -409,14 +407,14 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 14px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 14px; font-weight: 900;" onclick="selectFont(this)">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 13px; font-weight: 400;" onclick="selectFont(this)">优雅</div>
-                            <div class="font-preset" style="font-family: 'VAG Rounded', sans-serif; font-size: 13px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
-                            <div class="font-preset" style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;" onclick="selectFont(this)">科幻</div>
-                            <div class="font-preset" style="font-family: 'Bangers', cursive; font-size: 16px; font-weight: 400;" onclick="selectFont(this)">漫画</div>
-                            <div class="font-preset" style="font-family: 'Press Start 2P', cursive; font-size: 12px; font-weight: 400;" onclick="selectFont(this)">像素</div>
-                            <div class="font-preset" style="font-family: 'Pacifico', cursive; font-size: 15px; font-weight: 400;" onclick="selectFont(this)">手写</div>
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 12px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
+                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 12px; font-weight: 900; text-shadow: 1px 1px 0 rgba(0,0,0,0.3);" onclick="selectFont(this)">冲击</div>
+                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 11px; font-weight: 400; font-style: italic;" onclick="selectFont(this)">优雅</div>
+                            <div class="font-preset" style="font-family: 'Verdana', sans-serif; font-size: 11px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 11px; font-weight: 900; text-shadow: 0 0 3px #00d4ff; letter-spacing: 2px;" onclick="selectFont(this)">科幻</div>
+                            <div class="font-preset" style="font-family: 'Comic Sans MS', cursive; font-size: 13px; font-weight: 700; text-shadow: 1px 1px 0 #ff6b6b;" onclick="selectFont(this)">漫画</div>
+                            <div class="font-preset" style="font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; letter-spacing: 3px;" onclick="selectFont(this)">像素</div>
+                            <div class="font-preset" style="font-family: 'Brush Script MT', cursive; font-size: 13px; font-weight: 400; font-style: italic;" onclick="selectFont(this)">手写</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -735,14 +733,56 @@
 
         function selectFont(el) {
             const fontConfig = {
-                '粗黑': { family: "'Arial Black', 'Helvetica Neue', sans-serif", size: '36px', weight: '900', transform: 'none' },
-                '冲击': { family: "'Impact', 'Haettenschweiler', sans-serif", size: '36px', weight: '900', transform: 'scaleX(1.1)' },
-                '优雅': { family: "'Georgia', 'Times New Roman', serif", size: '28px', weight: '400', transform: 'none' },
-                '圆角': { family: "'Verdana', 'Geneva', sans-serif", size: '30px', weight: '500', transform: 'none' },
-                '科幻': { family: "'Orbitron', 'Arial Black', sans-serif", size: '32px', weight: '700', transform: 'none' },
-                '漫画': { family: "'Bangers', 'Comic Sans MS', cursive", size: '38px', weight: '400', transform: 'none' },
-                '像素': { family: "'Press Start 2P', 'Courier New', monospace", size: '22px', weight: '400', transform: 'none' },
-                '手写': { family: "'Pacifico', 'Brush Script MT', cursive", size: '34px', weight: '400', transform: 'none' }
+                '粗黑': { 
+                    family: "'Arial Black', 'Microsoft YaHei', sans-serif", 
+                    size: '40px', weight: '900', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'normal', fontStretch: 'normal'
+                },
+                '冲击': { 
+                    family: "'Impact', 'Arial Black', sans-serif", 
+                    size: '40px', weight: '900', 
+                    textShadow: '3px 3px 0px rgba(0,0,0,0.3)', letterSpacing: '1px',
+                    fontStyle: 'normal', fontStretch: 'condensed'
+                },
+                '优雅': { 
+                    family: "'Georgia', 'Times New Roman', serif", 
+                    size: '32px', weight: '400', 
+                    textShadow: 'none', letterSpacing: '3px',
+                    fontStyle: 'italic', fontStretch: 'normal'
+                },
+                '圆角': { 
+                    family: "'Verdana', 'Microsoft YaHei', sans-serif", 
+                    size: '34px', weight: '600', 
+                    textShadow: 'none', letterSpacing: '2px',
+                    fontStyle: 'normal', fontStretch: 'normal'
+                },
+                '科幻': { 
+                    family: "'Arial Black', 'Arial', sans-serif", 
+                    size: '36px', weight: '900', 
+                    textShadow: '0 0 10px #00d4ff, 0 0 20px #00d4ff', letterSpacing: '4px',
+                    fontStyle: 'normal', fontStretch: 'normal',
+                    transform: 'scaleX(1.1)'
+                },
+                '漫画': { 
+                    family: "'Comic Sans MS', 'Chalkboard', cursive", 
+                    size: '42px', weight: '700', 
+                    textShadow: '2px 2px 0px #ff6b6b', letterSpacing: '2px',
+                    fontStyle: 'normal', fontStretch: 'normal'
+                },
+                '像素': { 
+                    family: "'Courier New', 'Monaco', monospace", 
+                    size: '24px', weight: '700', 
+                    textShadow: 'none', letterSpacing: '6px',
+                    fontStyle: 'normal', fontStretch: 'normal',
+                    imageRendering: 'pixelated'
+                },
+                '手写': { 
+                    family: "'Brush Script MT', 'Comic Sans MS', cursive", 
+                    size: '38px', weight: '400', 
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.2)', letterSpacing: '1px',
+                    fontStyle: 'italic', fontStretch: 'normal'
+                }
             };
             const fontName = el.textContent.trim();
             const config = fontConfig[fontName];
@@ -754,8 +794,11 @@
             logo.style.fontFamily = config.family;
             logo.style.fontSize = config.size;
             logo.style.fontWeight = config.weight;
-            logo.style.transform = config.transform;
-            logo.style.letterSpacing = fontName === '像素' ? '4px' : '2px';
+            logo.style.textShadow = config.textShadow;
+            logo.style.letterSpacing = config.letterSpacing;
+            logo.style.fontStyle = config.fontStyle;
+            logo.style.transform = config.transform || 'none';
+            if (config.imageRendering) logo.style.imageRendering = config.imageRendering;
             
             // 强制重绘
             logo.style.display = 'none';
