@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>雷霆战机 - UI 美术设计工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Press+Start+2P&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -407,10 +408,14 @@
                     <div class="config-subsection">
                         <h4>标题字体</h4>
                         <div class="font-presets">
-                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 16px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
-                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 16px; font-weight: 900;" onclick="selectFont(this)">冲击</div>
-                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 14px; font-weight: 400;" onclick="selectFont(this)">优雅</div>
-                            <div class="font-preset" style="font-family: 'VAG Rounded', 'Arial Rounded MT Bold', sans-serif; font-size: 15px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
+                            <div class="font-preset" style="font-family: 'Arial Black', sans-serif; font-size: 14px; font-weight: 900;" onclick="selectFont(this)">粗黑</div>
+                            <div class="font-preset" style="font-family: 'Impact', sans-serif; font-size: 14px; font-weight: 900;" onclick="selectFont(this)">冲击</div>
+                            <div class="font-preset" style="font-family: 'Georgia', serif; font-size: 13px; font-weight: 400;" onclick="selectFont(this)">优雅</div>
+                            <div class="font-preset" style="font-family: 'VAG Rounded', sans-serif; font-size: 13px; font-weight: 600;" onclick="selectFont(this)">圆角</div>
+                            <div class="font-preset" style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;" onclick="selectFont(this)">科幻</div>
+                            <div class="font-preset" style="font-family: 'Bangers', cursive; font-size: 16px; font-weight: 400;" onclick="selectFont(this)">漫画</div>
+                            <div class="font-preset" style="font-family: 'Press Start 2P', cursive; font-size: 12px; font-weight: 400;" onclick="selectFont(this)">像素</div>
+                            <div class="font-preset" style="font-family: 'Pacifico', cursive; font-size: 15px; font-weight: 400;" onclick="selectFont(this)">手写</div>
                         </div>
                     </div>
                     <div class="config-subsection">
@@ -732,7 +737,11 @@
                 '粗黑': { family: "'Arial Black', 'Microsoft YaHei', sans-serif", size: '32px', weight: '900' },
                 '冲击': { family: "'Impact', 'Arial Black', sans-serif", size: '32px', weight: '900' },
                 '优雅': { family: "'Georgia', 'Times New Roman', serif", size: '30px', weight: '400' },
-                '圆角': { family: "'VAG Rounded', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif", size: '30px', weight: '600' }
+                '圆角': { family: "'VAG Rounded', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif", size: '30px', weight: '600' },
+                '科幻': { family: "'Orbitron', sans-serif", size: '30px', weight: '700' },
+                '漫画': { family: "'Bangers', cursive", size: '34px', weight: '400' },
+                '像素': { family: "'Press Start 2P', cursive", size: '24px', weight: '400' },
+                '手写': { family: "'Pacifico', cursive", size: '32px', weight: '400' }
             };
             const fontName = el.textContent.trim();
             const config = fontConfig[fontName];
