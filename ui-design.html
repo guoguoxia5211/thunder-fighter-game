@@ -312,10 +312,10 @@
                 </div>
                 <div class="config-content">
                     <div class="layout-presets">
-                        <div class="layout-preset" onclick="applyLayout('compact')">紧凑</div>
-                        <div class="layout-preset selected" onclick="applyLayout('standard')">标准</div>
-                        <div class="layout-preset" onclick="applyLayout('spacious')">宽敞</div>
-                        <div class="layout-preset" onclick="applyLayout('focus')">专注</div>
+                        <div class="layout-preset" onclick="applyLayout('compact', event)">紧凑</div>
+                        <div class="layout-preset selected" onclick="applyLayout('standard', event)">标准</div>
+                        <div class="layout-preset" onclick="applyLayout('spacious', event)">宽敞</div>
+                        <div class="layout-preset" onclick="applyLayout('focus', event)">专注</div>
                     </div>
                     <div class="config-subsection" style="margin-top:12px;">
                         <h4>预览区宽度</h4>
@@ -398,7 +398,7 @@
                 </div>
             </div>
 
-            <div class="config-panel" onclick="togglePanel(this, event)">
+            <div class="config-panel active">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">📝</span><span>字体设置</span></div>
                     <span class="toggle-icon">▶</span>
@@ -675,7 +675,7 @@
             showToast('按钮：' + btn.querySelector('span:last-child').textContent);
         }
 
-        function applyLayout(layout) {
+        function applyLayout(layout, event) {
             const layouts = {
                 compact: 25,
                 standard: 35,
