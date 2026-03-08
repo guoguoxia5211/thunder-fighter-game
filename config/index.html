@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 - 配置系统 v1.4.1</title>
+    <title>⚡ 雷霆战机 - 配置系统 v1.4.2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -324,11 +324,10 @@
     
     <script>
         const GITHUB_REPO = 'guoguoxia5211/thunder-fighter-game';
-        // 从 localStorage 读取 Token
         let githubToken = localStorage.getItem('github_token') || '';
         
         let config = {
-            version: "1.4.1",
+            version: "1.4.2",
             player: { speed: 5, health: 3, damage: 1, fireRate: 1 },
             enemies: { spawnRate: 5 },
             game: { gravity: 0.8 }
@@ -336,53 +335,68 @@
         
         let uploadedFiles = {};
         
-        window.onload = function() {
-            // 检查是否有 Token
-            if (!githubToken) {
-                showStatus('⚠️ 请先保存 GitHub Token', 'error');
-                setTimeout(() => {
-                    alert('⚠️ 首次使用需要 GitHub Token\n\n请前往:\nhttps://github.com/settings/tokens\n\n生成 Token 后保存');
-                }, 1000);
-            }
-            
-            // 从 localStorage 加载配置
+        // 从 localStorage 加载配置
+        function loadConfig() {
             try {
                 const saved = localStorage.getItem('thunder_config');
                 if (saved) {
                     const cfg = JSON.parse(saved);
-                    if (cfg && cfg.player) {
-                        config.player = cfg.player;
+                    config = cfg;
+                    
+                    // 更新滑块和显示值
+                    if (cfg.player) {
                         document.getElementById('speed').value = cfg.player.speed || 5;
                         document.getElementById('value_speed').textContent = cfg.player.speed || 5;
                         document.getElementById('current_speed').textContent = cfg.player.speed || 5;
+                        
                         document.getElementById('health').value = cfg.player.health || 3;
                         document.getElementById('value_health').textContent = cfg.player.health || 3;
                         document.getElementById('current_health').textContent = cfg.player.health || 3;
+                        
                         document.getElementById('damage').value = cfg.player.damage || 1;
                         document.getElementById('value_damage').textContent = cfg.player.damage || 1;
                         document.getElementById('current_damage').textContent = cfg.player.damage || 1;
+                        
                         document.getElementById('fireRate').value = cfg.player.fireRate || 1;
                         document.getElementById('value_fireRate').textContent = cfg.player.fireRate || 1;
                         document.getElementById('current_fireRate').textContent = cfg.player.fireRate || 1;
                     }
-                    if (cfg && cfg.enemies) {
-                        config.enemies = cfg.enemies;
+                    
+                    if (cfg.enemies) {
                         document.getElementById('spawnRate').value = cfg.enemies.spawnRate || 5;
                         document.getElementById('value_spawnRate').textContent = cfg.enemies.spawnRate || 5;
                         document.getElementById('current_spawnRate').textContent = cfg.enemies.spawnRate || 5;
                     }
-                    if (cfg && cfg.game) {
-                        config.game = cfg.game;
+                    
+                    if (cfg.game) {
                         document.getElementById('gravity').value = cfg.game.gravity || 0.8;
                         document.getElementById('value_gravity').textContent = cfg.game.gravity || 0.8;
                         document.getElementById('current_gravity').textContent = cfg.game.gravity || 0.8;
                     }
+                    
                     console.log('加载配置:', config);
+                    return true;
                 }
             } catch (e) {
                 console.log('加载配置失败:', e);
             }
-            showStatus('✅ 已加载上次配置', 'success');
+            return false;
+        }
+        
+        window.onload = function() {
+            // 检查 Token
+            if (!githubToken) {
+                showStatus('⚠️ 请先保存 GitHub Token', 'error');
+            }
+            
+            // 加载配置
+            const loaded = loadConfig();
+            if (loaded) {
+                showStatus('✅ 已加载上次配置', 'success');
+            } else {
+                showStatus('ℹ️ 使用默认配置', 'info');
+            }
+            
             loadCurrentPreviews();
         };
         
@@ -402,6 +416,9 @@
             if (key === 'fireRate') config.player.fireRate = parseFloat(value);
             if (key === 'spawnRate') config.enemies.spawnRate = parseFloat(value);
             if (key === 'gravity') config.game.gravity = parseFloat(value);
+            
+            // 保存到 localStorage
+            localStorage.setItem('thunder_config', JSON.stringify(config));
             
             sendConfigToPreview();
         }
