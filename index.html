@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ 雷霆战机 v1.3.0</title>
+    <title>⚡ 雷霆战机 v1.4.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; overflow: hidden; touch-action: none; font-family: 'Arial', sans-serif; }
@@ -32,7 +32,7 @@
     
     <div id="startScreen">
         <h1>⚡ 雷霆战机 ⚡</h1>
-        <div id="version">v1.3.0 - 配置同步修复版</div>
+        <div id="version">v1.4.0 - 配置同步修复版</div>
         <p>🎮 触摸屏幕控制飞机移动<br>🔫 自动发射子弹<br>🎲 Roguelike 升级系统<br>💰 金币永久成长</p>
         <button id="startBtn">开始游戏</button>
     </div>
@@ -59,17 +59,30 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        // 游戏配置 - 从配置页面同步
-        window.gameConfig = {
-            playerSpeed: 5,
-            playerHealth: 3,
+        // 游戏配置 - 从 localStorage 加载
+        const defaultConfig = {
             playerDamage: 1,
+            playerHealth: 3,
+            playerSpeed: 5,
             playerFireRate: 1,
             enemySpawnRate: 5,
             gravity: 0.8
         };
         
-        // 监听配置更新
+        // 从 localStorage 加载配置
+        try {
+            const saved = localStorage.getItem('thunder_config');
+            if (saved) {
+                window.gameConfig = JSON.parse(saved);
+                console.log('加载缓存配置:', window.gameConfig);
+            } else {
+                window.gameConfig = defaultConfig;
+            }
+        } catch (e) {
+            window.gameConfig = defaultConfig;
+        }
+        
+        // 监听配置更新（从配置页面）
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'UPDATE_CONFIG') {
                 const cfg = event.data.config;
@@ -85,6 +98,8 @@
                 if (cfg && cfg.game) {
                     window.gameConfig.gravity = cfg.game.gravity || 0.8;
                 }
+                // 保存到 localStorage
+                localStorage.setItem('thunder_config', JSON.stringify(window.gameConfig));
                 console.log('配置已更新:', window.gameConfig);
             }
         });
@@ -118,6 +133,7 @@
         let enemies = [];
         let enemyBullets = [];
         let particles = [];
+        let stars = [];
         
         const upgradePool = [
             { id: 'bulletSpeed', name: '🚀 子弹加速', desc: '子弹速度 +20%', apply: () => { playerUpgrades.bulletSpeed += 0.2; } },
@@ -157,7 +173,7 @@
         
         function drawPlayer() {
             ctx.shadowBlur = 20;
-            ctx.shadowColor = player.color;
+            ctx.shadowColor = '#4ecdc4';
             
             ctx.fillStyle = '#4ecdc4';
             ctx.beginPath();
@@ -192,7 +208,7 @@
                     vy: -12 * playerUpgrades.bulletSpeed - Math.cos(angle) * 3,
                     width: 6,
                     height: 20,
-                    damage: (window.gameConfig && window.gameConfig.playerDamage ? window.gameConfig.playerDamage : 1) * playerUpgrades.bulletDamage,
+                    damage: window.gameConfig.playerDamage * playerUpgrades.bulletDamage,
                     color: '#f1c40f'
                 });
             }
@@ -486,7 +502,7 @@
         function startGame() {
             gameRunning = true;
             score = 0;
-            lives = (window.gameConfig && window.gameConfig.playerHealth) ? window.gameConfig.playerHealth : 3;
+            lives = window.gameConfig.playerHealth || 3;
             level = 1;
             gold = 0;
             exp = 0;
@@ -524,22 +540,7 @@
             document.getElementById('startScreen').classList.remove('hidden');
         });
         
-        function loadAllAssets(callback) {
-            const gameAssets = {
-                bg: { src: '', loaded: false },
-                player: { src: '', loaded: false },
-                enemy_slime: { src: '', loaded: false },
-                enemy_mushroom: { src: '', loaded: false },
-                enemy_elite: { src: '', loaded: false },
-                enemy_boss: { src: '', loaded: false }
-            };
-            callback();
-        }
-        
-        loadAllAssets(() => {
-            document.getElementById('loadingScreen')?.classList.add('hidden');
-            document.getElementById('startScreen')?.classList.remove('hidden');
-        });
+        initStars();
     </script>
 </body>
 </html>
