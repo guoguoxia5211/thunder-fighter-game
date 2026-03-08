@@ -51,9 +51,9 @@
         .header-btn.secondary:hover { background: rgba(255,255,255,0.15); }
         .main-container { display: flex; height: 100vh; padding-top: 55px; }
         .preview-section {
-            width: 35%;
-            min-width: 260px;
-            max-width: 380px;
+            width: var(--preview-width, 35%);
+            min-width: 240px;
+            max-width: 450px;
             background: rgba(15, 12, 41, 0.5);
             padding: 20px;
             display: flex;
@@ -61,6 +61,7 @@
             align-items: flex-start;
             border-right: 1px solid rgba(255,255,255,0.08);
             overflow-y: auto;
+            transition: width 0.3s;
         }
         #preview {
             width: 100%;
@@ -72,6 +73,7 @@
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
         }
         .config-section { flex: 1; overflow-y: auto; padding: 15px; background: rgba(26, 26, 62, 0.3); }
         .config-panel {
@@ -119,26 +121,47 @@
         }
         .control-item input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 4px 15px rgba(0,212,255,0.6); }
         .value-display { text-align: right; font-size: 10px; color: rgba(0,212,255,0.8); margin-top: 4px; font-weight: 600; }
-        .gradient-presets, .texture-presets, .font-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-        .gradient-preset, .texture-preset, .font-preset {
+        .gradient-presets, .texture-presets, .font-presets, .layout-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .gradient-preset, .texture-preset, .font-preset, .layout-preset {
             height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: relative; overflow: hidden;
         }
-        .gradient-preset:hover, .texture-preset:hover, .font-preset:hover { transform: scale(1.08); }
-        .gradient-preset.selected, .texture-preset.selected, .font-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
-        .font-preset { display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; background: rgba(255,255,255,0.1); }
+        .gradient-preset:hover, .texture-preset:hover, .font-preset:hover, .layout-preset:hover { transform: scale(1.08); }
+        .gradient-preset.selected, .texture-preset.selected, .font-preset.selected, .layout-preset.selected { border-color: #00d4ff; box-shadow: 0 0 15px rgba(0,212,255,0.4); transform: scale(1.1); }
+        .font-preset, .layout-preset { display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; background: rgba(255,255,255,0.1); }
         .texture-preset { background-size: cover; background-position: center; }
         .theme-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .theme-preset { padding: 12px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; text-align: center; font-size: 12px; font-weight: 600; color: #fff; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .theme-preset:hover { transform: scale(1.05); }
         .theme-preset.selected { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
-        .game-title { text-align: center; padding: 35px 15px 25px; }
+        .game-title { text-align: center; padding: 35px 15px 25px; position: relative; }
         .game-logo {
-            font-size: 28px; font-weight: 900;
+            font-size: 28px;
+            font-weight: 900;
             background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #ff0066 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 6px; letter-spacing: 1px;
-            filter: drop-shadow(0 0 10px rgba(0,212,255,0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 20px rgba(0,212,255,0.8));
             transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+        .game-logo-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: logoGlow 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes logoGlow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
         }
         .game-subtitle { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; }
         .menu-section { padding: 15px 20px; display: flex; flex-direction: column; gap: 10px; }
@@ -178,7 +201,6 @@
         .toolbar-btn:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 30px rgba(0,212,255,0.6); }
         .toolbar-btn:active { transform: scale(0.95); }
         .toolbar-btn.secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-        /* Toast 提示 */
         .toast {
             position: fixed;
             top: 70px;
@@ -198,7 +220,6 @@
             z-index: 300;
         }
         .toast.show { transform: translateX(0); }
-        /* 涟漪效果 */
         .ripple {
             position: absolute;
             background: rgba(255,255,255,0.6);
@@ -210,7 +231,6 @@
         @keyframes rippleEffect {
             to { transform: scale(4); opacity: 0; }
         }
-        /* 选中高亮 */
         .highlight-border {
             position: absolute;
             top: -2px; left: -2px; right: -2px; bottom: -2px;
@@ -243,15 +263,15 @@
         </div>
     </div>
 
-    <!-- Toast 提示 -->
     <div class="toast" id="toast">已保存</div>
 
     <div class="main-container">
-        <div class="preview-section">
+        <div class="preview-section" id="previewSection">
             <div id="preview">
                 <div class="stars" id="stars"></div>
                 <div class="texture-overlay" id="textureOverlay"></div>
                 <div class="grid-overlay" id="gridOverlay"></div>
+                <div class="game-logo-bg" id="logoBg"></div>
 
                 <div class="game-title">
                     <div class="game-logo" id="gameLogo">雷霆战机</div>
@@ -287,6 +307,26 @@
         <div class="config-section">
             <div class="config-panel active">
                 <div class="config-header">
+                    <div class="config-title"><span class="config-icon">📐</span><span>布局预设</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="layout-presets">
+                        <div class="layout-preset" onclick="applyLayout('compact')">紧凑</div>
+                        <div class="layout-preset selected" onclick="applyLayout('standard')">标准</div>
+                        <div class="layout-preset" onclick="applyLayout('spacious')">宽敞</div>
+                        <div class="layout-preset" onclick="applyLayout('focus')">专注</div>
+                    </div>
+                    <div class="config-subsection" style="margin-top:12px;">
+                        <h4>预览区宽度</h4>
+                        <input type="range" min="25" max="50" value="35" oninput="adjustPreviewWidth(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="previewWidthVal">35%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel active">
+                <div class="config-header">
                     <div class="config-title"><span class="config-icon">🎨</span><span>快捷主题</span></div>
                     <span class="toggle-icon">▶</span>
                 </div>
@@ -302,7 +342,36 @@
                 </div>
             </div>
 
-            <div class="config-panel active" onclick="togglePanel(this, event)">
+            <div class="config-panel" onclick="togglePanel(this, event)">
+                <div class="config-header">
+                    <div class="config-title"><span class="config-icon">✨</span><span>标题特效</span></div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="config-content">
+                    <div class="config-subsection">
+                        <h4>背景光晕</h4>
+                        <input type="range" min="0" max="100" value="50" oninput="updateLogoGlow(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="logoGlowVal">50%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>文字阴影</h4>
+                        <input type="range" min="0" max="100" value="80" oninput="updateLogoShadow(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="logoShadowVal">80%</div>
+                    </div>
+                    <div class="config-subsection">
+                        <h4>图标装饰</h4>
+                        <label class="switch-row">
+                            <span class="switch-label">显示光晕背景</span>
+                            <label class="switch">
+                                <input type="checkbox" checked onchange="toggleLogoBg(this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel" onclick="togglePanel(this, event)">
                 <div class="config-header">
                     <div class="config-title"><span class="config-icon">🌌</span><span>背景底纹</span></div>
                     <span class="toggle-icon">▶</span>
@@ -355,8 +424,8 @@
                     </div>
                     <div class="config-subsection">
                         <h4>字间距</h4>
-                        <input type="range" min="0" max="10" value="1" step="0.5" oninput="applyLetterSpacing(this.value)" onclick="event.stopPropagation()">
-                        <div class="value-display" id="letterSpacingVal">1px</div>
+                        <input type="range" min="0" max="10" value="2" step="0.5" oninput="applyLetterSpacing(this.value)" onclick="event.stopPropagation()">
+                        <div class="value-display" id="letterSpacingVal">2px</div>
                     </div>
                 </div>
             </div>
@@ -530,7 +599,6 @@
         </div>
     </div>
 
-    <!-- 快捷工具栏 -->
     <div class="toolbar">
         <button class="toolbar-btn secondary" onclick="toggleAllPanels()" title="展开/收起">📋</button>
         <button class="toolbar-btn" onclick="toggleGrid()" title="网格线">📐</button>
@@ -542,6 +610,7 @@
         let gridVisible = false;
         let currentFont = 'Arial Black';
         let currentFontWeight = '600';
+        let logoGlowEnabled = true;
 
         function createStars(count) {
             const container = document.getElementById('stars');
@@ -583,7 +652,6 @@
         }
 
         function handleClick(btn, event) {
-            // 涟漪效果
             const ripple = document.createElement('span');
             ripple.className = 'ripple';
             const rect = btn.getBoundingClientRect();
@@ -596,7 +664,6 @@
             btn.appendChild(ripple);
             setTimeout(() => ripple.remove(), 600);
 
-            // 高亮效果
             const existing = document.querySelector('.highlight-border');
             if (existing) existing.remove();
             
@@ -606,6 +673,52 @@
             setTimeout(() => highlight.remove(), 2000);
 
             showToast('按钮：' + btn.querySelector('span:last-child').textContent);
+        }
+
+        function applyLayout(layout) {
+            const layouts = {
+                compact: 25,
+                standard: 35,
+                spacious: 45,
+                focus: 50
+            };
+            const width = layouts[layout];
+            document.documentElement.style.setProperty('--preview-width', width + '%');
+            document.getElementById('previewWidthVal').textContent = width + '%';
+            document.querySelectorAll('.layout-preset').forEach(p => p.classList.remove('selected'));
+            event.target.classList.add('selected');
+            showToast('布局：' + layout);
+            autoSave();
+        }
+
+        function adjustPreviewWidth(value) {
+            document.documentElement.style.setProperty('--preview-width', value + '%');
+            document.getElementById('previewWidthVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function updateLogoGlow(value) {
+            const glow = document.getElementById('logoBg');
+            const opacity = value / 100;
+            glow.style.opacity = opacity;
+            document.getElementById('logoGlowVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function updateLogoShadow(value) {
+            const shadow = value / 100;
+            const size = 10 + shadow * 15;
+            const alpha = 0.3 + shadow * 0.5;
+            document.getElementById('gameLogo').style.filter = `drop-shadow(0 0 ${size}px rgba(0,212,255,${alpha}))`;
+            document.getElementById('logoShadowVal').textContent = value + '%';
+            autoSave();
+        }
+
+        function toggleLogoBg(show) {
+            logoGlowEnabled = show;
+            document.getElementById('logoBg').style.display = show ? 'block' : 'none';
+            showToast(show ? '光晕已开启' : '光晕已关闭');
+            autoSave();
         }
 
         function update() {
@@ -778,6 +891,7 @@
                 subtitle: document.getElementById('gameSubtitle').textContent,
                 font: currentFont,
                 fontWeight: currentFontWeight,
+                layout: document.getElementById('previewWidthVal').textContent,
                 theme: 'custom'
             };
             const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
