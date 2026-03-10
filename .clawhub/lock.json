@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "skills": {
+    "elite-longterm-memory": {
+      "version": "1.2.3",
+      "installedAt": 1773002634486
+    },
+    "neural-memory": {
+      "version": "1.0.0",
+      "installedAt": 1773002638524
+    },
+    "memory-tiering": {
+      "version": "1.0.0",
+      "installedAt": 1773002642258
+    },
+    "smart-memory": {
+      "version": "2.5.0",
+      "installedAt": 1773002650853
+    },
+    "memory-hygiene": {
+      "version": "1.0.0",
+      "installedAt": 1773002657503
+    },
+    "memory-setup": {
+      "version": "1.0.0",
+      "installedAt": 1773002661350
+    },
+    "agent-memory": {
+      "version": "1.0.0",
+      "installedAt": 1773002665742
+    },
+    "session-memory": {
+      "version": "1.1.0",
+      "installedAt": 1773002673591
+    },
+    "memory-on-demand": {
+      "version": "1.0.0",
+      "installedAt": 1773002697577
+    },
+    "memory-sync-enhanced": {
+      "version": "2.0.0",
+      "installedAt": 1773002706467
+    },
+    "fluid-memory": {
+      "version": "1.0.9",
+      "installedAt": 1773002711347
+    },
+    "memory-qdrant": {
+      "version": "1.0.10",
+      "installedAt": 1773002715938
+    },
+    "lily-memory": {
+      "version": "5.2.3",
+      "installedAt": 1773002721523
+    },
+    "memory-setup-openclaw": {
+      "version": "1.0.0",
+      "installedAt": 1773002725709
+    },
+    "elite-longterm-memory-1-2-3": {
+      "version": "1.0.0",
+      "installedAt": 1773002732804
+    },
+    "elite-longterm-memory-local": {
+      "version": "1.1.0",
+      "installedAt": 1773002737696
+    },
+    "hypabase-memory": {
+      "version": "0.2.4",
+      "installedAt": 1773002741714
+    },
+    "quack-memory": {
+      "version": "1.0.2",
+      "installedAt": 1773002751094
+    },
+    "afrexai-qa-testing-engine": {
+      "version": "1.0.0",
+      "installedAt": 1773090982574
+    },
+    "test-master": {
+      "version": "0.1.0",
+      "installedAt": 1773090989343
+    }
+  }
+}

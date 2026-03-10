@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>雷霆战机</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="game-container">
+    <!-- 顶部 UI -->
+    <div class="game-ui">
+      <div class="version-panel">
+        <div class="label">版本</div>
+        <div class="value" id="version">加载中...</div>
+      </div>
+      <div class="score-panel">
+        <div class="label">分数</div>
+        <div class="value" id="score">0</div>
+      </div>
+      <div class="lives-panel">
+        <div class="label">生命</div>
+        <div class="value" id="lives">❤️❤️❤️</div>
+      </div>
+    </div>
+
+    <!-- 游戏画布 -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- 游戏结束弹窗 -->
+    <div class="game-over" id="gameOver">
+      <div class="modal">
+        <h2>游戏结束</h2>
+        <div class="final-score">
+          <div class="label">最终分数</div>
+          <div class="value" id="finalScore">0</div>
+        </div>
+        <button class="restart-btn" id="restartBtn">再玩一次</button>
+      </div>
+    </div>
+
+    <!-- 美术编辑按钮 -->
+    <button class="editor-btn" onclick="openEditor()">🎨 美术替换</button>
+  </div>
+
+  <script src="js/game.js?v=2"></script>
+  <script src="js/editor.js?v=2"></script>
+</body>
+</html>

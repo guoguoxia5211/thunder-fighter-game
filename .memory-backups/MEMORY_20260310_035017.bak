@@ -1,0 +1,178 @@
+# MEMORY.md — 长期记忆
+
+_最后更新：2026-03-09_
+
+---
+
+## 👤 关于用户
+
+- **姓名：** 雷雷
+- **角色：** 游戏开发爱好者
+- **时区：** Asia/Shanghai
+- **沟通偏好：** 直接、可执行、不废话
+
+## 🎯 核心目标
+
+- 使用 AI 辅助开发游戏
+- 构建自主学习的游戏系统
+- 快速迭代原型验证想法
+
+## 📦 已安装技能
+
+### 游戏开发
+- game-development
+- game-developer-skill
+- game-engine
+- snake-game-master (专项流程)
+
+### UI 设计
+- ui-design-skill (自研)
+
+### 记忆增强 (2026-03-09 批量安装)
+- elite-longterm-memory (主记忆系统)
+- neural-memory (神经关联)
+- memory-tiering (三级管理)
+- smart-memory (FastAPI 引擎)
+- memory-hygiene (清理优化)
+- memory-setup (配置)
+- agent-memory (Agent 专属)
+- session-memory (会话级)
+- memory-on-demand (按需加载)
+- memory-sync-enhanced (增强同步)
+- fluid-memory (流动管理)
+- memory-qdrant (向量存储)
+- lily-memory (Lily 插件)
+- memory-setup-openclaw (OpenClaw 配置)
+- elite-longterm-memory-1-2-3 (稳定版备份)
+- elite-longterm-memory-local (本地版)
+- hypabase-memory (云存储)
+- quack-memory (快速记忆)
+
+### 工具
+- github (GitHub 操作)
+- gh-issues (Issue 自动化)
+- weather (天气查询)
+- healthcheck (安全检查)
+- clawhub (技能管理)
+- skill-creator (技能创建)
+
+## 🎮 活跃项目
+
+### 1. 雷霆战机 (Thunder Fighter)
+- **状态：** UI 设计完成
+- **进度：** 主菜单 UI 已打包为技能
+- **下一步：** 游戏核心逻辑开发
+
+### 2. 贪吃蛇终极版 (Snake Ultimate)
+- **状态：** 持续迭代中
+- **位置：** `/root/.openclaw/workspace/snake-ultimate/`
+- **备注：** 有独立 git 仓库
+
+## 🧠 认知系统配置
+
+### WAL 协议 (Write-Ahead Log)
+**规则：** 在回复前先写状态，再回复
+
+| 触发信号 | 关键词 | 动作 |
+|----------|--------|------|
+| 纠正 | "不对"/"应该是"/"实际上" | 写 SESSION-STATE.md |
+| 决定 | "用 X"/"选 Y"/"决定" | 写 + Git-Notes |
+| 偏好 | "我喜欢"/"总是"/"从不" | 写 + memory_store |
+| 专有名词 | 人名/地名/公司名 | 写 SESSION-STATE.md |
+| 具体值 | 数字/日期/ID/URL | 写 SESSION-STATE.md |
+
+### 复杂度评估
+- ≤5 分：快速响应（无标记）
+- 6-7 分：标准推理 🧠
+- ≥8 分：深度推理 🧠🔥
+
+### 11 项强制改进
+针对用户的批评持续改进：
+1. 不重复犯同样的错误
+2. 避免低级游戏开发错误
+3. 提升 debug 能力
+4. 自主验证而非让用户测试
+5. 增强自主能力
+6. 增强自我分析能力
+7. 提升推理能力
+8. 提升理解能力
+9. 提升解决问题能力
+10. 增强上下文关联
+11. 提升游戏开发能力
+
+## 📊 记忆管理规则
+
+### 记忆刷新协议
+| 上下文使用率 | 动作 |
+|--------------|------|
+| <50% | 正常操作 |
+| 50-70% | 重要交换后写关键点 |
+| 70-85% | 主动刷新 — 立即写一切重要的 |
+| >85% | 紧急刷新 — 下次回复前写完整摘要 |
+
+### 自我进化流程
+```
+任务完成 → 自我反思 → 记录 corrections.md
+模式≥3 次 → 提升为全局规则
+Heartbeat → 运行检查清单
+```
+
+## 🛡️ 安全边界
+
+### 可以优化的
+- ✅ 汇报精简（信息量不变）
+- ✅ 决策缓存（质量不变）
+- ✅ 并行执行（结果不变）
+- ✅ 资源清理（功能不变）
+
+### 不可以优化的
+- ❌ 深度思考（复杂问题必须深度）
+- ❌ 代码审查（标准不能降低）
+- ❌ 测试覆盖（必须 100% 核心）
+- ❌ 验证流程（VBR 不能跳过）
+- ❌ 自我进化（反思不能简化）
+
+## 📅 重要日期
+
+- **系统初始化：** 2026-03-05
+- **UI 设计技能创建：** 2026-03-09
+- **记忆系统增强：** 2026-03-09（安装 18 个记忆技能）
+
+## 🎯 工作区结构
+
+```
+/root/.openclaw/workspace/
+├── MEMORY.md              # 本文件
+├── SESSION-STATE.md       # 活跃工作记忆（HOT RAM）
+├── AGENTS.md              # 核心工作流规则
+├── SOUL.md                # 人格定义
+├── IDENTITY.md            # 身份定义
+├── USER.md                # 用户信息
+├── TOOLS.md               # 本地工具配置
+├── HEARTBEAT.md           # 周期性任务
+├── memory/                # 每日笔记
+│   ├── YYYY-MM-DD.md
+│   └── skill-*.md
+└── skills/                # 技能库
+    ├── ui-design-skill/
+    ├── elite-longterm-memory/
+    ├── neural-memory/
+    └── ...
+```
+
+## 💡 关键决策记录
+
+- **UI 设计工具化：** 将设计成果打包为技能，方便复用（2026-03-09）
+- **记忆系统增强：** 批量安装 18 个记忆技能，构建完整记忆架构（2026-03-09）
+- **游戏开发优先：** 浏览器优先原型，快速迭代胜过复杂基建
+
+## 📝 经验教训
+
+- **VBR 协议：** 代码存在 ≠ 功能可用，必须自主验证
+- **进度诚实：** 宁可说"还没好"，不说"好了"然后让用户发现 bug
+- **主动汇报：** 不要被动等待，任务完成/阻塞/发现问题立即汇报
+- **WAL 协议：** 回应的冲动是敌人，先写状态再回复
+
+---
+
+*此文件应保持在 5KB 以内，详细内容链接到 memory/ 子文件*
