@@ -80,6 +80,18 @@
     "test-master": {
       "version": "0.1.0",
       "installedAt": 1773090989343
+    },
+    "perf-profiler": {
+      "version": "1.0.0",
+      "installedAt": 1773175647622
+    },
+    "game-engine": {
+      "version": "1.0.0",
+      "installedAt": 1773175652973
+    },
+    "game-ai": {
+      "version": "1.0.0",
+      "installedAt": 1773175657139
     }
   }
 }
