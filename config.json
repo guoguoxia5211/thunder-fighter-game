@@ -2,7 +2,7 @@
   "version": "1.4.3",
   "player": {
     "speed": 5,
-    "health": 10,
+    "health": 3,
     "damage": 10,
     "fireRate": 1
   },
