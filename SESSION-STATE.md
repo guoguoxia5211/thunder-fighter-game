@@ -7,6 +7,7 @@
 - **部署规则固化：** Python HTTP 服务器为唯一部署方式
 - **GitHub 同步：** ✅ 全部完成
 - **坦克大战编辑器：** 18:12 更新完成（代码优化 598 insertions, 212 deletions）
+- **坦克大战 UI：** 18:19 更新完成（3 files, 39 insertions, 32 deletions）
 
 ## 📋 待办事项
 - [x] 创建配置保存功能 PRD
