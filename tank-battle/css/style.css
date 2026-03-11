@@ -1,8 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background: #1a1a2e;
@@ -118,13 +114,13 @@ button:active {
     transform: translateY(-1px);
 }
 
-/* 编辑按钮样式 */
 .editor-btn {
-    font-size: 14px;
+    font-size: 14px !important;
+    padding: 12px 20px !important;
     transition: all 0.3s;
 }
 
 .editor-btn:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) !important;
     box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6) !important;
 }
