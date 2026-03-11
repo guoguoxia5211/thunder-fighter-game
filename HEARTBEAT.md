@@ -6,6 +6,22 @@
 
 ---
 
+## 🚀 强制部署检查
+
+每次游戏开发任务完成后，必须执行：
+
+- [ ] **启动 Python HTTP 服务器**
+  ```bash
+  cd /root/.openclaw/workspace/[项目名]
+  python3 -m http.server [端口] --bind 0.0.0.0 &
+  ```
+- [ ] **汇报在线链接** - `http://182.92.166.51:[端口]/`
+- [ ] **确认可以访问**
+
+**禁止：** 使用任何其他部署方式（GitHub Pages/Vercel/上传等）
+
+---
+
 ## 🤖 自主技能检查清单
 
 ### 每次 Heartbeat 执行

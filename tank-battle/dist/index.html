@@ -28,7 +28,6 @@
             <div class="controls">
                 <p>🎯 控制：方向键移动，空格键射击</p>
                 <p>🏠 目标：保护基地，消灭所有敌机</p>
-                <p style="margin-top: 15px;"><a href="config.html" style="color: #4ecdc4;">⚙️ 配置系统</a></p>
             </div>
         </div>
         <div id="game-over-screen" style="display:none;">
@@ -38,7 +37,6 @@
         </div>
     </div>
     
-    <script src="js/config.js"></script>
     <script src="js/perf-monitor.js"></script>
     <script src="js/collision.js"></script>
     <script src="js/bullet.js"></script>
@@ -48,11 +46,5 @@
     <script src="js/ai/behavior-tree.js"></script>
     <script src="js/enemy.js"></script>
     <script src="js/game.js"></script>
-    <script src="js/config-editor.js"></script>
-    <script src="js/editor.js"></script>
-    
-    <!-- 编辑按钮 -->
-    <button class="editor-btn" onclick="openConfigEditor()" style="position:fixed;bottom:20px;left:20px;z-index:9999;padding:12px 20px;background:linear-gradient(135deg,#4ecdc4,#26a69a);border:none;border-radius:10px;color:white;font-weight:bold;cursor:pointer;box-shadow:0 5px 15px rgba(78,205,196,0.4);">⚙️ 数值配置</button>
-    <button class="editor-btn" onclick="openTankEditor()" style="position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 20px;background:linear-gradient(135deg,#3498db,#2980b9);border:none;border-radius:10px;color:white;font-weight:bold;cursor:pointer;box-shadow:0 5px 15px rgba(52,152,219,0.4);">🎨 美术替换</button>
 </body>
 </html>

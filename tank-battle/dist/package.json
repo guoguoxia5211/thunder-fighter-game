@@ -1,0 +1,19 @@
+{
+  "name": "tank-battle",
+  "version": "1.0.0",
+  "description": "坦克大战 - Tank Battle Game",
+  "author": "雷雷",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guoguoxia5211/tank-battle"
+  },
+  "keywords": [
+    "game",
+    "tank",
+    "battle",
+    "html5",
+    "canvas",
+    "javascript"
+  ]
+}

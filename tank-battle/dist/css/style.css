@@ -117,14 +117,3 @@ button:hover {
 button:active {
     transform: translateY(-1px);
 }
-
-/* 编辑按钮样式 */
-.editor-btn {
-    font-size: 14px;
-    transition: all 0.3s;
-}
-
-.editor-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6) !important;
-}
