@@ -135,3 +135,17 @@ function deployTank() {
 }
 
 function refreshTankGame() { location.reload(); }
+
+// 添加编辑按钮
+function addEditorButton() {
+  const btn = document.createElement('button');
+  btn.className = 'editor-btn';
+  btn.textContent = '🎨 美术替换';
+  btn.onclick = openTankEditor;
+  btn.style.cssText = 'position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg,#f093fb,#f5576c);color:white;border:none;padding:15px 25px;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 5px 20px rgba(240,147,251,0.4);z-index:1000;';
+  document.body.appendChild(btn);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(addEditorButton, 1000);
+});
