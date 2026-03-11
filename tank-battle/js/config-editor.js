@@ -6,12 +6,9 @@
 const TANK_CONFIG_EDITOR = {
   PASSWORD: 'admin123',
   
-  // 打开配置编辑器
   open() {
     const password = prompt('🔐 请输入数值配置密码：\n(默认密码：admin123)');
-    
     if (!password) return;
-    
     if (password === this.PASSWORD) {
       this.showEditor();
     } else {
@@ -19,7 +16,6 @@ const TANK_CONFIG_EDITOR = {
     }
   },
   
-  // 显示编辑器界面
   showEditor() {
     const overlay = document.createElement('div');
     overlay.id = 'config-overlay';
@@ -29,7 +25,6 @@ const TANK_CONFIG_EDITOR = {
           <h2>⚙️ 坦克大战 - 数值配置</h2>
           <button class="close-btn" onclick="TANK_CONFIG_EDITOR.close()">✕ 关闭</button>
         </div>
-        
         <div class="config-content">
           <div class="config-tabs">
             <button class="tab active" onclick="TANK_CONFIG_EDITOR.showTab('player')">🚀 玩家</button>
@@ -37,10 +32,8 @@ const TANK_CONFIG_EDITOR = {
             <button class="tab" onclick="TANK_CONFIG_EDITOR.showTab('bullets')">💫 子弹</button>
             <button class="tab" onclick="TANK_CONFIG_EDITOR.showTab('spawn')">📦 生成</button>
           </div>
-          
           <div id="config-panel" class="config-panel"></div>
         </div>
-        
         <div class="config-footer">
           <div class="status" id="config-status">✅ 就绪</div>
           <div class="actions">
@@ -51,13 +44,11 @@ const TANK_CONFIG_EDITOR = {
         </div>
       </div>
     `;
-    
     document.body.appendChild(overlay);
     this.addStyles();
     this.showTab('player');
   },
   
-  // 关闭编辑器
   close() {
     const overlay = document.getElementById('config-overlay');
     const style = document.getElementById('config-style');
@@ -65,7 +56,6 @@ const TANK_CONFIG_EDITOR = {
     if (style) style.remove();
   },
   
-  // 添加样式
   addStyles() {
     const style = document.createElement('style');
     style.id = 'config-style';
@@ -112,7 +102,7 @@ const TANK_CONFIG_EDITOR = {
         cursor: pointer; font-size: 13px;
       }
       .tab.active {
-        background: linear-gradient(135deg, #4ecdc4, #26a69a);
+        background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
       }
       .config-panel { max-height: 50vh; overflow-y: auto; }
@@ -146,7 +136,7 @@ const TANK_CONFIG_EDITOR = {
       }
       .config-item input:focus {
         outline: none;
-        border-color: #4ecdc4;
+        border-color: #667eea;
       }
       .config-footer {
         background: #f8f9fa;
@@ -171,144 +161,82 @@ const TANK_CONFIG_EDITOR = {
     `;
   },
   
-  // 显示标签页
   showTab(tabName) {
     const panel = document.getElementById('config-panel');
-    const config = window.TANK_CONFIG || window.parent.TANK_CONFIG;
-    
-    // 更新标签状态
+    const config = window.TANK_CONFIG;
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
     
     let html = '';
-    
     if (tabName === 'player') {
       html = this.renderGroup('玩家配置', config.player, 'player');
     } else if (tabName === 'enemies') {
       html = `
-        <div class="config-group">
-          <h3>🔴 普通坦克</h3>
-          ${this.renderGroupContent(config.enemies.normal, 'enemies.normal')}
-        </div>
-        <div class="config-group">
-          <h3>🟠 快速坦克</h3>
-          ${this.renderGroupContent(config.enemies.fast, 'enemies.fast')}
-        </div>
-        <div class="config-group">
-          <h3>🟣 重装坦克</h3>
-          ${this.renderGroupContent(config.enemies.heavy, 'enemies.heavy')}
-        </div>
-        <div class="config-group">
-          <h3>🩷 特种坦克</h3>
-          ${this.renderGroupContent(config.enemies.special, 'enemies.special')}
-        </div>
+        <div class="config-group"><h3>🔴 普通坦克</h3>${this.renderGroupContent(config.enemies.normal, 'enemies.normal')}</div>
+        <div class="config-group"><h3>🟠 快速坦克</h3>${this.renderGroupContent(config.enemies.fast, 'enemies.fast')}</div>
+        <div class="config-group"><h3>🟣 重装坦克</h3>${this.renderGroupContent(config.enemies.heavy, 'enemies.heavy')}</div>
+        <div class="config-group"><h3>🩷 特种坦克</h3>${this.renderGroupContent(config.enemies.special, 'enemies.special')}</div>
       `;
     } else if (tabName === 'bullets') {
       html = `
-        <div class="config-group">
-          <h3>玩家子弹</h3>
-          ${this.renderGroupContent(config.bullets.player, 'bullets.player')}
-        </div>
-        <div class="config-group">
-          <h3>敌人子弹</h3>
-          ${this.renderGroupContent(config.bullets.enemy, 'bullets.enemy')}
-        </div>
+        <div class="config-group"><h3>玩家子弹</h3>${this.renderGroupContent(config.bullets.player, 'bullets.player')}</div>
+        <div class="config-group"><h3>敌人子弹</h3>${this.renderGroupContent(config.bullets.enemy, 'bullets.enemy')}</div>
       `;
     } else if (tabName === 'spawn') {
       html = this.renderGroup('敌人生成配置', config.spawn, 'spawn');
     }
-    
     panel.innerHTML = html;
   },
   
-  // 渲染分组
   renderGroup(title, data, prefix) {
-    let html = `<div class="config-group"><h3>${title}</h3>`;
-    html += this.renderGroupContent(data, prefix);
-    html += '</div>';
-    return html;
+    return `<div class="config-group"><h3>${title}</h3>${this.renderGroupContent(data, prefix)}</div>`;
   },
   
-  // 渲染分组内容
   renderGroupContent(data, prefix) {
     let html = '';
     for (const [key, value] of Object.entries(data)) {
       if (typeof value === 'number') {
-        html += `
-          <div class="config-item">
-            <label>${this.formatLabel(key)}</label>
-            <input type="number" step="0.1" value="${value}" 
-                   data-key="${prefix}.${key}">
-            <span class="value-preview">${value}</span>
-          </div>
-        `;
+        html += `<div class="config-item"><label>${this.formatLabel(key)}</label><input type="number" step="0.1" value="${value}" data-key="${prefix}.${key}"><span class="value-preview">${value}</span></div>`;
       }
     }
     return html;
   },
   
-  // 格式化标签
   formatLabel(key) {
     const labels = {
-      speed: '速度',
-      lives: '生命',
-      damage: '伤害',
-      hp: '血量',
-      score: '分数',
-      bulletSpeed: '子弹速度',
-      bulletCooldown: '射击冷却',
-      shootDelay: '射击间隔',
-      width: '宽度',
-      height: '高度',
-      interval: '生成间隔',
-      maxEnemies: '最大数量',
-      totalToSpawn: '总敌人数'
+      speed: '速度', lives: '生命', damage: '伤害', hp: '血量',
+      score: '分数', bulletSpeed: '子弹速度', bulletCooldown: '射击冷却',
+      shootDelay: '射击间隔', width: '宽度', height: '高度',
+      interval: '生成间隔', maxEnemies: '最大数量', totalToSpawn: '总敌人数'
     };
     return labels[key] || key;
   },
   
-  // 保存配置
   save() {
     const inputs = document.querySelectorAll('.config-item input');
-    const config = window.TANK_CONFIG || window.parent.TANK_CONFIG;
-    
+    const config = window.TANK_CONFIG;
     inputs.forEach(input => {
       const keys = input.dataset.key.split('.');
       let value = parseFloat(input.value);
-      
       let obj = config;
-      for (let i = 0; i < keys.length - 1; i++) {
-        obj = obj[keys[i]];
-      }
+      for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]];
       obj[keys[keys.length - 1]] = value;
     });
-    
     localStorage.setItem('tank_config', JSON.stringify(config));
-    
     const status = document.getElementById('config-status');
     status.textContent = '✅ 已保存';
     status.style.color = '#27ae60';
-    
-    setTimeout(() => {
-      status.textContent = '✅ 就绪';
-    }, 2000);
+    setTimeout(() => { status.textContent = '✅ 就绪'; }, 2000);
   },
   
-  // 立即生效
   apply() {
     this.save();
-    
     const status = document.getElementById('config-status');
     status.textContent = '⚡ 已生效（刷新游戏）';
     status.style.color = '#f39c12';
-    
-    setTimeout(() => {
-      location.reload();
-    }, 1000);
+    setTimeout(() => location.reload(), 1000);
   }
 };
 
-// 全局函数
-function openConfigEditor() {
-  TANK_CONFIG_EDITOR.open();
-}
+function openConfigEditor() { TANK_CONFIG_EDITOR.open(); }
+function resetConfig() { localStorage.removeItem('tank_config'); location.reload(); }

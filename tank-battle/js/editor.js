@@ -1,15 +1,11 @@
 /**
  * 坦克大战 - 美术替换系统
- * 密码保护，实时预览
  */
 
-// 配置
 const TANK_EDITOR_CONFIG = {
-  PASSWORD: 'admin123',
-  GAME_URL: '/tank-battle/'
+  PASSWORD: 'admin123'
 };
 
-// 资源列表
 const TANK_RESOURCES = [
   { id: 'player', name: '🚀 玩家坦克', category: '坦克', color: '#4ecdc4' },
   { id: 'enemy_normal', name: '🔴 普通敌人', category: '敌人', color: '#e74c3c' },
@@ -19,17 +15,13 @@ const TANK_RESOURCES = [
   { id: 'brick', name: '🧱 砖块', category: '地图', color: '#d35400' },
   { id: 'steel', name: '🟦 钢板', category: '地图', color: '#7f8c8d' },
   { id: 'base', name: '🏠 基地', category: '地图', color: '#f1c40f' },
-  { id: 'river', name: '🌊 河流', category: '地图', color: '#3498db' },
 ];
 
 let tankUploads = {};
 
-// 打开编辑器
 function openTankEditor() {
   const password = prompt('🔐 请输入美术编辑密码：\n(默认密码：admin123)');
-  
   if (!password) return;
-  
   if (password === TANK_EDITOR_CONFIG.PASSWORD) {
     showTankEditor();
   } else {
@@ -37,7 +29,6 @@ function openTankEditor() {
   }
 }
 
-// 显示编辑器
 function showTankEditor() {
   const overlay = document.createElement('div');
   overlay.id = 'tank-editor-overlay';
@@ -47,7 +38,6 @@ function showTankEditor() {
         <h2>🎨 坦克大战 - 美术编辑</h2>
         <button class="tank-close-btn" onclick="closeTankEditor()">✕ 关闭</button>
       </div>
-      
       <div class="tank-editor-content">
         <div class="tank-category-filter">
           <button class="tank-filter-btn active" onclick="filterTankCategory('all')">全部</button>
@@ -57,7 +47,6 @@ function showTankEditor() {
         </div>
         <div id="tank-resource-list" class="tank-resource-list"></div>
       </div>
-      
       <div class="tank-editor-footer">
         <div class="tank-status" id="tank-editor-status">✅ 就绪</div>
         <div class="tank-actions">
@@ -67,13 +56,11 @@ function showTankEditor() {
       </div>
     </div>
   `;
-  
   document.body.appendChild(overlay);
   addTankEditorStyles();
   renderTankResources('all');
 }
 
-// 关闭编辑器
 function closeTankEditor() {
   const overlay = document.getElementById('tank-editor-overlay');
   const style = document.getElementById('tank-editor-style');
@@ -81,7 +68,6 @@ function closeTankEditor() {
   if (style) style.remove();
 }
 
-// 添加样式
 function addTankEditorStyles() {
   const style = document.createElement('style');
   style.id = 'tank-editor-style';
@@ -129,7 +115,7 @@ function addTankEditorStyles() {
       cursor: pointer; font-size: 13px;
     }
     .tank-filter-btn.active {
-      background: linear-gradient(135deg, #4ecdc4, #26a69a);
+      background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
     }
     .tank-editor-content { padding: 20px; max-height: 50vh; overflow-y: auto; }
@@ -147,7 +133,7 @@ function addTankEditorStyles() {
       transition: all 0.3s;
     }
     .tank-resource-item:hover {
-      border-color: #4ecdc4;
+      border-color: #667eea;
       transform: translateY(-3px);
     }
     .tank-resource-preview {
@@ -194,44 +180,32 @@ function addTankEditorStyles() {
   `;
 }
 
-// 渲染资源
 function renderTankResources(category) {
   const list = document.getElementById('tank-resource-list');
-  
-  const filtered = category === 'all' 
-    ? TANK_RESOURCES 
-    : TANK_RESOURCES.filter(r => r.category === category);
-  
+  const filtered = category === 'all' ? TANK_RESOURCES : TANK_RESOURCES.filter(r => r.category === category);
   list.innerHTML = filtered.map(r => `
     <div class="tank-resource-item">
-      <img class="tank-resource-preview" id="tank-preview-${r.id}" 
-           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='${encodeURIComponent(r.color)}' x='3' y='3' width='30' height='30'/%3E%3C/svg%3E" 
-           alt="${r.name}">
+      <img class="tank-resource-preview" id="tank-preview-${r.id}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='${encodeURIComponent(r.color)}' x='3' y='3' width='30' height='30'/%3E%3C/svg%3E" alt="${r.name}">
       <div class="tank-resource-name">${r.name}</div>
       <button class="tank-upload-btn" onclick="document.getElementById('tank-upload-${r.id}').click()">📤 上传</button>
-      <input type="file" id="tank-upload-${r.id}" accept="image/*" style="display:none" 
-             onchange="uploadTankResource('${r.id}', event)">
+      <input type="file" id="tank-upload-${r.id}" accept="image/*" style="display:none" onchange="uploadTankResource('${r.id}', event)">
     </div>
   `).join('');
 }
 
-// 分类过滤
 function filterTankCategory(category) {
   document.querySelectorAll('.tank-filter-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
   renderTankResources(category);
 }
 
-// 上传资源
 function uploadTankResource(id, event) {
   const file = event.target.files[0];
   if (!file) return;
-  
   const reader = new FileReader();
   reader.onload = function(e) {
     tankUploads[id] = e.target.result;
     document.getElementById('tank-preview-' + id).src = e.target.result;
-    
     const status = document.getElementById('tank-editor-status');
     status.textContent = '✅ ' + file.name + ' 已上传';
     status.style.color = '#27ae60';
@@ -239,7 +213,6 @@ function uploadTankResource(id, event) {
   reader.readAsDataURL(file);
 }
 
-// 部署
 function deployTank() {
   if (Object.keys(tankUploads).length === 0) {
     const status = document.getElementById('tank-editor-status');
@@ -247,20 +220,11 @@ function deployTank() {
     status.style.color = '#f39c12';
     return;
   }
-  
   localStorage.setItem('tank_resources', JSON.stringify(tankUploads));
-  
   const status = document.getElementById('tank-editor-status');
   status.textContent = '✅ 已保存并部署';
   status.style.color = '#27ae60';
-  
-  setTimeout(() => {
-    closeTankEditor();
-    location.reload();
-  }, 1000);
+  setTimeout(() => { closeTankEditor(); location.reload(); }, 1000);
 }
 
-// 刷新游戏
-function refreshTankGame() {
-  location.reload();
-}
+function refreshTankGame() { location.reload(); }
