@@ -4,16 +4,8 @@
  */
 
 const TANK_CONFIG_EDITOR = {
-  PASSWORD: 'admin123',
-  
   open() {
-    const password = prompt('🔐 请输入数值配置密码：\n(默认密码：admin123)');
-    if (!password) return;
-    if (password === this.PASSWORD) {
-      this.showEditor();
-    } else {
-      alert('❌ 密码错误！');
-    }
+    this.showEditor();
   },
   
   showEditor() {
