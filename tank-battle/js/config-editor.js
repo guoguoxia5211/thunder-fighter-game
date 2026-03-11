@@ -1,6 +1,6 @@
 /**
- * 坦克大战 - 数值配置编辑器
- * 密码保护，实时调整游戏数值
+ * 数值配置编辑器 - 实时调整游戏数值
+ * 密码保护，即时生效
  */
 
 const TANK_CONFIG_EDITOR = {
@@ -56,18 +56,23 @@ const TANK_CONFIG_EDITOR = {
     if (style) style.remove();
   },
   
+  // 添加样式
   addStyles() {
     const style = document.createElement('style');
     style.id = 'config-style';
     style.textContent = `
       #config-overlay {
         position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: rgba(0,0,0,0.8);
         z-index: 9998;
         overflow-y: auto;
         padding: 20px;
       }
+      
       .config-container {
         background: white;
         border-radius: 15px;
@@ -75,6 +80,7 @@ const TANK_CONFIG_EDITOR = {
         margin: 20px auto;
         overflow: hidden;
       }
+      
       .config-header {
         background: linear-gradient(135deg, #1a1a2e, #16213e);
         color: white;
@@ -83,40 +89,68 @@ const TANK_CONFIG_EDITOR = {
         justify-content: space-between;
         align-items: center;
       }
-      .config-header h2 { margin: 0; font-size: 18px; }
+      
+      .config-header h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      
       .close-btn {
         background: rgba(255,255,255,0.2);
-        border: none; color: white;
-        padding: 8px 15px; border-radius: 6px;
-        cursor: pointer; font-weight: bold;
+        border: none;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
       }
-      .config-content { padding: 20px; }
+      
+      .config-content {
+        padding: 20px;
+      }
+      
       .config-tabs {
-        display: flex; gap: 8px;
-        margin-bottom: 20px; flex-wrap: wrap;
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
       }
+      
       .tab {
         padding: 10px 15px;
-        border: none; border-radius: 20px;
+        border: none;
+        border-radius: 20px;
         background: #e0e0e0;
-        cursor: pointer; font-size: 13px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.3s;
       }
+      
       .tab.active {
         background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
       }
-      .config-panel { max-height: 50vh; overflow-y: auto; }
+      
+      .config-panel {
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+      
       .config-group {
         background: #f8f9fa;
         border-radius: 10px;
         padding: 15px;
         margin-bottom: 15px;
       }
+      
       .config-group h3 {
         margin: 0 0 15px 0;
-        color: #2c3e50;
-        font-size: 16px;
+        color: #333;
+        font-size: 15px;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 8px;
       }
+      
       .config-item {
         display: grid;
         grid-template-columns: 1fr 100px 80px;
@@ -124,119 +158,232 @@ const TANK_CONFIG_EDITOR = {
         align-items: center;
         margin-bottom: 10px;
       }
+      
       .config-item label {
-        color: #555;
-        font-size: 14px;
+        font-size: 13px;
+        color: #666;
       }
+      
       .config-item input {
         padding: 8px;
-        border: 1px solid #ddd;
+        border: 2px solid #e0e0e0;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 13px;
       }
+      
       .config-item input:focus {
-        outline: none;
         border-color: #667eea;
+        outline: none;
       }
+      
+      .config-item .desc {
+        font-size: 11px;
+        color: #999;
+      }
+      
       .config-footer {
         background: #f8f9fa;
         padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid #e0e0e0;
+        border-top: 2px solid #e0e0e0;
       }
-      .status { color: #27ae60; font-weight: bold; }
-      .actions { display: flex; gap: 10px; }
-      .btn {
-        padding: 10px 20px;
-        border: none; border-radius: 8px;
-        cursor: pointer; font-weight: bold;
+      
+      .status {
+        color: #666;
         font-size: 14px;
+        margin-bottom: 10px;
       }
-      .btn-reset { background: #95a5a6; color: white; }
-      .btn-save { background: #3498db; color: white; }
-      .btn-apply { background: #27ae60; color: white; }
-      .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+      
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+      
+      .btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      .btn-reset {
+        background: #f0f0f0;
+        color: #333;
+      }
+      
+      .btn-save {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+      }
+      
+      .btn-apply {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        color: white;
+      }
     `;
+    
+    document.head.appendChild(style);
   },
   
+  // 显示标签页
   showTab(tabName) {
-    const panel = document.getElementById('config-panel');
-    const config = window.TANK_CONFIG;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.config-tabs .tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
     
+    const panel = document.getElementById('config-panel');
+    const config = window.GAME_CONFIG;
+    
     let html = '';
+    
     if (tabName === 'player') {
       html = this.renderGroup('玩家配置', config.player, 'player');
     } else if (tabName === 'enemies') {
       html = `
-        <div class="config-group"><h3>🔴 普通坦克</h3>${this.renderGroupContent(config.enemies.normal, 'enemies.normal')}</div>
-        <div class="config-group"><h3>🟠 快速坦克</h3>${this.renderGroupContent(config.enemies.fast, 'enemies.fast')}</div>
-        <div class="config-group"><h3>🟣 重装坦克</h3>${this.renderGroupContent(config.enemies.heavy, 'enemies.heavy')}</div>
-        <div class="config-group"><h3>🩷 特种坦克</h3>${this.renderGroupContent(config.enemies.special, 'enemies.special')}</div>
+        ${this.renderGroup('敌机 Type-1', config.enemies.enemy1, 'enemies.enemy1')}
+        ${this.renderGroup('敌机 Type-2', config.enemies.enemy2, 'enemies.enemy2')}
+        ${this.renderGroup('敌机 Type-3', config.enemies.enemy3, 'enemies.enemy3')}
       `;
+    } else if (tabName === 'boss') {
+      html = this.renderGroup('BOSS 配置', config.boss, 'boss');
     } else if (tabName === 'bullets') {
       html = `
-        <div class="config-group"><h3>玩家子弹</h3>${this.renderGroupContent(config.bullets.player, 'bullets.player')}</div>
-        <div class="config-group"><h3>敌人子弹</h3>${this.renderGroupContent(config.bullets.enemy, 'bullets.enemy')}</div>
+        ${this.renderGroup('普通子弹', config.bullets.normal, 'bullets.normal')}
+        ${this.renderGroup('追踪导弹', config.bullets.missile, 'bullets.missile')}
+        ${this.renderGroup('敌方子弹', config.bullets.enemy, 'bullets.enemy')}
       `;
-    } else if (tabName === 'spawn') {
-      html = this.renderGroup('敌人生成配置', config.spawn, 'spawn');
+    } else if (tabName === 'items') {
+      html = this.renderGroup('道具配置', config.items, 'items');
     }
+    
     panel.innerHTML = html;
   },
   
-  renderGroup(title, data, prefix) {
-    return `<div class="config-group"><h3>${title}</h3>${this.renderGroupContent(data, prefix)}</div>`;
-  },
-  
-  renderGroupContent(data, prefix) {
-    let html = '';
-    for (const [key, value] of Object.entries(data)) {
+  // 渲染配置组
+  renderGroup(title, config, path) {
+    let html = `<div class="config-group"><h3>${title}</h3>`;
+    
+    for (const [key, value] of Object.entries(config)) {
       if (typeof value === 'number') {
-        html += `<div class="config-item"><label>${this.formatLabel(key)}</label><input type="number" step="0.1" value="${value}" data-key="${prefix}.${key}"><span class="value-preview">${value}</span></div>`;
+        const label = this.getLabel(key);
+        const unit = this.getUnit(key);
+        html += `
+          <div class="config-item">
+            <label>${label}</label>
+            <input type="number" 
+                   value="${value}" 
+                   onchange="CONFIG_EDITOR.update('${path}.${key}', this.value)"
+                   step="${value < 1 ? 0.1 : 1}">
+            <span class="desc">${unit}</span>
+          </div>
+        `;
       }
     }
+    
+    html += '</div>';
     return html;
   },
   
-  formatLabel(key) {
+  // 获取中文标签
+  getLabel(key) {
     const labels = {
-      speed: '速度', lives: '生命', damage: '伤害', hp: '血量',
-      score: '分数', bulletSpeed: '子弹速度', bulletCooldown: '射击冷却',
-      shootDelay: '射击间隔', width: '宽度', height: '高度',
-      interval: '生成间隔', maxEnemies: '最大数量', totalToSpawn: '总敌人数'
+      speed: '速度',
+      hp: '血量',
+      score: '分数',
+      width: '宽度',
+      height: '高度',
+      lives: '生命数',
+      bulletSpeed: '子弹速度',
+      bulletCooldown: '射击间隔',
+      power: '火力等级',
+      maxPower: '最大火力',
+      spawnRate: '生成频率',
+      shootInterval: '射击间隔',
+      spawnScore: '出现分数',
+      damage: '伤害',
+      turnRate: '转向速率',
+      curveAmplitude: '曲线幅度',
+      curveFrequency: '曲线频率',
+      launchInterval: '发射间隔',
+      dropRate: '掉落率',
+      duration: '持续时间',
+      alpha: '透明度'
     };
     return labels[key] || key;
   },
   
-  save() {
-    const inputs = document.querySelectorAll('.config-item input');
-    const config = window.TANK_CONFIG;
-    inputs.forEach(input => {
-      const keys = input.dataset.key.split('.');
-      let value = parseFloat(input.value);
-      let obj = config;
-      for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]];
-      obj[keys[keys.length - 1]] = value;
-    });
-    localStorage.setItem('tank_config', JSON.stringify(config));
-    const status = document.getElementById('config-status');
-    status.textContent = '✅ 已保存';
-    status.style.color = '#27ae60';
-    setTimeout(() => { status.textContent = '✅ 就绪'; }, 2000);
+  // 获取单位
+  getUnit(key) {
+    const units = {
+      speed: '像素/秒',
+      bulletSpeed: '像素/秒',
+      bulletCooldown: '毫秒',
+      spawnRate: '秒',
+      shootInterval: '秒',
+      duration: '毫秒',
+      alpha: '0-1',
+      dropRate: '0-1'
+    };
+    return units[key] || '';
   },
   
+  // 更新配置值
+  update(path, value) {
+    const keys = path.split('.');
+    let obj = window.GAME_CONFIG;
+    
+    for (let i = 0; i < keys.length - 1; i++) {
+      obj = obj[keys[i]];
+    }
+    
+    obj[keys[keys.length - 1]] = parseFloat(value);
+    document.getElementById('config-status').textContent = '⚠️ 已修改（需保存/应用）';
+  },
+  
+  // 保存配置
+  save() {
+    saveConfig();
+    document.getElementById('config-status').textContent = '✅ 已保存到本地';
+  },
+  
+  // 立即生效
   apply() {
-    this.save();
-    const status = document.getElementById('config-status');
-    status.textContent = '⚡ 已生效（刷新游戏）';
-    status.style.color = '#f39c12';
-    setTimeout(() => location.reload(), 1000);
+    if (window.gameInstance) {
+      window.gameInstance.applyConfig();
+      document.getElementById('config-status').textContent = '✅ 已立即生效';
+    } else {
+      document.getElementById('config-status').textContent = '⚠️ 游戏未运行';
+    }
   }
 };
 
+// 添加全局按钮
+function addConfigButton() {
+  const btn = document.createElement('button');
+  btn.className = 'config-btn';
+  btn.textContent = '⚙️ 数值配置';
+  btn.onclick = () => CONFIG_EDITOR.open();
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(240,147,251,0.4);
+    z-index: 1000;
+  `;
+  document.body.appendChild(btn);
+}
+
+// 游戏加载后添加按钮
+window.addEventListener('load', () => {
+  setTimeout(addConfigButton, 1000);
+});
 function openConfigEditor() { TANK_CONFIG_EDITOR.open(); }
 function resetConfig() { localStorage.removeItem('tank_config'); location.reload(); }
